@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-body">
+        {% if avatar %}
+        <img class="card-img-top" src="{{ avatar }}" alt="user">
+        {% else %}
+        <img class="card-img-top" src="{{ url_for('static', filename='img/sundry/default_avatar.webp') }}" alt="user">
+        {% endif %}
+        <div class="avatar-over">
+            <i class="fa fa-camera text-white fs-1"></i>
+        </div>
+    </div>
+    <div class="card-footer text-center">{{ name }}</div>
+</div>

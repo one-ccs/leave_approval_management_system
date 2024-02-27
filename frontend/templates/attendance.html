@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    考勤 - {{ rid }} {{ name }}_请假审批管理系统
+{% endblock title %}
+
+{% block body %}
+    <div class="container d-flex align-items-center" style="height: calc(100% - 62px);">
+        <div class="itemcard">
+            <div class="itemcard-menu">
+                <ul class="pagination">
+                    <li data-itemcard-menu="1" class="page-item active"><a href="#" class="page-link"><i class="fa fa-address-card me-2"></i>用户信息</a></li>
+                    <li data-itemcard-menu="2" class="page-item"><a href="#" class="page-link"><i class="fa fa-asl-interpreting me-2"></i>审批</a></li>
+                    <li data-itemcard-menu="4" class="page-item disabled"><a href="#" class="page-link"><i class="fa fa-cogs me-2"></i>设置</a></li>
+                </ul>
+            </div>
+            <div data-itemcard-page="1" class="itemcard-page active">
+                <div class="row h-100 flex-nowrap align-items-center justify-content-center">
+                    <div class="col col-2 col-lg-2 col-sm-3">
+                        <div class="card">
+                            <img class=" card-body rounded" src="{{ url_for('static', filename='img/user.webp') }}" alt="user">
+                            <div class="card-footer text-center">{{ name }}</div>
+                        </div>
+                    </div>
+                    <table class="col col-8 table table-striped table-bordered m-0" border="3" style="width: 30%;background-color: #fff;">
+                        <thead>
+                            <tr><th colspan="2">考勤人员信息</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>ID</td><td>{{ tid }}</td></tr>
+                            <tr><td>姓名</td><td>{{ name }}</td></tr>
+                            <tr><td>性别</td><td>{{ gender }}</td></tr>
+                            <tr><td>电话号码</td><td>{{ telphone }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div data-itemcard-page="2" class="itemcard-page">
+                page2
+            </div>
+            <div data-itemcard-page="3" class="itemcard-page">
+                page3
+            </div>
+            <div data-itemcard-page="4" class="itemcard-page">
+                page4
+            </div>
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,8 @@
+__pycache__
+.vscodecounter
+.history
+.venv
+
+*.vsdx
+*.doc*
+*.jpg

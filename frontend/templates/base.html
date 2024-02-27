@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-confirm.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-table.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fileinput.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/static.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-confirm.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-table.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-table-zh-CN.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-fileinput.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-fileinput-theme.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-fileinput-zh-CN.min.js') }}"></script>
+        {% block style %}
+        {% endblock style %}
+    {% endblock head %}
+</head>
+<body>
+    <div id="backdrop-filter"></div>
+    <div id="drag-box"></div>
+    {% block navbar %}
+        {% include 'includes/top_navbar.html' %}
+    {% endblock navbar %}
+    {% block body %}
+    {% endblock body %}
+    {% block footer %}
+    {% endblock footer %}
+    <script src="{{ url_for('static', filename='js/static.js') }}"></script>
+    {% block script %}
+    {% endblock script %}
+</body>
+</html>

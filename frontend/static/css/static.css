@@ -1,0 +1,99 @@
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: var(--circle-bgcolor, rgba(0, 40, 51, 0.8));
+}
+::-webkit-scrollbar-thumb {
+    background-color: #bbb5ac;
+}
+body {
+    width: 100vw;
+    min-height: 100vh;
+    background-image: url(/static/img/bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+table {
+    user-select: none;
+    cursor: pointer;
+}
+#backdrop-filter {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #333a;
+    backdrop-filter: blur(3px);
+}
+#drag-box {
+    z-index: -999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background-color: rgba(139, 191, 249, 0.5);
+    border: 1px solid rgb(19, 98, 180);
+    display: none;
+    pointer-events: none;
+}
+.itemcard {
+    display: flex;
+    flex-direction: column;
+    padding: 50px 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.itemcard-menu {
+    width: 100%;
+}
+.itemcard-page {
+    display: none;
+    flex-grow: 1;
+    border-radius: 5px;
+    padding: 18px;
+    width: 100%;
+    height: 100%;
+    background-color: #fffc;
+}
+.itemcard-page.active {
+    display: block;
+}
+.btn.btn-default:hover {
+    background-color: #ccca;
+}
+.avatar-over {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+    height: calc(100% - 41px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0008;
+    opacity: 0;
+}
+.avatar-over:hover {
+    opacity: 1;
+}
+
+/* session */
+#btnLogin:hover, #btnRegist:hover {
+    color: black !important;
+    background-color: #00ff6e !important;
+}
+.carousel {
+    z-index: -9;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
