@@ -4,7 +4,7 @@ from flask import request, session, make_response, render_template, url_for, red
 from os import path
 from ..flaskapp import db
 from ..views import assistant_blue
-from ..classes import Datetime
+from classes import Datetime
 
 
 @assistant_blue.before_request

@@ -4,7 +4,7 @@ from flask import request, session, make_response, render_template, url_for, red
 from os import path
 from ..flaskapp import db
 from ..views import admin_blue
-from ..classes import Student
+from classes import Student
 
 
 @admin_blue.before_request

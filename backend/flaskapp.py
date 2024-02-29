@@ -3,7 +3,7 @@
 from flask import Flask, request, session, make_response, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-from .classes import Role
+from classes import Role
 
 MAIN_KEY = 'LmzwTvA1p5Bds3DODi$b2bfe2b68ef2esdf9b86dd354e00d3c3c7f533ce18fe8a6f33f7c3af52396b1bb'
 DATABASE_OPTIONS = {
@@ -178,3 +178,7 @@ def upload(key):
         return make_response({'state': 'ok', 'msg': '上传头像'}, 200)
     else:
         return make_response({'state': 'fail', 'msg': '不支持的操作, 已拒绝'}, 403)
+
+
+if __name__ == "__main__":
+    flaskapp.run(host='0.0.0.0', port=5001, debug=True)

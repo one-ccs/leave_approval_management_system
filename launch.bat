@@ -1,1 +1,1 @@
-cd backend && python manage.py runserver 5051 & cd ..
+cd backend && python flaskapp.py & cd ..

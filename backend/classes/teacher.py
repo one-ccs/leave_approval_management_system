@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from ..classes import User
+from classes import User
 
 
 class Teacher(User):
