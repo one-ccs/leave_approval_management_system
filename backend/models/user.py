@@ -3,14 +3,14 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
-from ..flaskapp import db
+from ..app import db
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), index=True, unique=True, nullable=False)
-    password_hash = db.Column(db.String(255))
-    token = db.Column(db.String(255))
+    id              = db.Column(db.Integer, primary_key=True)
+    name            = db.Column(db.String(32), index=True, unique=True, nullable=False)
+    password_hash   = db.Column(db.String(255))
+    token           = db.Column(db.String(255))
     create_datetime = db.Column(db.Date, default=datetime.now().strftime(r'%Y-%m-%d %H:%M:%S'))
 
     def __init__(self, id=None, name=None) -> None:

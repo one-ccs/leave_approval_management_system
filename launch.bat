@@ -1,1 +1,1 @@
-cd backend && python flaskapp.py & cd ..
+cd backend && python app.py & cd ..

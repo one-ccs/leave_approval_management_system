@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request, session, make_response, render_template, redirect
-from ..flaskapp import db
+from ..app import db
 from ..views import attendance_blue
 
 

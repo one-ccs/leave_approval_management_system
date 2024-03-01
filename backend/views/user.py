@@ -2,7 +2,7 @@
 from flask import request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
-from ..flaskapp import db, login_manager, unify_response
+from ..app import db, login_manager, unify_response
 from ..models import User
 from ..views import user_blue
 
