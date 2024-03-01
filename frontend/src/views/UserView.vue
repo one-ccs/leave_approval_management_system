@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <div class="view">user</div>
+    <div class="client-view">user</div>
 </template>
 
 <style lang="less" scoped>

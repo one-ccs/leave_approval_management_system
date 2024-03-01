@@ -1,5 +1,9 @@
 :root {
+    --van-white: #ddd;
+
     --text-color: #333;
+    --background-color: #ddd;
+    --bottom-menu-height: 80px;
 }
 
 *,
