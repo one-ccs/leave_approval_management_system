@@ -3,6 +3,7 @@
         "permiss",
         "Pinia",
         "SQLALCHEMY",
+        "tabbar",
         "vant",
         "werkzeug"
     ]

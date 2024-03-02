@@ -1,9 +1,11 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 </script>
 
 <template>
-    <div class="client-view">user</div>
+    <div class="user-wrapper">
+        user
+    </div>
 </template>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 </style>

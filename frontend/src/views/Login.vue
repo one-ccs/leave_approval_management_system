@@ -30,12 +30,13 @@ const onSubmit = (value: any) => {
         <van-image
             block
             width="100w"
-            height="260"
+            height="380"
             fit="cover"
             position="center"
             src="static/img/img01.jpg"
             class="picture mb-5"
         ></van-image>
+        <van-image src="static/img/logo.png" class="logo"></van-image>
         <van-form @submit="onSubmit" :rules="formRules">
             <van-cell-group>
                 <van-field
@@ -73,12 +74,27 @@ const onSubmit = (value: any) => {
 
 <style scoped lang="less">
 .picture {
+    opacity: .8;
+    max-width: var(--client-width);
     border-radius: 22% 78% 32% 68% / 67% 45% 55% 33% ;
     overflow: hidden;
 }
+.logo {
+    z-index: 1;
+    position: absolute;
+    top: 35%;
+    width: 256px;
+}
+@media screen and (min-width: 768px) {
+    .logo {
+        top: 28%;
+    }
+}
 .van-form {
-    display: block;
     width: 300px;
-    transition-delay: 9999s;
+
+    :deep(.van-cell.van-cell--large) {
+        border-bottom: 1px solid gray;
+    }
 }
 </style>

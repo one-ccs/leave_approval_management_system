@@ -2,7 +2,9 @@
 </script>
 
 <template>
-    <div class="view">app</div>
+    <div class="app-wrapper">
+        app
+    </div>
 </template>
 
 <style scoped lang="less">

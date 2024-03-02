@@ -59,7 +59,7 @@ const routes: RouteRecordRaw[] = [
         path: '/forgot',
         name: 'forgot',
         meta: {
-            title: '忘记密码',
+            title: '找回密码',
         },
         component: () => import('@/views/Forgot.vue'),
     },
@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | 请假视频管理系统`;
     const user = localLoad('user') || sessionLoad('user');
 
-    if (!user && to.name !== 'login') {
+    if (!user && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
         next('/login');
     } else if (user && user.expires <= new Date().getTime()) {
