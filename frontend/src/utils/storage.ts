@@ -1,4 +1,4 @@
-function localLoad(key: string, def=null) {
+function localLoad(key: string, def=null): any {
     let data = localStorage.getItem(key);
 
     if(!data) return def;
@@ -20,7 +20,7 @@ function localClear() {
     localStorage.clear();
 }
 
-function sessionLoad(key: string, def=null) {
+function sessionLoad(key: string, def=null): any {
     let data = sessionStorage.getItem(key);
 
     if(!data) return def;

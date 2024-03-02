@@ -3,7 +3,6 @@
 from flask import Flask, request, session, make_response, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-from classes import Role
 
 MAIN_KEY = 'LmzwTvA1p5Bds3DODi$b2bfe2b68ef2esdf9b86dd354e00d3c3c7f533ce18fe8a6f33f7c3af52396b1bb'
 DATABASE_OPTIONS = {
@@ -18,17 +17,17 @@ STATIC_FOLDER = '../frontend/static'
 UPLOAD_FOLDER = './frontend/static/user_upload'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png', 'webp', 'gif'])
 
-flaskapp = Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
-flaskapp.config['SECRET_KEY'] = MAIN_KEY
-flaskapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=1800)
-flaskapp.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
+app = Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
+app.config['SECRET_KEY'] = MAIN_KEY
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=1800)
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 ## Flask-SQLalchemy
-flaskapp.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DATABASE_OPTIONS["user"]}:{DATABASE_OPTIONS["password"]}@{DATABASE_OPTIONS["host"]}:{DATABASE_OPTIONS["port"]}/{DATABASE_OPTIONS["database"]}'
-flaskapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-flaskapp.config['SQLALCHEMY_ECHO'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DATABASE_OPTIONS["user"]}:{DATABASE_OPTIONS["password"]}@{DATABASE_OPTIONS["host"]}:{DATABASE_OPTIONS["port"]}/{DATABASE_OPTIONS["database"]}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = False
 
-db = SQLAlchemy(flaskapp)
+db = SQLAlchemy(app)
 db.rows2dict = (lambda rows, keys: [dict(zip(keys, row)) for row in rows])
 
 
@@ -51,33 +50,33 @@ def unify_response(code, data=None, msg=''):
     return ({'data': deepStrftime(data), 'msg': msg, 'code': code}, int(code))
 
 
-@flaskapp.before_request
+@app.before_request
 def check_login():
     if 'role' not in session:
         session.clear()
 
-@flaskapp.route('/favicon.ico')
+@app.route('/favicon.ico')
 def favicon():
     return redirect(url_for('static', filename='favicon.ico'))
 
-@flaskapp.route('/')
+@app.route('/')
 def root():
     args = session.get('role', {})
     return render_template('/index.html', **args)
 
-@flaskapp.route('/session')
+@app.route('/session')
 def _session():
     args = session.get('role', {})
     return render_template('/session.html', **args)
 
-@flaskapp.route('/online')
+@app.route('/online')
 def online():
     # 获取在线状态
     if 'role' in session:
         return make_response({'state': 'ok', 'msg': '已登录'}, 200)
     return make_response({'state': 'fail', 'msg': '未登录'}, 200)
 
-@flaskapp.route('/login', methods=['GET', 'POST', 'DELETE'])
+@app.route('/login', methods=['GET', 'POST', 'DELETE'])
 def login():
     res = None
     if request.method == 'GET': # 获取登录页
@@ -123,11 +122,11 @@ def login():
             res = make_response({'state': 'ok', 'msg': '登出成功'}, 200)
     return res
 
-@flaskapp.route('/regist', methods=['GET', 'POST'])
-def regist():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     res = None
     if request.method == 'GET':
-        return render_template('/regist.html')
+        return render_template('/register.html')
     if request.method == 'POST':
         role = None
         try:
@@ -151,7 +150,7 @@ def regist():
             res = make_response({'state': 'fail', 'msg': '注册失败, ID 已存在, 请修改后重试'}, 403)
     return res
 
-@flaskapp.route('/user')
+@app.route('/user')
 def user():
     if 'role' not in session:
         return redirect('/session')
@@ -168,7 +167,7 @@ def user():
         res = redirect('/admin/')
     return res
 
-@flaskapp.route('/upload/<path:key>', methods=['POST'])
+@app.route('/upload/<path:key>', methods=['POST'])
 def upload(key):
     if key == 'avatar':
         file_data = request.files.get('file_data')
@@ -181,4 +180,4 @@ def upload(key):
 
 
 if __name__ == "__main__":
-    flaskapp.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)

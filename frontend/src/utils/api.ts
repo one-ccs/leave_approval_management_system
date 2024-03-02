@@ -1,9 +1,16 @@
-import { showSuccessToast, showFailToast } from 'vant';
-import { localLoad, localSave } from './storage';
+import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
+import { localLoad, localSave, sessionSave } from './storage';
 import request from './request';
 import encryptMD5 from './encryptMD5';
 
-const TOKEN_NAME = 'token';
+
+export interface ResultData {
+    code: number;
+    message: string;
+    data: any;
+};
+
+const TOKEN_NAME = 'user';
 
 /**
  * 默认成功处理函数
@@ -31,20 +38,32 @@ function defaultFailure(data: any, status: number, url: string) {
  * @param failure 失败回调函数
  * @returns Promise
  */
-function apiLogin(formData: any, success: Function = defaultSuccess, failure: Function = defaultFailure) {
-    const userData = {
-        username: formData.username,
-        password: encryptMD5(formData.password),
-    };
+function apiLogin(user: any, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    showLoadingToast({
+        message: '登录中...',
+        forbidClick: true,
+    });
     return request('/api/user/login', {
         method: 'post',
-        data: userData,
+        data: {
+            username: user.username,
+            password: encryptMD5(user.password),
+        },
         contentType: 'form',
-        success: (data: any) => {
-            if (formData.remember) localSave(TOKEN_NAME, userData);
+        success: (data: ResultData) => {
+            closeToast();
+            const userData = {
+                username: user.username,
+                roles: data.data.roles,
+                expires: ((new Date()).getTime() + 1000 * 3600 * 2),
+            };
+            user.remember ? localSave(TOKEN_NAME, userData) : sessionSave(TOKEN_NAME, userData);
             success && success(data);
+        },
+        failure: (data: ResultData) => {
+            closeToast();
+            failure && failure(data);
         }
-        ,failure
     });
 }
 

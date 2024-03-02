@@ -1,25 +1,42 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import useGlobalStore from '@/stores/global';
 
-const badges = reactive([
-    1,2,3,4
-]);
+const globalStore = useGlobalStore();
+
+const items = [
+    {
+        icon: 'chat-o',
+        text: '通知',
+        link: '/notice',
+        permiss: 0x1,
+    },
+    {
+        icon: '',
+        text: '',
+        link: '',
+        permiss: 0x4,
+    },
+    {
+        icon: '',
+        text: '',
+        link: '',
+        permiss: 0x8,
+    },
+];
 </script>
 
 <template>
     <div class="bottom-menu">
+        <router-link to="notice" class="menu-item">
+            <van-icon name="chat-o" size="24" :badge="globalStore.badges.notice" />
+            <span class="mt-2">通知</span>
+        </router-link>
         <div class="menu-item">
-            <van-icon name="chat-o" size="24" :badge="badges[0].toString()" />
-            <span class="mt-2">通知</span></div>
-        <div class="menu-item">
-            <van-icon name="orders-o" size="24" :badge="badges[1].toString()" />
-            <span class="mt-2">通讯录</span></div>
-        <div class="menu-item">
-            <van-icon name="apps-o" size="24" :badge="badges[2].toString()" />
-            <span class="mt-2">工作台</span>
+            <van-icon name="apps-o" size="24" :badge="globalStore.badges.app" />
+            <span class="mt-2">应用</span>
         </div>
         <div class="menu-item">
-            <van-icon name="contact-o" size="24" :badge="badges[3].toString()" />
+            <van-icon name="contact-o" size="24" :badge="globalStore.badges.user" />
             <span class="mt-2">我的</span>
         </div>
     </div>

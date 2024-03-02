@@ -1,8 +1,8 @@
-import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type AxiosRequestConfig } from 'axios';
-import { showToast, showSuccessToast, showFailToast } from 'vant';
+import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
+import { showFailToast } from 'vant';
 
-const service = axios.create({
-    baseURL: 'http://127.0.0.1:5001',
+const service: AxiosInstance = axios.create({
+    // baseURL: 'http://127.0.0.1:5001',
     timeout: 5000,
     // 小于 500 的状态码不抛出错误
     validateStatus: status => (status < 500),
@@ -10,29 +10,22 @@ const service = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
+    (config: InternalAxiosRequestConfig) => {
         return config;
     },
     (error: AxiosError) => {
-        return Promise.reject();
+        return Promise.reject(error);
     }
 );
 
 // 响应拦截器
 service.interceptors.response.use(
     (response: AxiosResponse) => {
-        // 未登录，或登录已过期
-        if (response.data.code === 401) {
-            showToast('未登录，即将跳转登录页...');
-            setTimeout(() => {
-                location.href = '/login';
-            }, 1200);
-        }
         return response;
     },
     (error: AxiosError) => {
         showFailToast('发生了一些错误，请联系管理员。')
-        return Promise.reject();
+        return Promise.reject(error);
     }
 );
 
@@ -76,12 +69,12 @@ async function request(url: string, config?: RequestConfig) {
     if (token && tokenType === 'Bearer') headers['Authorization'] = `Bearer ${token}`;
 
     return service({ url, method, params, data, headers }).then((res: AxiosResponse) => {
-        if (res.data.code === 200 && success) return Promise.resolve(success(res.data));
-        if (res.data.code !== 200 && failure) return Promise.resolve(failure(res.data, res.data.code, url));
+        if (res.data.code === 200 && success) success(res.data);
+        if (res.data.code !== 200 && failure) failure(res.data, res.data.code, url);
 
         return Promise.resolve(res.data);
     }).catch((err: AxiosError) => {
-        if (error) return Promise.reject(error(err));
+        if (error) error(err);
 
         return Promise.reject(err);
     });

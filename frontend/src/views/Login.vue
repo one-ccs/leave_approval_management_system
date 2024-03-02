@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiLogin } from '@/utils/api';
+import { apiLogin, type ResultData } from '@/utils/api';
 
 const router = useRouter();
 const formRules = {
@@ -19,9 +19,9 @@ const formData = reactive({
 });
 
 const onSubmit = (value: any) => {
-    console.log(value);
-    router.push({ name: 'user' });
-    apiLogin(formData);
+    apiLogin(value, (data: ResultData) => {
+        router.push('/');
+    });
 };
 </script>
 
@@ -29,7 +29,7 @@ const onSubmit = (value: any) => {
     <div class="view">
         <van-image
             block
-            width="100vw"
+            width="100w"
             height="260"
             fit="cover"
             position="center"

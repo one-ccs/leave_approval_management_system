@@ -3,7 +3,7 @@
 from .app import UPLOAD_FOLDER
 from .app import ALLOWED_IMAGE_EXTENSIONS
 
-from .app import flaskapp
+from .app import app
 from .app import db
 
 
