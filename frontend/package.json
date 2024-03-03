@@ -11,7 +11,9 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@vant/use": "^1.6.0",
     "axios": "^1.6.7",
+    "font-awesome": "^4.7.0",
     "pinia": "^2.1.7",
     "vant": "^4.8.5",
     "vue": "^3.4.15",

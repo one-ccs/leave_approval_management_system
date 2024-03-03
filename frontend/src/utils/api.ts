@@ -1,5 +1,5 @@
 import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
-import { localLoad, localSave, sessionSave } from './storage';
+import { localLoad, localRemove, localSave, sessionRemove, sessionSave } from './storage';
 import request from './request';
 import encryptMD5 from './encryptMD5';
 
@@ -55,7 +55,7 @@ function apiLogin(user: any, success: Function = defaultSuccess, failure: Functi
             const userData = {
                 username: user.username,
                 roles: data.data.roles,
-                expires: ((new Date()).getTime() + 1000 * 3600 * 2),
+                expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };
             user.remember ? localSave(TOKEN_NAME, userData) : sessionSave(TOKEN_NAME, userData);
             success && success(data);
@@ -67,6 +67,19 @@ function apiLogin(user: any, success: Function = defaultSuccess, failure: Functi
     });
 }
 
+function apiLogout(success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/user/logout', {
+        method: 'post',
+        success: (data: ResultData) => {
+            localRemove(TOKEN_NAME);
+            sessionRemove(TOKEN_NAME);
+            success && success(data);
+        },
+        failure,
+    });
+}
+
 export {
     apiLogin,
+    apiLogout,
 }

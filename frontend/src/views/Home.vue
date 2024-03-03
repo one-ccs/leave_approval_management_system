@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import useGlobalStore from '@/stores/global';
+import { computed } from 'vue';
 
 const globalStore = useGlobalStore();
+const backgroundImage = computed(() => {
+    return `url(${globalStore.backgroundImage})`;
+});
 </script>
 
 <template>
@@ -37,7 +41,14 @@ const globalStore = useGlobalStore();
 <style scoped lang="less">
 .view {
     .client-view {
+        --bgi: v-bind(backgroundImage);
+
+        width: 100%;
         height: calc(100% - var(--van-tabbar-height));
+        background-image: var(--bgi);
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
     }
     .tabbar {
         --van-tabbar-background: #fff;

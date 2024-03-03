@@ -1,5 +1,6 @@
 :root {
     --van-white: #F2F5FC;
+    --van-nav-bar-background: #fff !important;
 
     --client-width: 100%;
     --text-color: #333;
@@ -11,6 +12,10 @@
     :root {
         --client-width: 560px;
     }
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 *,

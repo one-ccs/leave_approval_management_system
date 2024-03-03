@@ -12,4 +12,12 @@ export default defineMock([
           },
         },
     },
+    {
+        url: '/api/user/logout',
+        body: {
+          code: 200,
+          message: '登出成功',
+          data: true,
+        },
+    },
 ])

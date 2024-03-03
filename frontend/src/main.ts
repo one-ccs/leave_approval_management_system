@@ -3,6 +3,8 @@ import 'vant/es/dialog/style';
 import 'vant/es/notify/style';
 import 'vant/es/image-preview/style';
 
+import 'font-awesome/css/font-awesome.min.css';
+
 import './assets/main.css';
 
 import { createApp } from 'vue';

@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <div class="notice-wrapper">
+    <div class="client-wrapper notice">
         notice
     </div>
 </template>

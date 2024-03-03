@@ -1,4 +1,5 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import { showToast } from 'vant';
 import { localLoad, localRemove, sessionLoad, sessionRemove } from '@/utils/storage';
 import HomeView from '@/views/Home.vue';
 
@@ -28,6 +29,32 @@ const routes: RouteRecordRaw[] = [
                     title: '应用',
                 },
                 component: () => import('@/views/Home/App.vue'),
+                children: [
+                    {
+                        path: 'leave',
+                        name: 'leave',
+                        meta: {
+                            title: '请假'
+                        },
+                        component: () => import('@/views/Home/App/Leave.vue'),
+                    },
+                    {
+                        path: 'revoke',
+                        name: 'revoke',
+                        meta: {
+                            title: '销假'
+                        },
+                        component: () => import('@/views/Home/App/Revoke.vue'),
+                    },
+                    {
+                        path: 'student',
+                        name: 'student',
+                        meta: {
+                            title: '销假'
+                        },
+                        component: () => import('@/views/Home/App/Student.vue'),
+                    },
+                ],
             },
             {
                 path: '/user',
@@ -36,16 +63,34 @@ const routes: RouteRecordRaw[] = [
                     title: '用户',
                 },
                 component: () => import('@/views/Home/User.vue'),
+                children: [
+                    {
+                        path: 'modify',
+                        name: 'modify',
+                        meta: {
+                            title: '编辑资料',
+                        },
+                        component: () => import('@/views/Home/User/Modify.vue'),
+                    },
+                    {
+                        path: 'password',
+                        name: 'password',
+                        meta: {
+                            title: '修改密码',
+                        },
+                        component: () => import('@/views/Home/User/Password.vue'),
+                    },
+                    {
+                        path: 'setting',
+                        name: 'setting',
+                        meta: {
+                            title: '设置',
+                        },
+                        component: () => import('@/views/Home/User/Setting.vue'),
+                    },
+                ],
             },
-            {
-                path: '/about',
-                name: 'about',
-                meta: {
-                    title: '关于',
-                },
-                component: () => import('@/views/Home/About.vue'),
-            },
-        ]
+        ],
     },
     {
         path: '/login',
@@ -64,12 +109,20 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/Forgot.vue'),
     },
     {
+        path: '/about',
+        name: 'about',
+        meta: {
+            title: '关于',
+        },
+        component: () => import('@/views/About.vue'),
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: '404',
-        component: () => import('@/views/404.vue'),
         meta: {
             title: '404',
         },
+        component: () => import('@/views/404.vue'),
     },
 ];
 
@@ -90,6 +143,7 @@ router.beforeEach((to, from, next) => {
         // 登录已过期
         localRemove('user');
         sessionRemove('user');
+        showToast("登录已过期，即将跳转登录页面...");
         next('/login');
     } else if (user && to.name === 'login') {
         // 已登录禁止进入登录页
