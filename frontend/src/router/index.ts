@@ -2,6 +2,7 @@ import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { showToast } from 'vant';
 import { localLoad, localRemove, sessionLoad, sessionRemove } from '@/utils/storage';
 import HomeView from '@/views/Home.vue';
+import usePermissStore from '@/stores/permiss';
 
 
 const routes: RouteRecordRaw[] = [
@@ -31,28 +32,112 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/Home/App.vue'),
                 children: [
                     {
-                        path: 'leave',
-                        name: 'leave',
+                        path: 'user/leave',
+                        name: 'userLeave',
                         meta: {
-                            title: '请假'
+                            title: '请假',
+                            permiss: 1,
                         },
-                        component: () => import('@/views/Home/App/Leave.vue'),
+                        component: () => import('@/views/Home/App/Student/Leave.vue'),
                     },
                     {
-                        path: 'revoke',
-                        name: 'revoke',
+                        path: 'user/revoke',
+                        name: 'userRevoke',
                         meta: {
-                            title: '销假'
+                            title: '销假',
+                            permiss: 2,
                         },
-                        component: () => import('@/views/Home/App/Revoke.vue'),
+                        component: () => import('@/views/Home/App/Student/Revoke.vue'),
                     },
                     {
-                        path: 'student',
-                        name: 'student',
+                        path: 'user/history',
+                        name: 'userHistory',
                         meta: {
-                            title: '销假'
+                            title: '请假历史',
+                            permiss: 3,
                         },
-                        component: () => import('@/views/Home/App/Student.vue'),
+                        component: () => import('@/views/Home/App/Student/History.vue'),
+                    },
+                    {
+                        path: 'user/student',
+                        name: 'userStudent',
+                        meta: {
+                            title: '学生信息',
+                            permiss: 4,
+                        },
+                        component: () => import('@/views/Home/App/Student/Student.vue'),
+                    },
+                    {
+                        path: 'teacher/approve',
+                        name: 'teacherApprove',
+                        meta: {
+                            title: '审批',
+                            permiss: 5,
+                        },
+                        component: () => import('@/views/Home/App/Teacher/Approve.vue'),
+                    },
+                    {
+                        path: 'teacher/attendance',
+                        name: 'teacherAttendance',
+                        meta: {
+                            title: '考勤',
+                            permiss: 6,
+                        },
+                        component: () => import('@/views/Home/App/Teacher/Attendance.vue'),
+                    },
+                    {
+                        path: 'teacher/teacher',
+                        name: 'teacherTeacher',
+                        meta: {
+                            title: '教师信息',
+                            permiss: 7,
+                        },
+                        component: () => import('@/views/Home/App/Teacher/Teacher.vue'),
+                    },
+                    {
+                        path: 'admin/student',
+                        name: 'adminStudent',
+                        meta: {
+                            title: '学生管理',
+                            permiss: 8,
+                        },
+                        component: () => import('@/views/Home/App/Admin/Student.vue'),
+                    },
+                    {
+                        path: 'admin/teacher',
+                        name: 'adminTeacher',
+                        meta: {
+                            title: '教师管理',
+                            permiss: 9,
+                        },
+                        component: () => import('@/views/Home/App/Admin/Teacher.vue'),
+                    },
+                    {
+                        path: 'admin/permission',
+                        name: 'adminPermission',
+                        meta: {
+                            title: '权限管理',
+                            permiss: 9,
+                        },
+                        component: () => import('@/views/Home/App/Admin/Permission.vue'),
+                    },
+                    {
+                        path: 'admin/notice',
+                        name: 'adminNotice',
+                        meta: {
+                            title: '通知管理',
+                            permiss: 10,
+                        },
+                        component: () => import('@/views/Home/App/Admin/Notice.vue'),
+                    },
+                    {
+                        path: 'admin/lost',
+                        name: 'adminLost',
+                        meta: {
+                            title: '失物招领管理',
+                            permiss: 11,
+                        },
+                        component: () => import('@/views/Home/App/Admin/Lost.vue'),
                     },
                 ],
             },
@@ -126,7 +211,6 @@ const routes: RouteRecordRaw[] = [
     },
 ];
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
@@ -135,6 +219,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | 请假视频管理系统`;
     const user = localLoad('user') || sessionLoad('user');
+    const permissStore = usePermissStore();
 
     if (!user && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
@@ -148,6 +233,9 @@ router.beforeEach((to, from, next) => {
     } else if (user && to.name === 'login') {
         // 已登录禁止进入登录页
         next(from);
+    } else if (to.meta.permiss && !permissStore.hasPermiss(to.meta.permiss as number)) {
+        // 如果没有权限，则进入403
+        next('/403');
     } else {
         // 正常跳转
         next();

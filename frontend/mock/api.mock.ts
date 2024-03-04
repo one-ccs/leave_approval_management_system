@@ -1,4 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
+import user from './data/user';
 
 export default defineMock([
     {
@@ -6,10 +7,7 @@ export default defineMock([
         body: {
           code: 200,
           message: '登录成功',
-          data: {
-            username: 'ua',
-            roles: ['学生'],
-          },
+          data: user(),
         },
     },
     {

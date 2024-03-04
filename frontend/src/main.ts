@@ -13,9 +13,21 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 
+import usePermissStore from './stores/permiss';
+
+console.log();
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 
+// 自定义权限指令
+const permissStore = usePermissStore();
+app.directive('permiss', {
+    beforeMount(el, binding) {
+        if (!permissStore.permiss.includes(binding.value)) {
+            el.hidden = true;
+        }
+    },
+});
 app.mount('#app');

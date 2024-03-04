@@ -2,8 +2,13 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiLogin, type ResultData } from '@/utils/api';
+import i18n from '@/utils/i18n';
+import usePermissStore from '@/stores/permiss';
+import useUserStore from '@/stores/user';
 
 const router = useRouter();
+const permissStore = usePermissStore();
+const userStore = useUserStore();
 const formRules = {
     username: [
         { required: true, message: '请填写用户名' },
@@ -20,6 +25,8 @@ const formData = reactive({
 
 const onSubmit = (value: any) => {
     apiLogin(value, (data: ResultData) => {
+        permissStore.setRole(i18n(data.data.role));
+        userStore.initUser(data.data);
         router.push('/');
     });
 };

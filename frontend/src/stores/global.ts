@@ -1,5 +1,15 @@
 import { defineStore } from "pinia";
 
+
+const backgroundImageList = [
+    '/static/img/bg/blob-scene-haikei.svg',
+    '/static/img/bg/blurry-gradient-haikei.svg',
+    '/static/img/bg/circle-scatter-haikei.svg',
+    '/static/img/bg/layered-peaks-haikei.svg',
+    '/static/img/bg/stacked-steps-haikei.svg',
+    '/static/img/bg/stacked-waves-haikei.svg',
+    '/static/img/bg/wave-haikei.svg',
+];
 const useGlobalStore = defineStore('global', {
     state: () => ({
         _badges: {
@@ -8,16 +18,8 @@ const useGlobalStore = defineStore('global', {
             user: 0,
             leave: 0,
             revoke: 0,
+            approve: 0,
         },
-        backgroundImages: [
-            '/static/img/bg/blob-scene-haikei.svg',
-            '/static/img/bg/blurry-gradient-haikei.svg',
-            '/static/img/bg/circle-scatter-haikei.svg',
-            '/static/img/bg/layered-peaks-haikei.svg',
-            '/static/img/bg/stacked-steps-haikei.svg',
-            '/static/img/bg/stacked-waves-haikei.svg',
-            '/static/img/bg/wave-haikei.svg',
-        ],
         backgroundImageIndex: 5,
     }),
     getters: {
@@ -27,9 +29,10 @@ const useGlobalStore = defineStore('global', {
             user: state._badges.user || '',
             leave: state._badges.leave || '',
             revoke: state._badges.revoke || '',
+            approve: state._badges.approve || '',
         }),
-        backgroundImage: (state: any) => state.backgroundImages[state.backgroundImageIndex]
-            || state.backgroundImages[0],
+        backgroundImage: (state: any) => backgroundImageList[state.backgroundImageIndex]
+            || backgroundImageList[0],
     },
     actions: {
         setNoticeBadge(value: number) {
@@ -46,6 +49,9 @@ const useGlobalStore = defineStore('global', {
         },
         setRevokeBadge(value: number) {
             this._badges.revoke = value;
+        },
+        setApproveBadge(value: number) {
+            this._badges.approve = value;
         },
         setBackgroundImageIndex(index: number) {
             this.backgroundImageIndex = index;
