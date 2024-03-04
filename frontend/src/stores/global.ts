@@ -12,21 +12,21 @@ const backgroundImageList = [
 ];
 const useGlobalStore = defineStore('global', {
     state: () => ({
+        isUpdate: false,
         _badges: {
-            notice: 0,
-            app: 0,
-            user: 0,
-            leave: 0,
-            revoke: 0,
-            approve: 0,
+            notice: 1,
+            user: 3,
+            leave: 4,
+            revoke: 5,
+            approve: 6,
         },
         backgroundImageIndex: 5,
     }),
     getters: {
         badges: (state: any) => ({
             notice: state._badges.notice || '',
-            app: state._badges.app || '',
-            user: state._badges.user || '',
+            app: state._badges.leave + state._badges.revoke + state._badges.approve || '',
+            user: state.isUpdate ? state._badges.user + 1 : state._badges.user || '',
             leave: state._badges.leave || '',
             revoke: state._badges.revoke || '',
             approve: state._badges.approve || '',
@@ -37,9 +37,6 @@ const useGlobalStore = defineStore('global', {
     actions: {
         setNoticeBadge(value: number) {
             this._badges.notice = value;
-        },
-        setAppBadge(value: number) {
-            this._badges.app = value;
         },
         setUserBadge(value: number) {
             this._badges.user = value;

@@ -4,9 +4,11 @@ import { useRouter } from 'vue-router';
 import { apiLogout, type ResultData } from '@/utils/api';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
+import useGlobalStore from '@/stores/global';
 
-const userStore = useUserStore();
 const router = useRouter();
+const globalStore = useGlobalStore();
+const userStore = useUserStore();
 
 const checkUpdate =() => {
     showSuccessToast("最新版本");
@@ -41,12 +43,14 @@ const buttons = [
         icon: 'rocket',
         text: '检查更新',
         type: 'primary',
+        dot: globalStore.isUpdate,
         onClick: checkUpdate,
     },
     {
         icon: 'sign-out',
         text: '退出登录',
         type: 'danger',
+        dot: false,
         onClick: logout,
     },
 ];
@@ -77,12 +81,15 @@ const buttons = [
             <van-button v-for="button in buttons" :key="button.icon"
                 round
                 block
-                :icon-prefix="iconPrefix"
-                :icon="button.icon"
+                icon-position="right"
                 :type="(button.type as ButtonType)"
                 :text="button.text"
                 @click="button.onClick()"
-            ></van-button>
+            >
+                <template #icon>
+                    <van-icon :class-prefix="iconPrefix" :name="button.icon" :dot="button.dot"></van-icon>
+                </template>
+            </van-button>
         </van-space>
     </div>
 </template>
