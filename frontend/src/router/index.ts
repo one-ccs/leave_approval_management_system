@@ -22,6 +22,17 @@ const routes: RouteRecordRaw[] = [
                     title: '通知',
                 },
                 component: () => import('@/views/Home/Notice.vue'),
+                children: [
+                    {
+                        path: 'sign-in',
+                        name: 'signIn',
+                        meta: {
+                            title: '请假',
+                            permiss: 1,
+                        },
+                        component: () => import('@/views/Home/Notice/SignIn.vue'),
+                    },
+                ],
             },
             {
                 path: '/app',
@@ -71,7 +82,7 @@ const routes: RouteRecordRaw[] = [
                         path: 'teacher/approve',
                         name: 'teacherApprove',
                         meta: {
-                            title: '审批',
+                            title: '请假审批',
                             permiss: 5,
                         },
                         component: () => import('@/views/Home/App/Teacher/Approve.vue'),
@@ -80,17 +91,26 @@ const routes: RouteRecordRaw[] = [
                         path: 'teacher/attendance',
                         name: 'teacherAttendance',
                         meta: {
-                            title: '考勤',
+                            title: '查看考勤',
                             permiss: 6,
                         },
                         component: () => import('@/views/Home/App/Teacher/Attendance.vue'),
+                    },
+                    {
+                        path: 'teacher/notice',
+                        name: 'teacherNotice',
+                        meta: {
+                            title: '发布通知',
+                            permiss: 7,
+                        },
+                        component: () => import('@/views/Home/App/Teacher/Notice.vue'),
                     },
                     {
                         path: 'teacher/teacher',
                         name: 'teacherTeacher',
                         meta: {
                             title: '教师信息',
-                            permiss: 7,
+                            permiss: 8,
                         },
                         component: () => import('@/views/Home/App/Teacher/Teacher.vue'),
                     },
@@ -99,7 +119,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'adminStudent',
                         meta: {
                             title: '学生管理',
-                            permiss: 8,
+                            permiss: 9,
                         },
                         component: () => import('@/views/Home/App/Admin/Student.vue'),
                     },
@@ -108,7 +128,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'adminTeacher',
                         meta: {
                             title: '教师管理',
-                            permiss: 9,
+                            permiss: 10,
                         },
                         component: () => import('@/views/Home/App/Admin/Teacher.vue'),
                     },
@@ -117,7 +137,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'adminPermission',
                         meta: {
                             title: '权限管理',
-                            permiss: 9,
+                            permiss: 11,
                         },
                         component: () => import('@/views/Home/App/Admin/Permission.vue'),
                     },
@@ -126,7 +146,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'adminNotice',
                         meta: {
                             title: '通知管理',
-                            permiss: 10,
+                            permiss: 12,
                         },
                         component: () => import('@/views/Home/App/Admin/Notice.vue'),
                     },
@@ -135,7 +155,7 @@ const routes: RouteRecordRaw[] = [
                         name: 'adminLost',
                         meta: {
                             title: '失物招领管理',
-                            permiss: 11,
+                            permiss: 13,
                         },
                         component: () => import('@/views/Home/App/Admin/Lost.vue'),
                     },

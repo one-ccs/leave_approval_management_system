@@ -1,22 +1,22 @@
 <script setup lang="ts">
+import useBadgeStore from '@/stores/badge';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
-import useGlobalStore from '@/stores/global';
 
-const globalStore = useGlobalStore();
+const badgeStore = useBadgeStore();
 
 const apps = [
     {
         icon: 'records-o',
         text: '请假',
         route: '/app/user/leave',
-        badge: globalStore.badges.leave,
+        badge: badgeStore.leave,
         permiss: 1,
     },
     {
         icon: 'description-o',
         text: '销假',
         route: '/app/user/revoke',
-        badge: globalStore.badges.revoke,
+        badge: badgeStore.revoke,
         permiss: 2,
     },
     {
@@ -35,59 +35,66 @@ const apps = [
     },
     {
         icon: 'records-o',
-        text: '审批',
+        text: '请假审批',
         route: '/app/teacher/approve',
-        badge: globalStore.badges.approve,
+        badge: badgeStore.approve,
         permiss: 5,
     },
     {
         icon: 'chart-trending-o',
-        text: '考勤',
+        text: '查看考勤',
         route: '/app/teacher/attendance',
         badge: '',
         permiss: 6,
+    },
+    {
+        icon: 'chat-o',
+        text: '发布通知',
+        route: '/app/teacher/notice',
+        badge: '',
+        permiss: 7,
     },
     {
         icon: 'user-circle-o',
         text: '辅导员信息',
         route: '/app/teacher/teacher',
         badge: '',
-        permiss: 7,
+        permiss: 8,
     },
     {
         icon: 'manager-o',
         text: '学生管理',
         route: '/app/admin/student',
         badge: '',
-        permiss: 8,
+        permiss: 9,
     },
     {
         icon: 'user-o',
         text: '教师管理',
         route: '/app/admin/teacher',
         badge: '',
-        permiss: 9,
+        permiss: 10,
     },
     {
         icon: 'cluster-o',
         text: '权限管理',
         route: '/app/admin/permission',
         badge: '',
-        permiss: 10,
+        permiss: 11,
     },
     {
         icon: 'chat-o',
         text: '通知管理',
         route: '/app/admin/notice',
         badge: '',
-        permiss: 11,
+        permiss: 12,
     },
     {
         icon: 'coupon-o',
         text: '失物招领管理',
         route: '/app/admin/lost',
         badge: '',
-        permiss: 12,
+        permiss: 13,
     },
 ];
 </script>
@@ -95,9 +102,7 @@ const apps = [
 <template>
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
-        <header class="header">
-            应用
-        </header>
+        <header class="header">应用</header>
         <van-grid class="app-grid" square :border="false" :column-num="2" :gutter="18" icon-size="3rem" clickable>
             <van-grid-item v-for="app in apps" :key="app.route"
                 :icon="app.icon"
@@ -125,7 +130,6 @@ const apps = [
     .app-grid {
         --van-grid-item-content-background: #fffa;
 
-        padding: 0;
         max-height: calc(100% - 117px);
         overflow-x: hidden;
         overflow-y: auto;

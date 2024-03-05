@@ -7,8 +7,8 @@ const usePermissStore = defineStore('permiss', {
         _role: <Role>'student',
         _permiss: <{[key: string]: number[]}>{
             student: [1, 2, 3, 4],
-            teacher: [5, 6, 7],
-            admin: [8, 9, 10, 11, 12],
+            teacher: [5, 6, 7, 8],
+            admin: [9, 10, 11, 12, 13],
         },
     }),
     getters: {

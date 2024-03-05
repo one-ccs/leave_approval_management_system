@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import BackNavBar from '@/components/BackNavBar.vue';
-import useGlobalStore from '@/stores/global';
-import { useToggle } from '@vant/use';
 import { showSuccessToast } from 'vant';
+import { useToggle } from '@vant/use';
+import useGlobalStore from '@/stores/global';
+import BackNavBar from '@/components/BackNavBar.vue';
 
 const [choiceImagePopupShown, toggleChoiceImagePopupShown] = useToggle();
 
