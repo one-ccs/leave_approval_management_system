@@ -3,10 +3,12 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiLogin, type ResultData } from '@/utils/api';
 import i18n from '@/utils/i18n';
+import useGlobalStore from '@/stores/global';
 import usePermissStore from '@/stores/permiss';
 import useUserStore from '@/stores/user';
 
 const router = useRouter();
+const globalStore = useGlobalStore();
 const permissStore = usePermissStore();
 const userStore = useUserStore();
 const formRules = {
@@ -34,16 +36,18 @@ const onSubmit = (value: any) => {
 
 <template>
     <div class="view">
-        <van-image
-            block
-            width="100w"
-            height="380"
-            fit="cover"
-            position="center"
-            src="static/img/img01.jpg"
-            class="picture mb-5"
-        ></van-image>
-        <van-image src="static/img/logo.png" class="logo"></van-image>
+        <logo class="logo-box">
+            <van-image
+                class="picture"
+                block
+                width="100w"
+                height="380"
+                fit="cover"
+                position="center"
+                src="static/img/img01.jpg"
+            ></van-image>
+            <van-image src="static/img/logo.png" class="logo"></van-image>
+        </logo>
         <van-form @submit="onSubmit" :rules="formRules">
             <van-cell-group>
                 <van-field
@@ -76,32 +80,51 @@ const onSubmit = (value: any) => {
                 <van-button round block type="primary" native-type="submit">登录</van-button>
             </van-cell-group>
         </van-form>
+        <div class="copyright">
+            <span class="version">版本：{{ globalStore.version }}</span>
+            <van-divider vertical></van-divider>
+            <span class="accord">隐私政策和服务协议</span>
+        </div>
     </div>
 </template>
 
 <style scoped lang="less">
-.picture {
-    opacity: .8;
-    max-width: var(--client-width);
-    border-radius: 22% 78% 32% 68% / 67% 45% 55% 33% ;
-    overflow: hidden;
-}
-.logo {
-    z-index: 1;
-    position: absolute;
-    top: 35%;
-    width: 256px;
-}
-@media screen and (min-width: 768px) {
-    .logo {
-        top: 28%;
-    }
-}
-.van-form {
-    width: 300px;
+.view {
+    .logo-box {
+        position: relative;
+        margin-bottom: 3rem;
 
-    :deep(.van-cell.van-cell--large) {
-        border-bottom: 1px solid gray;
+        .picture {
+            opacity: .8;
+            max-width: var(--client-width);
+            border-radius: 22% 78% 32% 68% / 67% 45% 55% 33% ;
+            overflow: hidden;
+        }
+        .logo {
+            z-index: 1;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 256px;
+        }
+    }
+    .van-form {
+        width: 300px;
+
+        :deep(.van-cell.van-cell--large) {
+            border-bottom: 1px solid gray;
+        }
+    }
+    .copyright {
+        position: fixed;
+        bottom: 16px;
+        color: #333;
+        font-size: .66rem;
+
+        .version {
+            margin-left: 8px;
+        }
     }
 }
 </style>

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 const useGlobalStore = defineStore('global', {
     state: () => ({
         isUpdate: false,
+        version: '0.0.1',
         backgroundImageIndex: 6,
         backgroundImages: [
             '/static/img/bg/blob-scene-haikei.svg',
