@@ -36,7 +36,7 @@ const onSubmit = (value: any) => {
 
 <template>
     <div class="view">
-        <logo class="logo-box">
+        <div class="logo-box">
             <van-image
                 class="picture"
                 block
@@ -47,7 +47,7 @@ const onSubmit = (value: any) => {
                 src="static/img/img01.jpg"
             ></van-image>
             <van-image src="static/img/logo.png" class="logo"></van-image>
-        </logo>
+        </div>
         <van-form @submit="onSubmit" :rules="formRules">
             <van-cell-group>
                 <van-field

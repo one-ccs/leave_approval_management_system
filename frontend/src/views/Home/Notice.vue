@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import useNoticeStore from '@/stores/notice';
+import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 
 const noticeStore = useNoticeStore();
 

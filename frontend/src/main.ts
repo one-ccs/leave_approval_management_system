@@ -15,7 +15,6 @@ import router from './router';
 
 import usePermissStore from './stores/permiss';
 
-console.log();
 const app = createApp(App);
 
 app.use(createPinia());

@@ -5,15 +5,8 @@ const map = {
     管理员: 'admin',
     辅导员: 'teacher',
     学生: 'student',
-    a: {
-        b: {
-            c: 'ccc',
-        }
-    }
 };
 
 export default (key: string) => {
-    return key.split('.').reduce((o: any, i: string) => {
-        if (o) return o[i];
-    }, map);
+    return key.split('.').reduce((o: any, i: string) => o[i], map);
 };
