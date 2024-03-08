@@ -75,7 +75,14 @@ function apiLogout(success: Function = defaultSuccess, failure: Function = defau
             sessionRemove(TOKEN_NAME);
             success && success(data);
         },
-        failure,
+        failure: (data: ResultData) => {
+            localRemove(TOKEN_NAME);
+            sessionRemove(TOKEN_NAME);
+            failure && failure(data);
+            setTimeout(() => {
+                location.href = '/';
+            }, 800);
+        },
     });
 }
 

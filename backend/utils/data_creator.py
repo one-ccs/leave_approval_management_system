@@ -5,7 +5,7 @@ import sqlite3
 import random
 
 
-def random_telphone(count=11):
+def random_telephone(count=11):
     """
         随机生成XX位的手机号码
 
@@ -183,12 +183,12 @@ def create_leave(connection, start_sid, end_sid):
             leaves
         )
 
-def update_telphone(connection, start_tid, end_tid):
+def update_telephone(connection, start_tid, end_tid):
     tel = []
     for id in range(start_tid, end_tid):
-        tel.append((random_telphone(), id))
+        tel.append((random_telephone(), id))
     with connection:
-        connection.executemany('UPDATE teacher set telphone=? WHERE tid=?', tel)
+        connection.executemany('UPDATE teacher set telephone=? WHERE tid=?', tel)
 
 
 def main():
@@ -205,7 +205,7 @@ def main():
         # 生成请假条信息
         create_leave(connection, 2000000000, 2000001000)
         # # 更新教师电话号码
-        # update_telphone(connection, 100000, 100080)
+        # update_telephone(connection, 100000, 100080)
     except Exception as e:
         print(e)
     finally:

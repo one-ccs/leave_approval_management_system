@@ -4,7 +4,6 @@ from flask import request, session, make_response, render_template, url_for, red
 from os import path
 from ..app import db
 from ..views import admin_blue
-from classes import Student
 
 
 @admin_blue.before_request
@@ -35,7 +34,7 @@ def root():
             'name': session.get('role').get('name'),
         }
     avatar_path = url_for('static', filename=f'user_upload/avatar/{args["rid"]}.webp')
-    if path.isfile('fontend' + avatar_path):
+    if path.isfile('frontend' + avatar_path):
         args['avatar'] = avatar_path
     return render_template('/admin.html', **args)
 
@@ -158,7 +157,7 @@ def teachers():
                     'tid': row['tid'],
                     'name': row['name'],
                     'gender': row['gender'],
-                    'telphone': row['telphone'],
+                    'telephone': row['telephone'],
                     'role': row['role'],
                 })
             res = make_response(dict, 200)
@@ -192,12 +191,12 @@ def teachers():
 
             name = request.values.get('name')
             gend = request.values.get('gender')
-            telp = request.values.get('telphone')
+            telp = request.values.get('telephone')
             role = request.values.get('role')
 
             if len(ids) == 1: # 单独修改
                 result = db.execute(
-                    'UPDATE teacher SET tid=?,name=?,gender=?,telphone=? WHERE id=?',
+                    'UPDATE teacher SET tid=?,name=?,gender=?,telephone=? WHERE id=?',
                     (tids[0], name, gend, telp, ids[0])
                 )
                 if result:

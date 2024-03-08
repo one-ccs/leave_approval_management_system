@@ -37,7 +37,7 @@ def root():
             'name': session.get('role').get('name'),
         }
     avatar_path = url_for('static', filename=f'user_upload/avatar/{args["rid"]}.webp')
-    if path.isfile('fontend' + avatar_path):
+    if path.isfile('frontend' + avatar_path):
         args['avatar'] = avatar_path
     return render_template('/student.html', **args)
 

@@ -28,7 +28,7 @@ const formData = reactive({
 const onSubmit = (value: any) => {
     apiLogin(value, (data: ResultData) => {
         permissStore.setRole(i18n(data.data.role));
-        userStore.initUser(data.data);
+        userStore.setUser(data.data);
         router.push('/');
     });
 };

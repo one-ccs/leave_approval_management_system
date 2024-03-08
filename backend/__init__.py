@@ -10,16 +10,18 @@ from .app import db
 __all__ = ('UPLOAD_FOLDER', 'ALLOWED_IMAGE_EXTENSIONS', 'app', 'db')
 
 
-from .views import errorhandle_blue
-from .views import student_blue
-from .views import assistant_blue
-from .views import office_blue
-from .views import attendance_blue
+from .views import errorhandler_blue
+from .views import user_blue
 from .views import admin_blue
+from .views import teacher_blue
+from .views import student_blue
+from .views import leave_blue
+from .views import upload_blue
 
-app.register_blueprint(errorhandle_blue)
-app.register_blueprint(student_blue)
-app.register_blueprint(assistant_blue)
-app.register_blueprint(office_blue)
-app.register_blueprint(attendance_blue)
+app.register_blueprint(errorhandler_blue)
+app.register_blueprint(user_blue)
 app.register_blueprint(admin_blue)
+app.register_blueprint(teacher_blue)
+app.register_blueprint(student_blue)
+app.register_blueprint(leave_blue)
+app.register_blueprint(upload_blue)

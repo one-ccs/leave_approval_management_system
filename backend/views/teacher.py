@@ -3,11 +3,11 @@
 from flask import request, session, make_response, render_template, url_for, redirect
 from os import path
 from ..app import db
-from ..views import assistant_blue
-from classes import Datetime
+from ..views import teacher_blue
+from ..utils import DateTimeUtils
 
 
-@assistant_blue.before_request
+@teacher_blue.before_request
 def check_login():
     if 'role' not in session:
         if request.path == '/assistant/':
@@ -17,7 +17,7 @@ def check_login():
     if session.get('role').get('role') != '辅导员':
         return make_response({'state': 'fail', 'msg': '非法操作, 拒绝访问'}, 403)
 
-@assistant_blue.route('/')
+@teacher_blue.route('/')
 def root():
     rid = session.get('role').get('rid')
     args = {'avatar': ''}
@@ -28,7 +28,7 @@ def root():
             'rid': result['tid'],
             'name': result['name'],
             'gender': result['gender'],
-            'telphone': result['telphone']
+            'telephone': result['telephone']
         }
     else:
         args = {
@@ -36,11 +36,11 @@ def root():
             'name': session.get('role').get('name'),
         }
     avatar_path = url_for('static', filename=f'user_upload/avatar/{args["rid"]}.webp')
-    if path.isfile('fontend' + avatar_path):
+    if path.isfile('frontend' + avatar_path):
         args['avatar'] = avatar_path
     return render_template('/assistant.html', **args)
 
-@assistant_blue.route('/leaves', methods=['GET', 'POST'])
+@teacher_blue.route('/leaves', methods=['GET', 'POST'])
 def leaves():
     res = None
     tid = session.get('role').get('rid')
@@ -95,9 +95,9 @@ def leaves():
                 if result[0]['state'] not in ('待审批', '销假中'):
                     continue
                 # 请假天数, 向上取整, 时长不足 24 小时但跨天则算 2 天
-                diff_day = int(0.5 + Datetime.diff(result[0]['end_timestamp'], result[0]['start_timestamp']).total_seconds() / 3600 / 24)
-                start_day = Datetime.day(result[0]['start_timestamp'])
-                end_day = Datetime.day(result[0]['end_timestamp'])
+                diff_day = int(0.5 + MyDatetime.diff(result[0]['end_timestamp'], result[0]['start_timestamp']).total_seconds() / 3600 / 24)
+                start_day = MyDatetime.day(result[0]['start_timestamp'])
+                end_day = MyDatetime.day(result[0]['end_timestamp'])
                 if diff_day == 1 and start_day != end_day:
                     diff_day = 2
                 # 大于等于 3 天，修改状态为“审批中”; 小于三天，修改状态为“待销假”

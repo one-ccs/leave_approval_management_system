@@ -10,13 +10,13 @@ const useUserStore = defineStore('user', {
     getters: {
     },
     actions: {
-        initUser(user: any) {
-            const { avatar, name, role, major } = user;
+        setUser(user: any) {
+            const { avatar, name, username, role, major } = user;
             this.avatar = avatar || this.avatar;
-            this.name = name;
-            this.role = role;
+            this.name = name || username || this.name;
+            this.role = role || this.role;
             this.major = major;
-        }
+        },
     }
 });
 

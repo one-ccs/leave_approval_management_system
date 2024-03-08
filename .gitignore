@@ -5,3 +5,4 @@ __pycache__
 
 *.vsdx
 *.doc*
+test.py
