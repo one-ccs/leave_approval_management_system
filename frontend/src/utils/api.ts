@@ -10,8 +10,6 @@ export interface ResultData {
     data: any;
 };
 
-const TOKEN_NAME = 'user';
-
 /**
  * 默认成功处理函数
  * @param message 提示消息
@@ -48,16 +46,11 @@ function apiLogin(user: any, success: Function = defaultSuccess, failure: Functi
         data: {
             username: user.username,
             password: encryptMD5(user.password),
+            remember: user.remember,
         },
         contentType: 'form',
         success: (data: ResultData) => {
             closeToast();
-            const userData = {
-                username: user.username,
-                roles: data.data.roles,
-                expires: ((new Date()).getTime() + 1000 * 3600 * 24),
-            };
-            user.remember ? localSave(TOKEN_NAME, userData) : sessionSave(TOKEN_NAME, userData);
             success && success(data);
         },
         failure: (data: ResultData) => {
@@ -70,19 +63,8 @@ function apiLogin(user: any, success: Function = defaultSuccess, failure: Functi
 function apiLogout(success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/user/logout', {
         method: 'post',
-        success: (data: ResultData) => {
-            localRemove(TOKEN_NAME);
-            sessionRemove(TOKEN_NAME);
-            success && success(data);
-        },
-        failure: (data: ResultData) => {
-            localRemove(TOKEN_NAME);
-            sessionRemove(TOKEN_NAME);
-            failure && failure(data);
-            setTimeout(() => {
-                location.href = '/';
-            }, 800);
-        },
+        success,
+        failure,
     });
 }
 

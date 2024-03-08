@@ -25,7 +25,7 @@ const permissStore = usePermissStore();
 app.directive('permiss', {
     beforeMount(el, binding) {
         if (!permissStore.permiss.includes(binding.value)) {
-            el.hidden = true;
+            el['hidden'] = true;
         }
     },
 });

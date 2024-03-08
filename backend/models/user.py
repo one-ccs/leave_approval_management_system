@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     password_hash   = db.Column(db.String(255))
     role            = db.Column(db.SmallInteger)
     create_datetime = db.Column(db.DateTime, default=DateTimeUtils.str_now())
+    avatar          = db.Column(db.String(255))
 
     def __init__(self, id=None, username=None) -> None:
         """ 若初始化时指定 id 或 username 将用数据库数据初始化 """
@@ -26,9 +27,10 @@ class User(db.Model, UserMixin):
             self.password_hash = user.password_hash
             self.role = user.role
             self.create_datetime = user.create_datetime
+            self.avatar = user.avatar
 
     def __repr__(self):
-        return f'<models.User {{{self.id}, {self.username}, {self.role}, {self.create_datetime}}}>'
+        return f'<models.User {{{self.id}, {self.username}, {self.role}, {self.create_datetime}, {self.avatar}}}>'
 
     @property
     def password(self):
@@ -48,4 +50,4 @@ class User(db.Model, UserMixin):
         return False
 
     def value_of(self):
-        return {**{'username': self.username, 'role': self.role, 'createDatetime': self.create_datetime}}
+        return {**{'username': self.username, 'role': self.role, 'createDatetime': self.create_datetime, 'avatar': self.avatar}}

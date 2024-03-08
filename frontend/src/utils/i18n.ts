@@ -1,14 +1,13 @@
 const map = {
-    admin: '管理员',
-    teacher: '辅导员',
-    student: '学生',
-    管理员: 'admin',
-    辅导员: 'teacher',
-    学生: 'student',
-    role: {
+    roleZh: {
         0: '管理员',
         1: '辅导员',
         2: '学生',
+    },
+    roleEn: {
+        0: 'admin',
+        1: 'teacher',
+        2: 'student',
     },
 };
 

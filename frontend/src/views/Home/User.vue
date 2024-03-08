@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { showSuccessToast, type ButtonType } from 'vant';
+import { showSuccessToast, type ButtonType, showFailToast } from 'vant';
 import { useRouter } from 'vue-router';
 import { apiLogout, type ResultData } from '@/utils/api';
 import useUserStore from '@/stores/user';
@@ -14,10 +14,9 @@ const checkUpdate =() => {
     showSuccessToast("最新版本");
 };
 const logout = () => {
-    apiLogout((data: ResultData) => {
-        showSuccessToast(data.message);
-        router.replace({ name: 'login'});
-    });
+    apiLogout();
+    userStore.clear();
+    router.replace({ name: 'login'});
 };
 
 const iconPrefix= 'fa';
@@ -60,11 +59,11 @@ const buttons = [
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
         <div class="user-card">
-            <van-image class="avatar" :src="userStore.avatar" round width="88" height="88"></van-image>
+            <van-image class="avatar" :src="userStore.userInfo.avatar" round width="88" height="88"></van-image>
             <van-space class="info" direction="vertical" :size="5">
-                <div class="name">{{ userStore.name }}</div>
-                <div class="role">{{ userStore.role }}</div>
-                <div class="major">{{ userStore.major }}</div>
+                <div class="name">{{ userStore.userInfo.name }}</div>
+                <div class="role">{{ userStore.userInfo.role }}</div>
+                <div class="major">{{ userStore.userInfo.major }}</div>
             </van-space>
         </div>
         <van-cell-group class="cell-group">

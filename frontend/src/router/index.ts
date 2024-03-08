@@ -3,6 +3,7 @@ import { showToast } from 'vant';
 import { localLoad, localRemove, sessionLoad, sessionRemove } from '@/utils/storage';
 import HomeView from '@/views/Home.vue';
 import usePermissStore from '@/stores/permiss';
+import useUserStore from '@/stores/user';
 
 
 const routes: RouteRecordRaw[] = [
@@ -238,19 +239,21 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | 请假视频管理系统`;
-    const user = localLoad('user') || sessionLoad('user');
     const permissStore = usePermissStore();
+    const userStore = useUserStore();
 
-    if (!user && !['login', 'forgot'].includes(to.name as string)) {
+    if (!userStore.isInit) userStore.init();
+
+    if (!userStore.isLogin && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
         next('/login');
-    } else if (user && user.expires <= new Date().getTime()) {
+    } else if (userStore.isLogin && userStore.isExpires) {
         // 登录已过期
         localRemove('user');
         sessionRemove('user');
         showToast("登录已过期，即将跳转登录页面...");
         next('/login');
-    } else if (user && to.name === 'login') {
+    } else if (userStore.isLogin && to.name === 'login') {
         // 已登录禁止进入登录页
         next(from);
     } else if (to.meta.permiss && !permissStore.hasPermiss(to.meta.permiss as number)) {

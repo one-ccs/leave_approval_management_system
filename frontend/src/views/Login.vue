@@ -27,8 +27,8 @@ const formData = reactive({
 
 const onSubmit = (value: any) => {
     apiLogin(value, (data: ResultData) => {
-        permissStore.setRole(i18n(data.data.role));
-        userStore.setUser(data.data);
+        permissStore.setRole(i18n(data.data.role, 'roleEn'));
+        userStore.setUser(data.data).save();
         router.push('/');
     });
 };
@@ -80,6 +80,12 @@ const onSubmit = (value: any) => {
                 <van-button round block type="primary" native-type="submit">登录</van-button>
             </van-cell-group>
         </van-form>
+        <div class="test-accounts">
+            <span>测试账号：</span>
+            <div class="account">角色：管理员，用户名：1202，密码：903</div>
+            <div class="account">角色：辅导员，用户名：100000，密码：123</div>
+            <div class="account">角色：学生，用户名：2000000000，密码：123</div>
+        </div>
         <div class="copyright">
             <span class="version">版本：{{ globalStore.version }}</span>
             <van-divider vertical></van-divider>
@@ -115,6 +121,11 @@ const onSubmit = (value: any) => {
         :deep(.van-cell.van-cell--large) {
             border-bottom: 1px solid gray;
         }
+    }
+    .test-accounts {
+        margin-top: 1.5rem;
+        font-size: .8rem;
+        color: #888;
     }
     .copyright {
         position: fixed;
