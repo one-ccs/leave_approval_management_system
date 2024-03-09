@@ -59,14 +59,10 @@ const settings = [
     .view-container {
         position: relative;
         padding: 15px 0;
-        width: 100%;
-        height: 100%;
         background-image: var(--bgi);
         background-size: cover;
         background-position: center top;
         background-repeat: no-repeat;
-        overflow-x: hidden;
-        overflow-y: auto;
 
         .setting-group {
             --van-cell-group-background: #0000;

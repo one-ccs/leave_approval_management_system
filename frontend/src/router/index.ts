@@ -43,17 +43,27 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/Home/App.vue'),
                 children: [
                     {
-                        path: 'user/leave',
-                        name: 'userLeave',
+                        path: 'student/leave',
+                        name: 'studentLeave',
                         meta: {
                             title: '请假',
                             permiss: 1,
                         },
                         component: () => import('@/views/Home/App/Student/Leave.vue'),
+                        children: [
+                            {
+                                path: 'add',
+                                name: 'studentLeaveAdd',
+                                meta: {
+                                    title: '请假申请',
+                                },
+                                component: () => import('@/views/Home/App/Student/Leave/Add.vue')
+                            },
+                        ],
                     },
                     {
-                        path: 'user/revoke',
-                        name: 'userRevoke',
+                        path: 'student/revoke',
+                        name: 'studentRevoke',
                         meta: {
                             title: '销假',
                             permiss: 2,
@@ -61,8 +71,8 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/Home/App/Student/Revoke.vue'),
                     },
                     {
-                        path: 'user/history',
-                        name: 'userHistory',
+                        path: 'student/history',
+                        name: 'studentHistory',
                         meta: {
                             title: '请假历史',
                             permiss: 3,
@@ -70,8 +80,8 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/Home/App/Student/History.vue'),
                     },
                     {
-                        path: 'user/student',
-                        name: 'userStudent',
+                        path: 'student/student',
+                        name: 'studentStudent',
                         meta: {
                             title: '学生信息',
                             permiss: 4,

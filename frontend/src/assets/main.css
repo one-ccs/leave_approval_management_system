@@ -37,6 +37,14 @@
     left: 0;
 }
 
+.view-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .link-button {
     color: var(--text-color);
     cursor: pointer;

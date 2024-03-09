@@ -5,6 +5,7 @@
         "permiss",
         "Pinia",
         "SQLALCHEMY",
+        "swipeable",
         "tabbar",
         "vant",
         "webfont",

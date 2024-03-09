@@ -8,28 +8,28 @@ const apps = [
     {
         icon: 'records-o',
         text: '请假',
-        route: '/app/user/leave',
+        route: '/app/student/leave',
         badge: badgeStore.leave,
         permiss: 1,
     },
     {
         icon: 'description-o',
         text: '销假',
-        route: '/app/user/revoke',
+        route: '/app/student/revoke',
         badge: badgeStore.revoke,
         permiss: 2,
     },
     {
         icon: 'todo-list-o',
         text: '请假历史',
-        route: '/app/user/history',
+        route: '/app/student/history',
         badge: '',
         permiss: 3,
     },
     {
         icon: 'user-circle-o',
         text: '学生信息',
-        route: '/app/user/student',
+        route: '/app/student/student',
         badge: '',
         permiss: 4,
     },
@@ -103,8 +103,8 @@ const apps = [
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
         <header class="header">应用</header>
-        <van-grid class="app-grid" square :border="false" :column-num="2" :gutter="18" icon-size="3rem" clickable>
-            <van-grid-item v-for="app in apps" :key="app.route"
+        <van-grid class="app-grids" square :border="false" :column-num="2" :gutter="18" icon-size="3rem" clickable>
+            <van-grid-item v-for="app in apps"
                 :icon="app.icon"
                 :text="app.text"
                 :badge="app.badge"
@@ -127,12 +127,16 @@ const apps = [
         color: #fff;
         font-size: 2.2rem;
     }
-    .app-grid {
+    .app-grids {
         --van-grid-item-content-background: #fffa;
 
         max-height: calc(100% - 117px);
         overflow-x: hidden;
         overflow-y: auto;
+
+        :deep(.van-grid-item__text) {
+            font-size: 1rem;
+        }
     }
 }
 </style>

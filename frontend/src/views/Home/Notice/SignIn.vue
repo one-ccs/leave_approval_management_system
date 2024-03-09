@@ -85,6 +85,7 @@ const notices = ref([
                     </div>
                 </div>
             </div>
+            <van-back-top></van-back-top>
         </div>
     </div>
 </template>
@@ -92,10 +93,6 @@ const notices = ref([
 <style scoped lang="less">
 .view {
     .view-container {
-        width: 100%;
-        height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
 
         .notice-list {
             margin: 0 15px;

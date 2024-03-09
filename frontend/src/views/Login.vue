@@ -44,7 +44,7 @@ const onSubmit = (value: any) => {
             ></van-image>
             <van-image src="static/img/logo.png" class="logo"></van-image>
         </div>
-        <van-form @submit="onSubmit" :rules="formRules">
+        <van-form @submit="onSubmit">
             <van-cell-group>
                 <van-field
                     v-model="formData.username"
@@ -53,6 +53,7 @@ const onSubmit = (value: any) => {
                     left-icon="friends"
                     size="large"
                     clearable
+                    :rules="formRules.username"
                 ></van-field>
                 <van-field
                     v-model="formData.password"
@@ -62,6 +63,7 @@ const onSubmit = (value: any) => {
                     left-icon="lock"
                     size="large"
                     clearable
+                    :rules="formRules.password"
                 ></van-field>
             </van-cell-group>
             <van-cell-group inset class="d-flex align-items-center justify-content-between mt-1">

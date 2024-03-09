@@ -75,7 +75,7 @@ export default defineConfig({
                 assetFileNames: (chunkInfo) => {
                     // 修改 font-awesome 字体资源文件路径
                     if (chunkInfo.name?.includes('fontawesome-webfont')) {
-                        return 'static/css/fonts/[ext]/[name]-[hash].[ext]';
+                        return 'static/fonts/[ext]/[name]-[hash].[ext]';
                     }
                     return 'static/[ext]/[name]-[hash].[ext]';
                 },

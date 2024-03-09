@@ -115,7 +115,7 @@ const buttons = [
             margin: 0 15px;
         }
         .name {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
         }
         .role, .major {
             color: #333;
@@ -127,6 +127,11 @@ const buttons = [
         --van-cell-background: #fffa;
         border-radius: var(--van-cell-group-inset-radius);
         overflow: hidden;
+
+        :deep(.fa) {
+            margin-right: 8px;
+            font-size: 1.3rem;
+        }
     }
     .button-group {
         opacity: .85;
