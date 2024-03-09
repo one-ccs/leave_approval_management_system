@@ -31,8 +31,8 @@ const useUserStore = defineStore('user', {
     }),
     getters: {
         role: (state: any) => state.userInfo.role,
-        roleZh: (state: any) => i18n(state.userInfo.role, 'roleZh'),
-        roleEn: (state: any) => i18n(state.userInfo.role, 'roleEn'),
+        roleZh: (state: any) => i18n(state.userInfo.role, 'role.zh'),
+        roleEn: (state: any) => i18n(state.userInfo.role, 'role.en'),
     },
     actions: {
         init() {
@@ -69,7 +69,7 @@ const useUserStore = defineStore('user', {
             // 修改登录状态
             this.isLogin = true;
             // 设置用户权限
-            permissStore.setRole(i18n(role, 'roleEn'));
+            permissStore.setRole(i18n(role, 'role.en'));
             return this;
         },
         isExpired() {

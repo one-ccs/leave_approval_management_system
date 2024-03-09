@@ -54,6 +54,11 @@ input:-webkit-autofill {
     transition: background-color 9999s;
 }
 
+/* custom */
+.round {
+    border-radius: 8px !important;
+}
+
 /* bootstrap */
 .circle {
     border-radius: 50% !important;

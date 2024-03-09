@@ -6,46 +6,46 @@ import { ref } from 'vue';
 
 const router = useRouter();
 const stateTabsValue = ref(0);
-const categoryTabsValue = ref(0);
+const categoryTabsValue = ref(-1);
 
 const stateTabs = [
     {
         title: '待审批',
-        state: 0,
+        value: 0,
     },
     {
         title: '已撤回',
-        state: 1,
+        value: 1,
     },
     {
         title: '已驳回',
-        state: 2,
+        value: 2,
     },
     {
         title: '已完成',
-        state: 3,
+        value: 3,
     },
 ];
 const categoryTabs = [
     {
         title: '全部类型',
-        category: 0,
+        value: -1,
     },
     {
         title: '事假',
-        category: 1,
+        value: 0,
     },
     {
         title: '病假',
-        category: 2,
+        value: 1,
     },
     {
         title: '公假',
-        category: 3,
+        value: 2,
     },
     {
         title: '出校申请',
-        category: 4,
+        value: 3,
     },
 ];
 </script>
@@ -63,18 +63,16 @@ const categoryTabs = [
             >
                 <van-tab v-for="tab in stateTabs"
                     title-class="tab-title"
-                    :name="tab.state"
+                    :name="tab.value"
                     :title="tab.title"
                 >
-                    {{ tab.title }}
+                    <van-empty image="search" description="暂无数据"></van-empty>
                 </van-tab>
             </van-tabs>
-            <van-tabs class="category-tabs" v-model:active="categoryTabsValue"
-                shrink
-            >
+            <van-tabs class="category-tabs" v-model:active="categoryTabsValue" shrink>
                 <van-tab v-for="tab in categoryTabs"
                     title-class="tab-title"
-                    :name="tab.category"
+                    :name="tab.value"
                     :title="tab.title"
                 ></van-tab>
             </van-tabs>
@@ -83,62 +81,67 @@ const categoryTabs = [
 </template>
 
 <style scoped lang="less">
-.view-container {
-    --category-tabs-height: 30px;
-    position: relative;
-
-    --van-tabs-line-height: 38px;
-
-    .state-tabs {
-        position: relative;
-        width: 100%;
-        height: 100%;
-
-        :deep([role="tablist"]) {
-            padding: 0 0 10px 0;
-            background-color: #fff;
-
-            .van-tabs__line {
-                display: none;
-            }
-        }
-        :deep(.tab-title) {
-            font-size: .85rem;
-        }
-        :deep(.tab-title.van-tab--active .van-tab__text) {
-            font-weight: bold;
-        }
-        :deep(.van-tabs__content) {
-            padding: 8px;
-            padding-top: calc(var(--category-tabs-height) + 8px);
-            height: calc(100% - var(--van-tabs-line-height));
-        }
+.view {
+    .view-header {
+        --van-nav-bar-text-color: #000;
     }
-    .category-tabs {
-        position: absolute;
-        top: var(--van-tabs-line-height);
-        left: 0;
-        width: 100%;
+    .view-container {
+        --category-tabs-height: 30px;
+        position: relative;
 
-        :deep([role="tablist"]) {
-            padding: 0 0 10px 0;
-            background-color: #fff;
+        --van-tabs-line-height: 38px;
 
-            .van-tabs__line {
-                display: none;
+        .state-tabs {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            :deep([role="tablist"]) {
+                padding: 0 0 10px 0;
+                background-color: #fff;
+
+                .van-tabs__line {
+                    display: none;
+                }
+            }
+            :deep(.tab-title) {
+                font-size: .85rem;
+            }
+            :deep(.tab-title.van-tab--active .van-tab__text) {
+                font-weight: bold;
+            }
+            :deep(.van-tabs__content) {
+                padding: 8px;
+                padding-top: calc(var(--category-tabs-height) + 8px);
+                height: calc(100% - var(--van-tabs-line-height));
             }
         }
-        :deep(.van-tabs__wrap) {
-            height: var(--category-tabs-height);
-        }
-        :deep(.tab-title) {
-            font-size: .8rem;
-        }
-        :deep(.tab-title.van-tab--active .van-tab__text) {
-            border-radius: 12px;
-            padding: 0 8px;
-            color: #fff;
-            background-color: #29B9FD;
+        .category-tabs {
+            position: absolute;
+            top: var(--van-tabs-line-height);
+            left: 0;
+            width: 100%;
+
+            :deep([role="tablist"]) {
+                padding: 0 0 10px 0;
+                background-color: #fff;
+
+                .van-tabs__line {
+                    display: none;
+                }
+            }
+            :deep(.van-tabs__wrap) {
+                height: var(--category-tabs-height);
+            }
+            :deep(.tab-title) {
+                font-size: .8rem;
+            }
+            :deep(.tab-title.van-tab--active .van-tab__text) {
+                border-radius: 12px;
+                padding: 0 8px;
+                color: #fff;
+                background-color: #29B9FD;
+            }
         }
     }
 }

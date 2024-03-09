@@ -60,7 +60,7 @@ const notices = ref([
 
 <template>
     <div class="view">
-        <back-nav-bar class="view-header"></back-nav-bar>
+        <back-nav-bar class="view-header" />
         <div class="view-container">
             <div class="notice-list">
                 <div class="notice-item" v-for="notice in notices">
