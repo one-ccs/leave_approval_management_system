@@ -62,7 +62,7 @@ const buttons = [
             <van-image class="avatar" :src="userStore.userInfo.avatar" round width="88" height="88"></van-image>
             <van-space class="info" direction="vertical" :size="5">
                 <div class="name">{{ userStore.userInfo.name }}</div>
-                <div class="role">{{ userStore.userInfo.role }}</div>
+                <div class="role">{{ userStore.roleZh }}</div>
                 <div class="major">{{ userStore.userInfo.major }}</div>
             </van-space>
         </div>

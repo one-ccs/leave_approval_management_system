@@ -25,7 +25,7 @@ const settings = [
 
 <template>
     <div class="view">
-        <back-nav-bar class="view-header" title="设置"></back-nav-bar>
+        <back-nav-bar class="view-header"></back-nav-bar>
         <div class="view-container">
             <van-cell-group inset class="setting-group">
                 <van-cell v-for="setting in settings" :key="setting.title"

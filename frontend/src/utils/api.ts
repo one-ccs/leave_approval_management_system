@@ -36,7 +36,7 @@ function defaultFailure(data: any, status: number, url: string) {
  * @param failure 失败回调函数
  * @returns Promise
  */
-function apiLogin(user: any, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+export function apiLogin(user: any, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     showLoadingToast({
         message: '登录中...',
         forbidClick: true,
@@ -60,15 +60,10 @@ function apiLogin(user: any, success: Function = defaultSuccess, failure: Functi
     });
 }
 
-function apiLogout(success: Function = defaultSuccess, failure: Function = defaultFailure) {
+export function apiLogout(success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/user/logout', {
         method: 'post',
         success,
         failure,
     });
-}
-
-export {
-    apiLogin,
-    apiLogout,
 }

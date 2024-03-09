@@ -1,5 +1,5 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import { showToast } from 'vant';
+import { showFailToast, showToast } from 'vant';
 import { localLoad, localRemove, sessionLoad, sessionRemove } from '@/utils/storage';
 import HomeView from '@/views/Home.vue';
 import usePermissStore from '@/stores/permiss';
@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
         component: HomeView,
         children: [
             {
-                path: '/notice',
+                path: 'notice',
                 name: 'notice',
                 meta: {
                     title: '通知',
@@ -28,15 +28,14 @@ const routes: RouteRecordRaw[] = [
                         path: 'sign-in',
                         name: 'signIn',
                         meta: {
-                            title: '请假',
-                            permiss: 1,
+                            title: '签到',
                         },
                         component: () => import('@/views/Home/Notice/SignIn.vue'),
                     },
                 ],
             },
             {
-                path: '/app',
+                path: 'app',
                 name: 'app',
                 meta: {
                     title: '应用',
@@ -163,7 +162,7 @@ const routes: RouteRecordRaw[] = [
                 ],
             },
             {
-                path: '/user',
+                path: 'user',
                 name: 'user',
                 meta: {
                     title: '用户',
@@ -247,11 +246,10 @@ router.beforeEach((to, from, next) => {
     if (!userStore.isLogin && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
         next('/login');
-    } else if (userStore.isLogin && userStore.isExpires) {
+    } else if (userStore.isLogin && userStore.isExpired()) {
         // 登录已过期
-        localRemove('user');
-        sessionRemove('user');
-        showToast("登录已过期，即将跳转登录页面...");
+        userStore.clear();
+        showFailToast("登录已过期\n请重新登录");
         next('/login');
     } else if (userStore.isLogin && to.name === 'login') {
         // 已登录禁止进入登录页

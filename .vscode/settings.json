@@ -1,10 +1,14 @@
 {
     "cSpell.words": [
+        "fontawesome",
+        "fortawesome",
         "permiss",
         "Pinia",
         "SQLALCHEMY",
         "tabbar",
         "vant",
+        "webfont",
         "werkzeug"
-    ]
+    ],
+    "liveServer.settings.root": "/frontend/dist"
 }

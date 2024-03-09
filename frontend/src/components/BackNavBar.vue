@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const { title, rightText } = defineProps({
     title: {
         type: String,
-        required: true,
     },
     rightText: {
         type: String,
@@ -12,6 +11,7 @@ const { title, rightText } = defineProps({
 });
 
 const router = useRouter();
+const route = useRoute();
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const router = useRouter();
         :right-text="rightText"
     >
         <template #title>
-            <span class="title">{{ title }}</span>
+            <span class="title">{{ title || route.meta.title }}</span>
         </template>
         <template v-if="!rightText" #right>
             <slot name="right"></slot>

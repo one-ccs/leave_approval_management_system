@@ -9,68 +9,58 @@ const notices = ref([
         datetime: '2024-3-5 21:53:41',
         state: 0,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 1,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 0,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 0,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 1,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 1,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 0,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 1,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 1,
         title: '查寝',
-        major: userStore.major,
     },
     {
         datetime: '2024-3-5 22:11:52',
         state: 1,
         title: '查寝',
-        major: userStore.major,
     },
 ]);
 </script>
 
 <template>
     <div class="view">
-        <back-nav-bar class="view-header" title="签到"></back-nav-bar>
+        <back-nav-bar class="view-header"></back-nav-bar>
         <div class="view-container">
             <div class="notice-list">
                 <div class="notice-item" v-for="notice in notices">
@@ -90,7 +80,7 @@ const notices = ref([
                                 ></van-button>
                                 <div class="title">{{ notice.title }}</div>
                             </div>
-                            <div class="notice-describe">{{ notice.major }}</div>
+                            <div class="notice-describe">{{ userStore.userInfo.major }}</div>
                         </div>
                     </div>
                 </div>

@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 
-type Role = 'student' | 'teacher' | 'admin';
+export type RoleEn = 'student' | 'teacher' | 'admin';
 
 const usePermissStore = defineStore('permiss', {
     state: () => ({
-        _role: <Role>'student',
+        _role: <RoleEn>'student',
         _permiss: <{[key: string]: number[]}>{
             student: [1, 2, 3, 4],
             teacher: [5, 6, 7, 8],
@@ -13,10 +13,10 @@ const usePermissStore = defineStore('permiss', {
     }),
     getters: {
         role: (state) => state._role,
-        permiss: (state) => state._permiss[state._role],
+        permiss: (state) => state._permiss[state._role] || state._permiss.student,
     },
     actions: {
-        setRole(role: Role) {
+        setRole(role: RoleEn) {
             this._role = role;
         },
         hasPermiss(permiss: number) {

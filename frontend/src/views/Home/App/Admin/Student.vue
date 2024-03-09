@@ -4,7 +4,7 @@ import BackNavBar from '@/components/BackNavBar.vue';
 
 <template>
     <div class="view">
-        <back-nav-bar class="view-header" title="学生管理"></back-nav-bar>
+        <back-nav-bar class="view-header"></back-nav-bar>
         <div class="view-container"></div>
     </div>
 </template>

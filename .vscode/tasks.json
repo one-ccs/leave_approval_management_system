@@ -16,7 +16,16 @@
             "group": "build",
             "problemMatcher": [],
             "label": "npm: build - frontend",
-            "detail": "run-p type-check \"build-only {@}\" --"
+            "detail": "vue-tsc --build --force && vite build"
+        },
+        {
+            "type": "npm",
+            "script": "build-only",
+            "path": "frontend",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: build-only - frontend",
+            "detail": "vite build"
         }
     ]
 }

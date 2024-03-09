@@ -8,8 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BackNavBar: typeof import('./src/components/BackNavBar.vue')['default']
-    BottomMenu: typeof import('./src/components/BottomMenu/BottomMenu.vue')['default']
-    RightSlideRouter: typeof import('./src/components/RightSlideRouter.vue')['default']
     RightSlideRouterView: typeof import('./src/components/RightSlideRouterView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -18,7 +16,6 @@ declare module 'vue' {
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanCheckbox: typeof import('vant/es')['Checkbox']
-    VanCol: typeof import('vant/es')['Col']
     VanDivider: typeof import('vant/es')['Divider']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
@@ -28,9 +25,7 @@ declare module 'vue' {
     VanImage: typeof import('vant/es')['Image']
     VanNavBar: typeof import('vant/es')['NavBar']
     VanPopup: typeof import('vant/es')['Popup']
-    VanRow: typeof import('vant/es')['Row']
     VanSpace: typeof import('vant/es')['Space']
-    VanSticky: typeof import('vant/es')['Sticky']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
   }

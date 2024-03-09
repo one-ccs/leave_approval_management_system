@@ -11,7 +11,7 @@ const map = {
     },
 };
 
-export default (key: string, path?: string) => {
+export default (key: string | number, path?: string) => {
     if (path) key = `${path}.${key}`;
-    return key.split('.').reduce((o: any, i: string) => o[i], map);
+    return String(key).split('.').reduce((o: any, i: string) => o[i], map);
 };
