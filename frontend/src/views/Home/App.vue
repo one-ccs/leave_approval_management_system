@@ -103,8 +103,16 @@ const apps = [
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
         <header class="header">应用</header>
-        <van-grid class="app-grids translucent-half" square :border="false" :column-num="2" :gutter="18" icon-size="3rem" clickable>
+        <van-grid
+            class="app-grids translucent-half"
+            square
+            :border="false"
+            :column-num="2"
+            icon-size="3rem"
+            clickable
+        >
             <van-grid-item v-for="app in apps"
+                class="app-box"
                 :icon="app.icon"
                 :text="app.text"
                 :badge="app.badge"
@@ -134,6 +142,16 @@ const apps = [
 
         :deep(.van-grid-item__text) {
             font-size: 1rem;
+        }
+
+        .app-box {
+            flex-basis: calc(50% - 5px) !important;
+        }
+        .app-box:nth-child(2n) {
+            margin-left: auto;
+        }
+        .app-box:nth-child(n+3) {
+            margin-top: 10px;
         }
     }
 }

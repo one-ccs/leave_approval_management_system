@@ -27,9 +27,9 @@ const userStore = useUserStore();
                 <van-cell title="邮箱" :value="userStore.userInfo.email" />
                 <van-cell v-permiss="0x100" title="学号" :value="userStore.userInfo.username" />
                 <van-cell v-permiss="0x100" title="所属班级" :value="userStore.userInfo._class" />
-                <van-cell v-permiss="0x100" title="所属专业" :value="userStore.userInfo.major" />
                 <van-cell v-permiss="0x100" title="所属学部" :value="userStore.userInfo.department" />
                 <van-cell v-permiss="0x100" title="所属学院" :value="userStore.userInfo.faculty" />
+                <van-cell v-permiss="0x100" title="所属专业" :value="userStore.userInfo.major" />
                 <van-cell v-permiss="0x100" title="入学时间" :value="userStore.userInfo.admissionDate" />
 
                 <van-cell v-permiss="0x200" title="职工号" :value="userStore.userInfo.username" />
@@ -45,10 +45,10 @@ const userStore = useUserStore();
 <style scoped lang="less">
 .view {
     .view-container {
-        .van-cell {
+        :deep(.van-cell) {
             align-items: center;
 
-            :deep(.van-cell__value) {
+            .van-cell__title, .van-cell__value {
                 flex: auto;
             }
         }

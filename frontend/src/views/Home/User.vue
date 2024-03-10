@@ -59,7 +59,7 @@ const buttons = [
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
         <div class="user-card">
-            <van-image class="avatar" :src="userStore.userInfo.avatar" round width="88" height="88"></van-image>
+            <van-image class="avatar" :src="userStore.userInfo.avatar" round width="72" height="72"></van-image>
             <van-space class="info" direction="vertical" :size="5">
                 <div class="name">{{ userStore.userInfo.name }}</div>
                 <div class="role">{{ userStore.roleZh }}</div>
@@ -108,18 +108,19 @@ const buttons = [
         justify-content: flex-start;
         margin: 50px 0;
         border-radius: 8px;
-        padding: 15px 0;
+        padding: 15px;
         background-color: #fffa;
 
         .avatar {
-            margin: 0 15px;
+            flex: 0 0 auto;
+            margin-right: 15px;
         }
         .name {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
         }
         .role, .major {
             color: #333;
-            font-size: .8rem;
+            font-size: .85rem;
         }
     }
     .cell-group {

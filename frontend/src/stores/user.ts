@@ -82,7 +82,7 @@ const useUserStore = defineStore('user', {
         },
         setUser(user: UnionUser) {
             // 设置用户信息
-            const { avatar, name, username, role, gender, _class } = user;
+            const { avatar, name, username, role, gender, _class, grade, major } = user;
             this._persistence = {
                 ...user,
                 avatar: avatar || this._persistence.avatar,
@@ -91,6 +91,7 @@ const useUserStore = defineStore('user', {
                 gender: gender || '保密',
                 expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };
+            if (typeof _class === 'number') this._persistence._class = `${grade}${major}${_class}班`
 
             // 修改登录状态
             this.isLogin = true;

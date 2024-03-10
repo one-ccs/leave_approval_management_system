@@ -53,7 +53,8 @@ const categoryTabs = i18n('tabs.category');
             height: 100%;
 
             :deep([role="tablist"]) {
-                padding: 0 0 10px 0;
+                padding: 0;
+                padding-left: 3px;
 
                 .van-tabs__line {
                     display: none;
@@ -78,7 +79,7 @@ const categoryTabs = i18n('tabs.category');
             width: 100%;
 
             :deep([role="tablist"]) {
-                padding: 0 0 10px 0;
+                padding: 0;
                 background-color: #fff;
 
                 .van-tabs__line {
