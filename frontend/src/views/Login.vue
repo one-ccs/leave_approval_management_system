@@ -24,7 +24,7 @@ const formData = reactive({
 
 const onSubmit = (value: any) => {
     apiLogin(value, (data: ResultData) => {
-        userStore.setUser(data.data).save();
+        userStore.clear().setUser(data.data).save();
         router.push('/');
     });
 };

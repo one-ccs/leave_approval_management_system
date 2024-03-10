@@ -3,7 +3,7 @@ from flask import request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
 from ..app import db, login_manager
-from ..models import User
+from ..models import Role, User, Admin, Teacher, Student
 from ..views import user_blue
 from ..utils import Result
 
@@ -62,8 +62,19 @@ def login():
                 return Result.failure('登录失败\n不存在该用户')
             if not user.check_password_hash(password):
                 return Result.failure('登录失败\n密码错误')
+            # 获取详细信息
+            any_user = None
+            if user.role == Role.ADMIN:
+                any_user = Admin.query.filter_by(user_id=user.id).first()
+            elif user.role == Role.TEACHER:
+                any_user = Teacher.query.filter_by(user_id=user.id).first()
+            elif user.role == Role.STUDENT:
+                any_user = Student.query.filter_by(user_id=user.id).first()
+            else:
+                return Result.failure('登录失败\n角色数据异常\n请联系管理员')
+            # 登录用户
             if login_user(user):
-                data = user.value_of()
+                data = { **user.vars(), **any_user.vars()}
                 return Result.success('登录成功', data)
     return Result.method_not_allowed()
 

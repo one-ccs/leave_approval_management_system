@@ -46,7 +46,6 @@ const useUserStore = defineStore('user', {
             avatar: '/static/img/avatar.jpg',
             name: '小哆啦',
             role: 0,
-            _class: '20计算机科学与技术20班',
             expires: null,
         },
         _keyName: 'userStore',
@@ -88,9 +87,8 @@ const useUserStore = defineStore('user', {
                 ...user,
                 avatar: avatar || this._persistence.avatar,
                 role: role >= 0 ? role : this._persistence.role,
-                name: name || username || '',
+                name: name || username || this._persistence.name,
                 gender: gender || '保密',
-                _class: _class || this._persistence._class,
                 expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };
 

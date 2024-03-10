@@ -30,7 +30,13 @@ class User(db.Model, UserMixin):
             self.avatar = user.avatar
 
     def __repr__(self):
-        return f'<models.User {{{self.id}, {self.username}, {self.role}, {self.create_datetime}, {self.avatar}}}>'
+        return '<models.Student {' + \
+            f'id: {self.id}' + \
+            f', username: {self.username}' + \
+            f', role: {self.role}' + \
+            f', create_datetime: {self.create_datetime}' + \
+            f', avatar: {self.avatar}' + \
+        '}>'
 
     @property
     def password(self):
@@ -49,5 +55,13 @@ class User(db.Model, UserMixin):
             return True
         return False
 
-    def value_of(self):
-        return {**{'username': self.username, 'role': self.role, 'createDatetime': self.create_datetime, 'avatar': self.avatar}}
+    def vars(self, ignore=None, ignore_default=['_sa_instance_state', 'id', 'password_hash']):
+        _dict = { ** vars(self)}
+
+        if ignore is None:
+            ignore = ignore_default
+        for key in ignore:
+            if key in _dict:
+                del _dict[key]
+
+        return _dict
