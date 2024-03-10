@@ -24,6 +24,11 @@
     text-align: center;
 }
 
+/* 显示规定属性样式 防止优先级过低 不生效 */
+[hidden] {
+    display: none !important;
+}
+
 /* 自定义样式 */
 :root {
     --client-width: 100%;

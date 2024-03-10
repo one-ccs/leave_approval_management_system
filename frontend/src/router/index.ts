@@ -23,16 +23,6 @@ const routes: RouteRecordRaw[] = [
                     title: '通知',
                 },
                 component: () => import('@/views/Home/Notice.vue'),
-                children: [
-                    {
-                        path: 'sign-in',
-                        name: 'signIn',
-                        meta: {
-                            title: '签到',
-                        },
-                        component: () => import('@/views/Home/Notice/SignIn.vue'),
-                    },
-                ],
             },
             {
                 path: 'app',
@@ -43,131 +33,166 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/Home/App.vue'),
                 children: [
                     {
-                        path: 'student/leave',
-                        name: 'studentLeave',
-                        meta: {
-                            title: '请假',
-                            permiss: 1,
-                        },
-                        component: () => import('@/views/Home/App/Student/Leave.vue'),
+                        path: 'student',
+                        name: '',
                         children: [
                             {
-                                path: 'add',
-                                name: 'studentLeaveAdd',
+                                path: 'leave',
+                                name: 'studentLeave',
                                 meta: {
-                                    title: '请假申请',
+                                    title: '请假',
+                                    permiss: 1,
                                 },
-                                component: () => import('@/views/Home/App/Student/Leave/Add.vue')
+                                component: () => import('@/views/Home/App/Student/Leave.vue'),
+                                children: [
+                                    {
+                                        path: 'add',
+                                        name: 'studentLeaveAdd',
+                                        meta: {
+                                            title: '请假申请',
+                                        },
+                                        component: () => import('@/views/Home/App/Student/Leave/Add.vue')
+                                    },
+                                ],
+                            },{
+                                path: 'revoke',
+                                name: 'studentRevoke',
+                                meta: {
+                                    title: '销假',
+                                    permiss: 2,
+                                },
+                                component: () => import('@/views/Home/App/Student/Revoke.vue'),
+                            },
+                            {
+                                path: 'history',
+                                name: 'studentHistory',
+                                meta: {
+                                    title: '请假历史',
+                                    permiss: 3,
+                                },
+                                component: () => import('@/views/Home/App/Student/History.vue'),
+                            },
+                            {
+                                path: 'signIn',
+                                name: 'studentSignIn',
+                                meta: {
+                                    title: '签到',
+                                    permiss: 3,
+                                },
+                                component: () => import('@/views/Home/App/Student/SignIn.vue'),
+                            },
+                            {
+                                path: 'student',
+                                name: 'studentStudent',
+                                meta: {
+                                    title: '学生信息',
+                                    permiss: 4,
+                                },
+                                component: () => import('@/views/Home/App/UserInfo.vue'),
                             },
                         ],
                     },
                     {
-                        path: 'student/revoke',
-                        name: 'studentRevoke',
-                        meta: {
-                            title: '销假',
-                            permiss: 2,
-                        },
-                        component: () => import('@/views/Home/App/Student/Revoke.vue'),
+                        path: 'teacher',
+                        name: '',
+                        children: [
+                            {
+                                path: 'approve',
+                                name: 'teacherApprove',
+                                meta: {
+                                    title: '请假审批',
+                                    permiss: 5,
+                                },
+                                component: () => import('@/views/Home/App/Teacher/Approve.vue'),
+                            },
+                            {
+                                path: 'attendance',
+                                name: 'teacherAttendance',
+                                meta: {
+                                    title: '查看考勤',
+                                    permiss: 6,
+                                },
+                                component: () => import('@/views/Home/App/Teacher/Attendance.vue'),
+                            },
+                            {
+                                path: 'notice',
+                                name: 'teacherNotice',
+                                meta: {
+                                    title: '发布通知',
+                                    permiss: 7,
+                                },
+                                component: () => import('@/views/Home/App/Teacher/Notice.vue'),
+                            },
+                            {
+                                path: 'teacher',
+                                name: 'teacherTeacher',
+                                meta: {
+                                    title: '教师信息',
+                                    permiss: 8,
+                                },
+                                component: () => import('@/views/Home/App/UserInfo.vue'),
+                            },
+                        ],
                     },
                     {
-                        path: 'student/history',
-                        name: 'studentHistory',
-                        meta: {
-                            title: '请假历史',
-                            permiss: 3,
-                        },
-                        component: () => import('@/views/Home/App/Student/History.vue'),
-                    },
-                    {
-                        path: 'student/student',
-                        name: 'studentStudent',
-                        meta: {
-                            title: '学生信息',
-                            permiss: 4,
-                        },
-                        component: () => import('@/views/Home/App/Student/Student.vue'),
-                    },
-                    {
-                        path: 'teacher/approve',
-                        name: 'teacherApprove',
-                        meta: {
-                            title: '请假审批',
-                            permiss: 5,
-                        },
-                        component: () => import('@/views/Home/App/Teacher/Approve.vue'),
-                    },
-                    {
-                        path: 'teacher/attendance',
-                        name: 'teacherAttendance',
-                        meta: {
-                            title: '查看考勤',
-                            permiss: 6,
-                        },
-                        component: () => import('@/views/Home/App/Teacher/Attendance.vue'),
-                    },
-                    {
-                        path: 'teacher/notice',
-                        name: 'teacherNotice',
-                        meta: {
-                            title: '发布通知',
-                            permiss: 7,
-                        },
-                        component: () => import('@/views/Home/App/Teacher/Notice.vue'),
-                    },
-                    {
-                        path: 'teacher/teacher',
-                        name: 'teacherTeacher',
-                        meta: {
-                            title: '教师信息',
-                            permiss: 8,
-                        },
-                        component: () => import('@/views/Home/App/Teacher/Teacher.vue'),
-                    },
-                    {
-                        path: 'admin/student',
-                        name: 'adminStudent',
-                        meta: {
-                            title: '学生管理',
-                            permiss: 9,
-                        },
-                        component: () => import('@/views/Home/App/Admin/Student.vue'),
-                    },
-                    {
-                        path: 'admin/teacher',
-                        name: 'adminTeacher',
-                        meta: {
-                            title: '教师管理',
-                            permiss: 10,
-                        },
-                        component: () => import('@/views/Home/App/Admin/Teacher.vue'),
-                    },
-                    {
-                        path: 'admin/permission',
-                        name: 'adminPermission',
-                        meta: {
-                            title: '权限管理',
-                            permiss: 11,
-                        },
-                        component: () => import('@/views/Home/App/Admin/Permission.vue'),
-                    },
-                    {
-                        path: 'admin/notice',
-                        name: 'adminNotice',
-                        meta: {
-                            title: '通知管理',
-                            permiss: 12,
-                        },
-                        component: () => import('@/views/Home/App/Admin/Notice.vue'),
-                    },
-                    {
-                        path: 'admin/lost',
-                        name: 'adminLost',
-                        meta: {
-                            title: '失物招领管理',
-                            permiss: 13,
-                        },
-                        component: () => import('@/views/Home/App/Admin/Lost.vue'),
+                        path: 'admin',
+                        name: '',
+                        children: [
+                            {
+                                path: 'student',
+                                name: 'adminStudent',
+                                meta: {
+                                    title: '学生管理',
+                                    permiss: 9,
+                                },
+                                component: () => import('@/views/Home/App/Admin/Student.vue'),
+                            },
+                            {
+                                path: 'teacher',
+                                name: 'adminTeacher',
+                                meta: {
+                                    title: '教师管理',
+                                    permiss: 10,
+                                },
+                                component: () => import('@/views/Home/App/Admin/Teacher.vue'),
+                            },
+                            {
+                                path: 'permission',
+                                name: 'adminPermission',
+                                meta: {
+                                    title: '权限管理',
+                                    permiss: 11,
+                                },
+                                component: () => import('@/views/Home/App/Admin/Permission.vue'),
+                            },
+                            {
+                                path: 'notice',
+                                name: 'adminNotice',
+                                meta: {
+                                    title: '通知管理',
+                                    permiss: 12,
+                                },
+                                component: () => import('@/views/Home/App/Admin/Notice.vue'),
+                            },
+                            {
+                                path: 'lost',
+                                name: 'adminLost',
+                                meta: {
+                                    title: '失物招领管理',
+                                    permiss: 13,
+                                },
+                                component: () => import('@/views/Home/App/Admin/Lost.vue'),
+                            },
+                            {
+                                path: 'userInfo',
+                                name: 'adminLost',
+                                meta: {
+                                    title: '管理员信息',
+                                    permiss: 14,
+                                },
+                                component: () => import('@/views/Home/App/UserInfo.vue'),
+                            },
+                        ],
                     },
                 ],
             },

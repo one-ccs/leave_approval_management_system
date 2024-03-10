@@ -27,13 +27,13 @@ const dailyNoticeGroup = [
         icon: 'comment-o',
         title: '课程通知',
         label: '',
-        route: '/notice/sign-in',
+        route: '/app/student/signIn',
     },
     {
         icon: 'flag-o',
         title: '活动通知',
         label: '',
-        route: '/notice/sign-in',
+        route: '/app/student/signIn',
     },
 ];
 </script>

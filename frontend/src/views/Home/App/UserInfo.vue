@@ -25,15 +25,17 @@ const userStore = useUserStore();
             <van-cell-group inset class="mt-2">
                 <van-cell title="手机" :value="userStore.userInfo.telephone" />
                 <van-cell title="邮箱" :value="userStore.userInfo.email" />
-                <van-cell title="学号" :value="userStore.userInfo.username" />
-                <van-cell title="所属班级" :value="userStore.userInfo._class" />
-                <van-cell title="所属专业" :value="userStore.userInfo.major" />
-                <van-cell title="所属学部" :value="userStore.userInfo.department" />
-                <van-cell title="所属学院" :value="userStore.userInfo.faculty" />
-                <van-cell title="入学时间" :value="userStore.userInfo.admissionDate" />
+                <van-cell v-permiss="0x100" title="学号" :value="userStore.userInfo.username" />
+                <van-cell v-permiss="0x100" title="所属班级" :value="userStore.userInfo._class" />
+                <van-cell v-permiss="0x100" title="所属专业" :value="userStore.userInfo.major" />
+                <van-cell v-permiss="0x100" title="所属学部" :value="userStore.userInfo.department" />
+                <van-cell v-permiss="0x100" title="所属学院" :value="userStore.userInfo.faculty" />
+                <van-cell v-permiss="0x100" title="入学时间" :value="userStore.userInfo.admissionDate" />
+
+                <van-cell v-permiss="0x200" title="职工号" :value="userStore.userInfo.username" />
             </van-cell-group>
 
-            <van-cell-group inset class="mt-2">
+            <van-cell-group v-permiss="0x100" inset class="mt-2">
                 <van-cell title="学籍档案" is-link/>
             </van-cell-group>
         </div>
