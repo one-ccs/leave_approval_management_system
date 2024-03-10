@@ -1,53 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import i18n from '@/utils/i18n';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
 
 const router = useRouter();
 const stateTabsValue = ref(0);
 const categoryTabsValue = ref(-1);
 
-const stateTabs = [
-    {
-        title: '待审批',
-        value: 0,
-    },
-    {
-        title: '已撤回',
-        value: 1,
-    },
-    {
-        title: '已驳回',
-        value: 2,
-    },
-    {
-        title: '已完成',
-        value: 3,
-    },
-];
-const categoryTabs = [
-    {
-        title: '全部类型',
-        value: -1,
-    },
-    {
-        title: '事假',
-        value: 0,
-    },
-    {
-        title: '病假',
-        value: 1,
-    },
-    {
-        title: '公假',
-        value: 2,
-    },
-    {
-        title: '出校申请',
-        value: 3,
-    },
-];
+const stateTabs = i18n('tabs.state.leave');
+const categoryTabs = i18n('tabs.category');
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import BackNavBar from '@/components/BackNavBar.vue';
 import { showFailToast, type UploaderFileListItem } from 'vant';
+import BackNavBar from '@/components/BackNavBar.vue';
 
 const categoryPickerShown = ref(false);
 const startDatetimePickerShown = ref(false);
