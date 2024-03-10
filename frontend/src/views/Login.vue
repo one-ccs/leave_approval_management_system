@@ -45,7 +45,7 @@ const onSubmit = (value: any) => {
             <van-image src="static/img/logo.png" class="logo"></van-image>
         </div>
         <van-form @submit="onSubmit">
-            <van-cell-group>
+            <van-cell-group class="translucent">
                 <van-field
                     v-model="formData.username"
                     name="username"

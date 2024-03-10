@@ -26,6 +26,13 @@
             "problemMatcher": [],
             "label": "npm: build-only - frontend",
             "detail": "vite build"
-        }
+        },
+        {
+            "type": "shell",
+            "command": "launch.py",
+            "problemMatcher": [],
+            "label": "flask: launch.py",
+            "detail": "run flask app"
+        },
     ]
 }

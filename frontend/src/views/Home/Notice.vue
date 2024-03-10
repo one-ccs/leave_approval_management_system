@@ -42,12 +42,12 @@ const dailyNoticeGroup = [
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
         <header class="header">通知</header>
-        <van-cell-group class="notice-group" :border="false">
+        <van-cell-group class="notice-group translucent-half" :border="false">
             <van-cell v-for="notice in noticeGroup" :title="notice.title">
                 <template #label>{{ notice.label }}</template>
             </van-cell>
         </van-cell-group>
-        <van-cell-group class="daily-notice" title="日常通知" :border="false">
+        <van-cell-group class="daily-notice translucent-half" title="日常通知" :border="false">
             <van-cell v-for="notice in dailyNoticeGroup"
                 value="查看全部"
                 :icon="notice.icon"
@@ -74,9 +74,6 @@ const dailyNoticeGroup = [
         font-size: 2.2rem;
     }
     .notice-group, .daily-notice {
-        --van-cell-group-background: #0000;
-        --van-cell-background: #fffa;
-
         .van-cell {
             :deep(.van-cell__title > span) {
                 color: #4D7EE0;

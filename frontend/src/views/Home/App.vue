@@ -103,7 +103,7 @@ const apps = [
     <div class="client-wrapper">
         <right-slide-router-view></right-slide-router-view>
         <header class="header">应用</header>
-        <van-grid class="app-grids" square :border="false" :column-num="2" :gutter="18" icon-size="3rem" clickable>
+        <van-grid class="app-grids translucent-half" square :border="false" :column-num="2" :gutter="18" icon-size="3rem" clickable>
             <van-grid-item v-for="app in apps"
                 :icon="app.icon"
                 :text="app.text"
@@ -128,8 +128,6 @@ const apps = [
         font-size: 2.2rem;
     }
     .app-grids {
-        --van-grid-item-content-background: #fffa;
-
         max-height: calc(100% - 117px);
         overflow-x: hidden;
         overflow-y: auto;

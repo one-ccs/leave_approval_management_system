@@ -63,10 +63,10 @@ const buttons = [
             <van-space class="info" direction="vertical" :size="5">
                 <div class="name">{{ userStore.userInfo.name }}</div>
                 <div class="role">{{ userStore.roleZh }}</div>
-                <div class="major">{{ userStore.userInfo.major }}</div>
+                <div class="major">{{ userStore.userInfo._class }}</div>
             </van-space>
         </div>
-        <van-cell-group class="cell-group">
+        <van-cell-group class="cell-group translucent-half">
             <van-cell v-for="cell in cells" :key="cell.route"
                 size="large"
                 :icon-prefix="iconPrefix"
@@ -123,8 +123,6 @@ const buttons = [
         }
     }
     .cell-group {
-        --van-cell-group-background: #0000;
-        --van-cell-background: #fffa;
         border-radius: var(--van-cell-group-inset-radius);
         overflow: hidden;
 

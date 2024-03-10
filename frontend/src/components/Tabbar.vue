@@ -28,7 +28,4 @@ const badgeStore = useBadgeStore();
 </template>
 
 <style scoped lang="less">
-.tabbar {
-    --van-tabbar-background: #fff;
-}
 </style>

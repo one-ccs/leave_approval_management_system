@@ -41,9 +41,6 @@ const categoryTabs = i18n('tabs.category');
 
 <style scoped lang="less">
 .view {
-    .view-header {
-        --van-nav-bar-text-color: #000;
-    }
     .view-container {
         --category-tabs-height: 30px;
         position: relative;
@@ -57,7 +54,6 @@ const categoryTabs = i18n('tabs.category');
 
             :deep([role="tablist"]) {
                 padding: 0 0 10px 0;
-                background-color: #fff;
 
                 .van-tabs__line {
                     display: none;

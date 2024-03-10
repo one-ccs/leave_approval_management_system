@@ -328,7 +328,6 @@ const onSubmit = () => {
 
 <style scoped lang="less">
 .view {
-    --van-cell-background: #fff;
 
     .view-container {
         padding: 15px 0;

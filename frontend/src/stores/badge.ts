@@ -2,11 +2,11 @@ import { defineStore } from "pinia";
 
 const useBadgeStore = defineStore('badge', {
     state: () => ({
-        _notice: 1,
-        _user: 3,
-        _leave: 4,
-        _revoke: 5,
-        _approve: 6,
+        _notice: 0,
+        _user: 0,
+        _leave: 0,
+        _revoke: 0,
+        _approve: 0,
     }),
     getters: {
         notice: (state: any) => state._notice || '',

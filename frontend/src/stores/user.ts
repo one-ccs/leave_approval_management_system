@@ -9,10 +9,32 @@ export interface User {
     avatar: string;
     name: string;
     username: string | undefined;
+    email: string;
     role: number;
-    major: string;
     expires: number | null;
 };
+
+export interface Admin extends User {
+    gender: string;
+};
+
+export interface Teacher extends User {
+    gender: string;
+    telephone: string;
+};
+
+export interface Student extends User {
+    gender: string;
+    department: string;
+    faculty: string;
+    major: string;
+    grade: string;
+    _class: string;
+    admissionDate: string;
+};
+
+export type UnionUser = Admin & Teacher & Student;
+
 
 const permissStore = usePermissStore(pinia);
 
@@ -20,20 +42,20 @@ const useUserStore = defineStore('user', {
     state: () => ({
         isInit: false,
         isLogin: false,
-        _persistence: <User>{
+        _persistence: <UnionUser>{
             avatar: '/static/img/avatar.jpg',
             name: '小哆啦',
-            role: 2,
-            major: '20计算机科学与技术20班',
+            role: 0,
+            _class: '20计算机科学与技术20班',
             expires: null,
         },
         _keyName: 'userStore',
     }),
     getters: {
-        role: (state: any) => state._persistence.role,
-        roleZh: (state: any) => i18n(state._persistence.role, 'role.zh'),
-        roleEn: (state: any) => i18n(state._persistence.role, 'role.en'),
-        userInfo: (state: any) => state._persistence,
+        role: (state: any): number => state._persistence.role,
+        roleZh: (state: any):string => i18n(state._persistence.role, 'role.zh'),
+        roleEn: (state: any): string => i18n(state._persistence.role, 'role.en'),
+        userInfo: (state: any): UnionUser => state._persistence,
     },
     actions: {
         init() {
@@ -59,14 +81,19 @@ const useUserStore = defineStore('user', {
             this.isLogin = false;
             return this;
         },
-        setUser(user: User) {
+        setUser(user: UnionUser) {
             // 设置用户信息
-            const { avatar, name, username, role, major } = user;
-            this._persistence.avatar = avatar || this._persistence.avatar;
-            this._persistence.name = name || username || this._persistence.name;
-            this._persistence.role = role >= 0 ? role : this._persistence.role;
-            this._persistence.major = major;
-            this._persistence.expires = ((new Date()).getTime() + 1000 * 3600 * 24);
+            const { avatar, name, username, role, gender, _class } = user;
+            this._persistence = {
+                ...user,
+                avatar: avatar || this._persistence.avatar,
+                role: role >= 0 ? role : this._persistence.role,
+                name: name || username || '',
+                gender: gender || '保密',
+                _class: _class || this._persistence._class,
+                expires: ((new Date()).getTime() + 1000 * 3600 * 24),
+            };
+
             // 修改登录状态
             this.isLogin = true;
             // 设置用户权限

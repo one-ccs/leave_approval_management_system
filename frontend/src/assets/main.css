@@ -1,14 +1,41 @@
 @import './base.css';
 
 
+/* 覆写框架样式 */
 .van-nav-bar {
     width: 100%;
+}
+
+.translucent {
+    --van-cell-group-background: #0000;
+    --van-cell-background: #0000;
+    --van-grid-item-content-background: #0000;
+}
+
+.translucent-half {
+    --van-cell-group-background: #0000;
+    --van-cell-background: #fffa;
+    --van-grid-item-content-background: #fffa;
 }
 
 .fa {
     width: 16px;
     height: 16px;
     text-align: center;
+}
+
+/* 自定义样式 */
+:root {
+    --client-width: 100%;
+    --text-color: #333;
+    --background-color: #F2F5FC;
+    --bottom-menu-height: 80px;
+}
+
+@media screen and (min-width: 768px) {
+    :root {
+        --client-width: 560px;
+    }
 }
 
 #app {

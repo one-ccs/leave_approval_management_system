@@ -1,13 +1,55 @@
 <script setup lang="ts">
 import BackNavBar from '@/components/BackNavBar.vue';
+import useUserStore from '@/stores/user';
+
+const userStore = useUserStore();
 </script>
 
 <template>
     <div class="view">
         <back-nav-bar class="view-header" />
-        <div class="view-container"></div>
+        <div class="view-container">
+            <van-cell-group inset class="mt-2">
+                <van-cell title="头像">
+                    <template #value>
+                        <van-image class="avatar" :src="userStore.userInfo.avatar" round width="66" height="66"></van-image>
+                    </template>
+                </van-cell>
+            </van-cell-group>
+
+            <van-cell-group inset class="mt-2">
+                <van-cell title="姓名" :value="userStore.userInfo.name" />
+                <van-cell title="性别" :value="userStore.userInfo.gender" />
+            </van-cell-group>
+
+            <van-cell-group inset class="mt-2">
+                <van-cell title="手机" :value="userStore.userInfo.telephone" />
+                <van-cell title="邮箱" :value="userStore.userInfo.email" />
+                <van-cell title="学号" :value="userStore.userInfo.username" />
+                <van-cell title="所属班级" :value="userStore.userInfo._class" />
+                <van-cell title="所属专业" :value="userStore.userInfo.major" />
+                <van-cell title="所属学部" :value="userStore.userInfo.department" />
+                <van-cell title="所属学院" :value="userStore.userInfo.faculty" />
+                <van-cell title="入学时间" :value="userStore.userInfo.admissionDate" />
+            </van-cell-group>
+
+            <van-cell-group inset class="mt-2">
+                <van-cell title="学籍档案" is-link/>
+            </van-cell-group>
+        </div>
     </div>
 </template>
 
 <style scoped lang="less">
+.view {
+    .view-container {
+        .van-cell {
+            align-items: center;
+
+            :deep(.van-cell__value) {
+                flex: auto;
+            }
+        }
+    }
+}
 </style>

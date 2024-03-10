@@ -28,7 +28,7 @@ const settings = [
     <div class="view">
         <back-nav-bar class="view-header" />
         <div class="view-container">
-            <van-cell-group inset class="setting-group">
+            <van-cell-group inset class="setting-group translucent-half">
                 <van-cell v-for="setting in settings" :key="setting.title"
                     size="large"
                     :icon-prefix="iconPrefix"
@@ -65,10 +65,6 @@ const settings = [
         background-position: center top;
         background-repeat: no-repeat;
 
-        .setting-group {
-            --van-cell-group-background: #0000;
-            --van-cell-background: #fffa;
-        }
         .choice-image-popup-overlay {
             position: absolute;
         }
