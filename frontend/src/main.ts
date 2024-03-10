@@ -13,8 +13,16 @@ import App from './App.vue';
 import router from './router';
 import pinia from './stores/pinia';
 
+import useGlobalStore from './stores/global';
 import usePermissStore from './stores/permiss';
+import useUserStore from './stores/user';
 
+
+// 初始化 store
+useGlobalStore().init();
+useUserStore().init();
+
+// 配置 vue app
 const app = createApp(App);
 
 app.use(pinia);

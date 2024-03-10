@@ -10,6 +10,7 @@ const globalStore = useGlobalStore();
 
 const changeBackgroundImage = (index: number) => {
     globalStore.setBackgroundImageIndex(index);
+    globalStore.save();
     showSuccessToast("修改成功");
 };
 

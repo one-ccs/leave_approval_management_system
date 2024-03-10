@@ -20,19 +20,20 @@ const useUserStore = defineStore('user', {
     state: () => ({
         isInit: false,
         isLogin: false,
-        userInfo: <User>{
+        _persistence: <User>{
             avatar: '/static/img/avatar.jpg',
             name: '小哆啦',
             role: 2,
             major: '20计算机科学与技术20班',
             expires: null,
         },
-        _keyName: 'user',
+        _keyName: 'userStore',
     }),
     getters: {
-        role: (state: any) => state.userInfo.role,
-        roleZh: (state: any) => i18n(state.userInfo.role, 'role.zh'),
-        roleEn: (state: any) => i18n(state.userInfo.role, 'role.en'),
+        role: (state: any) => state._persistence.role,
+        roleZh: (state: any) => i18n(state._persistence.role, 'role.zh'),
+        roleEn: (state: any) => i18n(state._persistence.role, 'role.en'),
+        userInfo: (state: any) => state._persistence,
     },
     actions: {
         init() {
@@ -43,14 +44,14 @@ const useUserStore = defineStore('user', {
             return this;
         },
         load() {
-            const localUser = localLoad(this._keyName);
-            if (localUser) {
-                this.setUser(localUser);
+            const persistence = localLoad(this._keyName);
+            if (persistence) {
+                this.setUser(persistence);
             }
             return this;
         },
         save() {
-            localSave(this._keyName, this.userInfo);
+            localSave(this._keyName, this._persistence);
             return this;
         },
         clear() {
@@ -61,11 +62,11 @@ const useUserStore = defineStore('user', {
         setUser(user: User) {
             // 设置用户信息
             const { avatar, name, username, role, major } = user;
-            this.userInfo.avatar = avatar || this.userInfo.avatar;
-            this.userInfo.name = name || username || this.userInfo.name;
-            this.userInfo.role = role >= 0 ? role : this.userInfo.role;
-            this.userInfo.major = major;
-            this.userInfo.expires = ((new Date()).getTime() + 1000 * 3600 * 24);
+            this._persistence.avatar = avatar || this._persistence.avatar;
+            this._persistence.name = name || username || this._persistence.name;
+            this._persistence.role = role >= 0 ? role : this._persistence.role;
+            this._persistence.major = major;
+            this._persistence.expires = ((new Date()).getTime() + 1000 * 3600 * 24);
             // 修改登录状态
             this.isLogin = true;
             // 设置用户权限
@@ -73,8 +74,8 @@ const useUserStore = defineStore('user', {
             return this;
         },
         isExpired() {
-            if (!this.userInfo.expires) return true;
-            return this.userInfo.expires <= new Date().getTime();
+            if (!this._persistence.expires) return true;
+            return this._persistence.expires <= new Date().getTime();
         },
     }
 });

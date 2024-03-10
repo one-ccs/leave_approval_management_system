@@ -251,8 +251,6 @@ router.beforeEach((to, from, next) => {
     const permissStore = usePermissStore();
     const userStore = useUserStore();
 
-    if (!userStore.isInit) userStore.init();
-
     if (!userStore.isLogin && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
         next('/login');
