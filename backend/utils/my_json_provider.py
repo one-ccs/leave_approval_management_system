@@ -23,8 +23,7 @@ class MyJSONProvider(DefaultJSONProvider):
     def _default(obj):
         """无法序列化的对象会自动调用该函数"""
         if isinstance(obj, MyJSONProvider.__need_default):
-            print(123123, obj.id)
-            return obj.vars()
+            return obj.vars() if obj.vars else '无法序列化, 对象上缺少 vars 方法'
 
     # 设置 default (实践直接定义 default 方法无效)
     default = _default

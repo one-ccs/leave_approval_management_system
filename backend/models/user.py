@@ -30,7 +30,7 @@ class User(db.Model, UserMixin):
             self.avatar = user.avatar
 
     def __repr__(self):
-        return ObjectUtils.string(self, ('_sa_instance_state', 'password_hash'))
+        return ObjectUtils.repr(self, ('_sa_instance_state', 'password_hash'))
 
     @property
     def password(self):
