@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request, session, make_response, render_template, url_for, redirect
+from flask import request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from datetime import timedelta
-from .utils import Result
+from .utils import Result, _Flask
 
 
 # Origin 白名单
@@ -25,8 +25,9 @@ STATIC_FOLDER = '../frontend/static'
 UPLOAD_FOLDER = './frontend/static/user_upload'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png', 'webp', 'gif'])
 
-app = Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
+app = _Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
 
+# Flask
 app.url_map.strict_slashes = False
 app.config['SECRET_KEY'] = MAIN_KEY
 app.config['SESSION_COOKIE_HTTPONLY'] = True
@@ -69,6 +70,11 @@ def favicon():
 @app.route('/api')
 def api():
     return Result.success(True, 'ok')
+
+
+# 放在最后导入 防止循环导入
+from .models import User, Admin, Teacher, Student, Leave
+app.json_provider_class.set_need_default(User, Admin, Teacher, Student, Leave)
 
 
 if __name__ == "__main__":

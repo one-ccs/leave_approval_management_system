@@ -10,6 +10,17 @@ export interface ResultData {
     data: any;
 };
 
+export interface PageQuery {
+    pageIndex: number;
+    pageSize: number;
+    query: string;
+};
+
+export interface LeavePageQuery extends PageQuery {
+    state: number;
+    category: number;
+}
+
 /**
  * 默认成功处理函数
  * @param message 提示消息
@@ -42,13 +53,12 @@ export function apiLogin(user: any, success: Function = defaultSuccess, failure:
         forbidClick: true,
     });
     return request('/api/user/login', {
-        method: 'post',
+        method: 'POST',
         data: {
             username: user.username,
             password: encryptMD5(user.password),
             remember: user.remember,
         },
-        contentType: 'form',
         success: (data: ResultData) => {
             closeToast();
             success && success(data);
@@ -62,7 +72,42 @@ export function apiLogin(user: any, success: Function = defaultSuccess, failure:
 
 export function apiLogout(success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/user/logout', {
-        method: 'post',
+        method: 'POST',
+        success,
+        failure,
+    });
+}
+
+export function apiLeaveGet(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/leave', {
+        params: query,
+        success,
+        failure,
+    });
+}
+
+export function apiLeavePut(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/leave', {
+        params: query,
+        method: 'PUT',
+        success,
+        failure,
+    });
+}
+
+export function apiLeavePost(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/leave', {
+        params: query,
+        method: 'POST',
+        success,
+        failure,
+    });
+}
+
+export function apiLeaveDelete(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/leave', {
+        params: query,
+        method: 'DELETE',
         success,
         failure,
     });

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from ..app import db
+from ..utils import ObjectUtils
+
 
 class Admin(db.Model):
     """管理员表"""
@@ -10,20 +12,12 @@ class Admin(db.Model):
     gender     = db.Column(db.String(2))
 
     def __repr__(self):
-        return '<models.Student {' + \
-            f'id: {self.id}' + \
-            f', user_id: {self.user_id}' + \
-            f', name: {self.name}' + \
-            f', gender: {self.gender}' + \
-        '}>'
+        return ObjectUtils.repr(self, ('_sa_instance_state',))
 
-    def vars(self, ignore=None, ignore_default=['_sa_instance_state', 'id', 'user_id']):
-        _dict = { ** vars(self)}
-
+    def vars(self, ignore=None, ignore_default=('_sa_instance_state', 'id', 'user_id')):
         if ignore is None:
             ignore = ignore_default
-        for key in ignore:
-            if key in _dict:
-                del _dict[key]
+        return ObjectUtils.vars(self, ignore)
 
-        return _dict
+    def withDict(self, **kw):
+        return ObjectUtils.update_with_dict(self, **kw, ignore=('_sa_instance_state',), is_snake=True)

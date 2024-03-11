@@ -1,11 +1,12 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from flask import request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
 from ..app import db, login_manager
 from ..models import Role, User, Admin, Teacher, Student
 from ..views import user_blue
-from ..utils import Result
+from ..utils import Result, RequestUtils
 
 
 # 会话保护模式 [None|'basic'|'strong']
@@ -41,7 +42,7 @@ def login():
     """ 登录视图 """
     # 判断是否存在该用户
     if request.method == 'GET':
-        username = request.values.get('username')
+        username = RequestUtils.quick_data(request, 'username')
         if not username:
             return Result.failure('请输入账号')
         if User(username=username).exist():
@@ -50,8 +51,7 @@ def login():
             return Result.success('不存在该用户', False)
     # 用户登录
     if request.method == 'POST':
-        username = request.values.get('username')
-        password = request.values.get('password')
+        username, password = RequestUtils.quick_data(request, 'username', 'password')
 
         if not username or not password:
             return Result.failure('请输入账号和密码')

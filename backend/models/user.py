@@ -3,7 +3,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from ..app import db
-from ..utils import DateTimeUtils
+from ..utils import DateTimeUtils, ObjectUtils
 
 
 class User(db.Model, UserMixin):
@@ -30,13 +30,7 @@ class User(db.Model, UserMixin):
             self.avatar = user.avatar
 
     def __repr__(self):
-        return '<models.Student {' + \
-            f'id: {self.id}' + \
-            f', username: {self.username}' + \
-            f', role: {self.role}' + \
-            f', create_datetime: {self.create_datetime}' + \
-            f', avatar: {self.avatar}' + \
-        '}>'
+        return ObjectUtils.string(self, ('_sa_instance_state', 'password_hash'))
 
     @property
     def password(self):
@@ -55,13 +49,10 @@ class User(db.Model, UserMixin):
             return True
         return False
 
-    def vars(self, ignore=None, ignore_default=['_sa_instance_state', 'id', 'password_hash']):
-        _dict = { ** vars(self)}
-
+    def vars(self, ignore=None, ignore_default=('_sa_instance_state', 'id', 'password_hash')):
         if ignore is None:
             ignore = ignore_default
-        for key in ignore:
-            if key in _dict:
-                del _dict[key]
+        return ObjectUtils.vars(self, ignore)
 
-        return _dict
+    def withDict(self, **kw):
+        return ObjectUtils.update_with_dict(self, **kw, ignore=('_sa_instance_state',), is_snake=True)
