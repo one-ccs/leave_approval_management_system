@@ -37,7 +37,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 ## Flask-SQLalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DATABASE_OPTIONS["user"]}:{DATABASE_OPTIONS["password"]}@{DATABASE_OPTIONS["host"]}:{DATABASE_OPTIONS["port"]}/{DATABASE_OPTIONS["database"]}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = False
+app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 db.rows2dict = (lambda rows, keys: [dict(zip(keys, row)) for row in rows])

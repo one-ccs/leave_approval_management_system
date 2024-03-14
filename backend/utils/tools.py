@@ -121,13 +121,16 @@ class ObjectUtils(object):
         return f'{class_name}{{{attributes_str}}}'
 
     @staticmethod
-    def vars(obj: object, ignore=[]) -> dict:
+    def vars(obj: object, ignore=[], snake=True) -> dict:
         """将对象的属性转为字典形式
         :param obj 对象
         :param ignore (可选) 忽略属性列表
+        :param snake (可选,  默认 True) 是否转为下划线形式
         :return 对象 { 属性: 值 } 组成的字典
         """
-        return {k: v for k, v in obj.__dict__.items() if k not in ignore}
+        if isinstance(obj, dict):
+            return { StringUtils.camel_to_snake(k) if snake else k: v for k, v in obj.items() if k not in ignore }
+        return { k: v for k, v in obj.__dict__.items() if k not in ignore }
 
     @staticmethod
     def update_with_dict(obj:object, **kw) -> object:
