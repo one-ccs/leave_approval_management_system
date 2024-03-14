@@ -1,5 +1,12 @@
 import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { showFailToast } from 'vant';
+import router from '@/router';
+import useUserStore from '@/stores/user';
+import pinia from '@/stores/pinia';
+
+
+const userStore = useUserStore(pinia);
+
 
 const service: AxiosInstance = axios.create({
     baseURL: 'http://127.0.0.1:5001',
@@ -26,6 +33,15 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
     (response: AxiosResponse) => {
+        // 未登录，或登录已过期
+        if (response.data.code === 401) {
+            showFailToast('未登录\n即将跳转登录页...');
+            userStore.clear();
+            setTimeout(() => {
+                router.push('/login');
+            }, 800);
+            return Promise.reject(response);
+        }
         return response;
     },
     (error: AxiosError) => {

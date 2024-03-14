@@ -1,6 +1,5 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import { showFailToast, showToast } from 'vant';
-import { localLoad, localRemove, sessionLoad, sessionRemove } from '@/utils/storage';
+import { showFailToast } from 'vant';
 import HomeView from '@/views/Home.vue';
 import usePermissStore from '@/stores/permiss';
 import useUserStore from '@/stores/user';

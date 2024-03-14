@@ -1,5 +1,4 @@
 import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
-import { localLoad, localRemove, localSave, sessionRemove, sessionSave } from './storage';
 import request from './request';
 import encryptMD5 from './encryptMD5';
 
@@ -13,7 +12,7 @@ export interface ResultData {
 export interface PageQuery {
     pageIndex: number;
     pageSize: number;
-    query: string;
+    query?: string;
 };
 
 export interface LeavePageQuery extends PageQuery {
@@ -80,7 +79,10 @@ export function apiLogout(success: Function = defaultSuccess, failure: Function 
 
 export function apiLeaveGet(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave', {
-        params: query,
+        params: {
+            ...query,
+            category: query.category === -1 ? undefined : query.category,
+        },
         success,
         failure,
     });

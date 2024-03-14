@@ -121,16 +121,24 @@ class ObjectUtils(object):
         return f'{class_name}{{{attributes_str}}}'
 
     @staticmethod
-    def vars(obj: object, ignore=[], snake=True) -> dict:
+    def vars(obj: object, ignore=[], style='snake') -> dict:
         """将对象的属性转为字典形式
         :param obj 对象
         :param ignore (可选) 忽略属性列表
-        :param snake (可选,  默认 True) 是否转为下划线形式
+        :param style (可选 'camel',  默认 'snake') 键名命名风格
         :return 对象 { 属性: 值 } 组成的字典
         """
+        dict_items = {}
         if isinstance(obj, dict):
-            return { StringUtils.camel_to_snake(k) if snake else k: v for k, v in obj.items() if k not in ignore }
-        return { k: v for k, v in obj.__dict__.items() if k not in ignore }
+            dict_items = obj.items()
+        if hasattr(obj, '__dict__'):
+            dict_items = obj.__dict__.items()
+
+        if style == 'snake':
+            return { StringUtils.camel_to_snake(k): v for k, v in dict_items if k not in ignore }
+        if style == 'camel':
+            return { StringUtils.snake_to_camel(k): v for k, v in dict_items if k not in ignore }
+        return { k: v for k, v in dict_items if k not in ignore }
 
     @staticmethod
     def update_with_dict(obj:object, **kw) -> object:
@@ -138,14 +146,16 @@ class ObjectUtils(object):
         :param obj 对象
         :param **kw 关键字参数
         :param ignore (可选) 忽略属性列表
-        :param is_snake (可选) 是否将驼峰转为下划线形式
+        :param style (可选 'camel',  默认 'snake') 键名命名风格
         :return 更新数据后的对象
         """
-        is_snake = kw.get('is_snake', False)
+        style = kw.get('style', 'snake')
         ignore = kw.get('ignore', [])
         for k, v in kw.items():
-            if is_snake:
+            if style == 'snake':
                 k = StringUtils.camel_to_snake(k)
+            if style == 'camel':
+                k = StringUtils.snake_to_camel(k)
             if hasattr(obj, k) and k not in ignore:
                 setattr(obj, k, v)
         return obj
@@ -155,6 +165,18 @@ class StringUtils(object):
 
     @staticmethod
     def camel_to_snake(camel_str: str) -> str:
-        """将驼峰命名的字符串转换为下划线形式"""
+        """将驼峰形式命名的字符串转换为下划线形式"""
         pattern = re.compile(r'(?<!^)(?=[A-Z])')
         return pattern.sub('_', camel_str).lower()
+
+    @staticmethod
+    def snake_to_camel(snake_str: str) -> str:
+        """将下划线形式命名的字符串转换为驼峰形式"""
+        if snake_str[0] == '_':
+            components = snake_str.split('_')
+            return '_' + ''.join(v.title() if i > 0 else v for i, v in enumerate(components[1:]))
+        if snake_str[0] == '__':
+            components = snake_str.split('_')
+            return '__' + ''.join(v.title() if i > 0 else v for i, v in enumerate(components[1:]))
+        components = snake_str.split('_')
+        return components[0] + ''.join(v.title() for v in components[1:])

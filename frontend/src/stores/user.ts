@@ -11,6 +11,7 @@ export interface User {
     username: string | undefined;
     email: string;
     role: number;
+    createDatetime: string;
     expires: number | null;
 };
 
@@ -82,13 +83,14 @@ const useUserStore = defineStore('user', {
         },
         setUser(user: UnionUser) {
             // 设置用户信息
-            const { avatar, name, username, role, gender, _class, grade, major } = user;
+            const { avatar, name, username, role, gender, _class, grade, admissionDate, createDatetime, major } = user;
             this._persistence = {
                 ...user,
                 avatar: avatar || this._persistence.avatar,
                 role: role >= 0 ? role : this._persistence.role,
                 name: name || username || this._persistence.name,
                 gender: gender || '保密',
+                admissionDate: admissionDate || createDatetime || '',
                 expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };
             if (typeof _class === 'number') this._persistence._class = `${grade}${major}${_class}班`

@@ -23,7 +23,7 @@ class Student(db.Model):
     def vars(self, ignore=None, ignore_default=('_sa_instance_state', 'id', 'user_id', 'teacher_id')):
         if ignore is None:
             ignore = ignore_default
-        return ObjectUtils.vars(self, ignore)
+        return ObjectUtils.vars(self, ignore, style='camel')
 
     def withDict(self, **kw):
         return ObjectUtils.update_with_dict(self, **kw, ignore=('_sa_instance_state',), is_snake=True)

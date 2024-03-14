@@ -1,16 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { apiLeaveGet, type LeavePageQuery, type ResultData } from '@/utils/api';
+import type { Leave } from '@/utils/interface';
 import i18n from '@/utils/i18n';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
+import LeaveCard from '@/components/LeaveCard.vue';
 
 const router = useRouter();
-const stateTabsValue = ref(0);
-const categoryTabsValue = ref(-1);
 
+// 标签栏列表
 const stateTabs = i18n('tabs.state.leave');
 const categoryTabs = i18n('tabs.category');
+
+// 查询参数
+const query = ref<LeavePageQuery>({
+    pageIndex: 1,
+    pageSize: 10,
+    state: 0,
+    category: -1,
+});
+const leaveList = ref<Leave[]>();
+
+// 获取请假条
+const getLeave = () => {
+    apiLeaveGet(query.value, (data: ResultData) => {
+        leaveList.value = data.data.list;
+    });
+};
+
+onMounted(() => {
+    getLeave();
+});
 </script>
 
 <template>
@@ -18,7 +40,8 @@ const categoryTabs = i18n('tabs.category');
         <right-slide-router-view></right-slide-router-view>
         <back-nav-bar class="view-header" right-text="新建申请" @click-right="router.push('/app/student/leave/add')"></back-nav-bar>
         <div class="view-container">
-            <van-tabs class="state-tabs" v-model:active="stateTabsValue"
+            <van-tabs class="state-tabs" v-model:active="query.state"
+                @change="getLeave()"
                 shrink
                 animated
                 swipeable
@@ -29,10 +52,20 @@ const categoryTabs = i18n('tabs.category');
                     :name="tab.value"
                     :title="tab.title"
                 >
-                    <van-empty image="search" description="暂无数据"></van-empty>
+                    <div class="leave-list" v-if="leaveList">
+                        <leave-card v-for="item in leaveList"
+                            :state="item.state"
+                            :start-datetime="item.startDatetime"
+                            :end-datetime="item.endDatetime"
+                        />
+                    </div>
+                    <van-empty v-else image="search" description="暂无数据"></van-empty>
                 </van-tab>
             </van-tabs>
-            <van-tabs class="category-tabs" v-model:active="categoryTabsValue" shrink>
+            <van-tabs class="category-tabs" v-model:active="query.category"
+                @change="getLeave()"
+                shrink
+            >
                 <van-tab v-for="tab in categoryTabs"
                     title-class="tab-title"
                     :name="tab.value"
