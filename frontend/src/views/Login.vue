@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiLogin, type ResultData } from '@/utils/api';
+import type { ResultData } from '@/utils/interface';
+import { apiLogin } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
 

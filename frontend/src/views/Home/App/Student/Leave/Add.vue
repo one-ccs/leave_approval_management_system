@@ -2,6 +2,8 @@
 import { computed, ref } from 'vue';
 import { showFailToast, type UploaderFileListItem } from 'vant';
 import BackNavBar from '@/components/BackNavBar.vue';
+import { apiLeavePut } from '@/utils/api';
+import type { Leave, ResultData } from '@/utils/interface';
 
 const categoryPickerShown = ref(false);
 const startDatetimePickerShown = ref(false);
@@ -11,7 +13,7 @@ const leaveForm = ref({
     startDatetime: '',
     endDatetime: '',
     leaveSchool: false,
-    reason: '',
+    leaveReason: '',
 });
 const leaveFormShadow = ref({
     category: '',
@@ -149,7 +151,7 @@ const pictureOversize = (file: any) => {
     showFailToast('文件大小不能超过 1024 KB')
 };
 const onSubmit = () => {
-    console.log(leaveForm.value);
+    apiLeavePut(leaveForm.value as unknown as Leave);
 };
 </script>
 
@@ -254,7 +256,7 @@ const onSubmit = () => {
 
                 <van-cell-group inset class="mt-2">
                     <van-field
-                        v-model="leaveForm.reason"
+                        v-model="leaveForm.leaveReason"
                         rows="3"
                         autosize
                         label-align="top"

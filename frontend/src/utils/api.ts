@@ -1,30 +1,14 @@
 import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
+import type { ResultData, LeavePageQuery, Leave } from './interface';
 import request from './request';
 import encryptMD5 from './encryptMD5';
 
-
-export interface ResultData {
-    code: number;
-    message: string;
-    data: any;
-};
-
-export interface PageQuery {
-    pageIndex: number;
-    pageSize: number;
-    query?: string;
-};
-
-export interface LeavePageQuery extends PageQuery {
-    state: number;
-    category: number;
-}
 
 /**
  * 默认成功处理函数
  * @param message 提示消息
  */
-function defaultSuccess(data: any) {
+function defaultSuccess(data: ResultData) {
     showSuccessToast(data.message);
 }
 
@@ -33,7 +17,8 @@ function defaultSuccess(data: any) {
  * @param url 请求地址
  * @param code 状态码
  */
-function defaultFailure(data: any, status: number, url: string) {
+function defaultFailure(data: ResultData, status: number, url: string) {
+    if (data.code === 401) return;
     showFailToast(data.message);
 }
 
@@ -88,18 +73,18 @@ export function apiLeaveGet(query: LeavePageQuery, success: Function = defaultSu
     });
 }
 
-export function apiLeavePut(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+export function apiLeavePut(query: Leave, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave', {
-        params: query,
+        data: query,
         method: 'PUT',
         success,
         failure,
     });
 }
 
-export function apiLeavePost(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+export function apiLeavePost(query: Leave, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave', {
-        params: query,
+        data: query,
         method: 'POST',
         success,
         failure,
@@ -108,7 +93,7 @@ export function apiLeavePost(query: LeavePageQuery, success: Function = defaultS
 
 export function apiLeaveDelete(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave', {
-        params: query,
+        data: query,
         method: 'DELETE',
         success,
         failure,

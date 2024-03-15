@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiLeaveGet, type LeavePageQuery, type ResultData } from '@/utils/api';
-import type { Leave } from '@/utils/interface';
+import type { Leave, LeavePageQuery, ResultData } from '@/utils/interface';
+import { apiLeaveGet } from '@/utils/api';
 import i18n from '@/utils/i18n';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
@@ -21,7 +21,7 @@ const query = ref<LeavePageQuery>({
     state: 0,
     category: -1,
 });
-const leaveList = ref<Leave[]>();
+const leaveList = ref<Leave[]>([]);
 
 // 获取请假条
 const getLeave = () => {
@@ -55,12 +55,14 @@ onMounted(() => {
                     <div class="leave-list" v-if="leaveList?.length">
                         <leave-card v-for="item in leaveList"
                             :key="item.id"
+                            :id="item.id"
                             :state="item.state"
                             :start-datetime="item.startDatetime"
                             :end-datetime="item.endDatetime"
+                            to="/app/student/leave/detail"
                         />
                     </div>
-                    <van-empty v-else image="search" description="暂无数据"></van-empty>
+                    <van-empty v-else image="search" description="暂无数据" />
                 </van-tab>
             </van-tabs>
             <van-tabs class="category-tabs" v-model:active="query.category"
@@ -108,9 +110,15 @@ onMounted(() => {
                 font-weight: bold;
             }
             :deep(.van-tabs__content) {
-                padding: 8px;
+                padding: 8px 15px;
                 padding-top: calc(var(--category-tabs-height) + 8px);
                 height: calc(100% - var(--van-tabs-line-height));
+
+                .van-tab__panel {
+                    height: 100%;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
             }
         }
         .category-tabs {

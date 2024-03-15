@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from ..app import db
-from ..utils import ObjectUtils
+from ..utils import ObjectUtils, DateTimeUtils
 
 
 class Leave(db.Model):
     """请假条表"""
     id         = db.Column(db.Integer, primary_key=True)
     user_id    = db.Column(db.Integer, db.ForeignKey("student.id"))
-    state      = db.Column(db.SmallInteger)
+    state      = db.Column(db.SmallInteger, default=0)
     category   = db.Column(db.SmallInteger)
-    apply_datetime  = db.Column(db.DateTime)
+    apply_datetime  = db.Column(db.DateTime, default=DateTimeUtils.now())
     start_datetime  = db.Column(db.DateTime)
     end_datetime    = db.Column(db.DateTime)
     annex_url       = db.Column(db.String(255))

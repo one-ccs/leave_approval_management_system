@@ -1,58 +1,74 @@
+export interface ResultData {
+    code: number;
+    message: string;
+    data: any;
+};
+
+export interface PageQuery {
+    pageIndex: number;
+    pageSize: number;
+    query?: string;
+};
+
+export interface LeavePageQuery extends PageQuery {
+    state: number;
+    category: number;
+};
+
 export interface User {
-    avatar?: string;
-    createDatetime: string;
     id: number;
+    username: string;
     passwordHash: string;
     role: number;
-    username: string;
-}
-
+    avatar?: string;
+    createDatetime: string;
+};
 
 export interface Admin {
-    gender: string;
     id: number;
-    name: string;
     userId: number;
-}
+    name: string;
+    gender: string;
+};
 
 export interface Teacher {
-    gender: string;
     id: number;
-    name: string;
-    telephone: string;
     userId: number;
-}
+    name: string;
+    gender: string;
+    telephone: string;
+};
 
 export interface Student {
-    class: string;
+    id: number;
+    userId: number;
+    teacherId: number;
+    name: string;
+    gender: string;
     department: string;
     faculty: string;
-    gender: string;
-    grade: string;
-    id: number;
     major: string;
-    name: string;
-    teacherId: number;
-    userId: number;
-}
+    grade: string;
+    _class: string;
+};
 
 export interface Leave {
-    a1Datetime: string;
-    a2Datetime: string;
-    annexUrl: string;
-    applyDatetime: string;
-    approver1Id: number;
-    approver2Id: number;
-    category: string;
-    endDatetime: string;
     id: number;
-    leaveReason: string;
-    rejectReason: string;
-    revokeId: number;
-    revokeDatetime: string;
-    startDatetime: string;
-    state: number;
     userId: number;
+    state: number;
+    category: string;
+    applyDatetime: string;
+    startDatetime: string;
+    endDatetime: string;
+    leaveReason: string;
+    annexUrl: string;
+    a1Datetime: string;
+    approver1Id: number;
+    a2Datetime: string;
+    approver2Id: number;
+    revokeDatetime: string;
+    revokeId: number;
+    rejectReason: string;
 };
 
 export enum LeaveState {

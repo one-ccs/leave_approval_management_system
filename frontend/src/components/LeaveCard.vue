@@ -2,8 +2,13 @@
 import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
 import { LeaveState } from '@/utils/interface';
+import { useRouter } from 'vue-router';
 
-const { state, startDatetime, endDatetime } = defineProps({
+const { id, state, startDatetime, endDatetime, to } = defineProps({
+    id: {
+        type: Number,
+        required: true,
+    },
     state: {
         type: Number,
         required: true,
@@ -16,8 +21,13 @@ const { state, startDatetime, endDatetime } = defineProps({
         type: String,
         required: true,
     },
+    to: {
+        type: String,
+        required: true,
+    }
 });
 
+const router = useRouter();
 const userStore = useUserStore();
 
 const iconColor = () => {
@@ -29,9 +39,9 @@ const iconColor = () => {
         case LeaveState.REJECTED:
             return '#ff8383';
         case LeaveState.CANCEL:
-            return '#345';
+            return '#ff9632';
         case LeaveState.CANCELING:
-            return '#345';
+            return '#ff9632';
         case LeaveState.DONE:
             return '#6dd080';
     }
@@ -39,7 +49,7 @@ const iconColor = () => {
 </script>
 
 <template>
-    <div class="leave-card">
+    <div class="leave-card" @click="router.push({ path: to, query: { id } })">
         <div class="icon-wrapper" :style="{ color: iconColor() }">
             <van-icon name="notes-o" size="38"></van-icon>
             <div class="text">{{ i18n(state, 'field.leave.state') }}</div>
@@ -63,7 +73,7 @@ const iconColor = () => {
     justify-content: flex-start;
     margin: 8px auto;
     border-radius: 8px;
-    padding: 18px;
+    padding: 24px;
     width: 100%;
     background: #fff;
 

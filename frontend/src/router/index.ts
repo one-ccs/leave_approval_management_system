@@ -52,6 +52,14 @@ const routes: RouteRecordRaw[] = [
                                         },
                                         component: () => import('@/views/Home/App/Student/Leave/Add.vue')
                                     },
+                                    {
+                                        path: 'detail',
+                                        name: 'studentLeaveDetail',
+                                        meta: {
+                                            title: '请假详情',
+                                        },
+                                        component: () => import('@/views/Home/App/LeaveDetail.vue')
+                                    },
                                 ],
                             },{
                                 path: 'revoke',

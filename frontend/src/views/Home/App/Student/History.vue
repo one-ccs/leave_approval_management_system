@@ -1,20 +1,42 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import type { Leave, LeavePageQuery, ResultData } from '@/utils/interface';
+import { apiLeaveGet } from '@/utils/api';
 import i18n from '@/utils/i18n';
 import BackNavBar from '@/components/BackNavBar.vue';
+import LeaveCard from '@/components/LeaveCard.vue';
 
-const stateAllTabsValue = ref(0);
-const categoryTabsValue = ref(-1);
-
+// 标签栏列表
 const stateAllTabs = [...i18n('tabs.state.leave'), ...i18n('tabs.state.revoke')];
 const categoryTabs = i18n('tabs.category');
+
+// 查询参数
+const query = ref<LeavePageQuery>({
+    pageIndex: 1,
+    pageSize: 10,
+    state: 0,
+    category: -1,
+});
+const leaveList = ref<Leave[]>([]);
+
+// 获取请假条
+const getLeave = () => {
+    apiLeaveGet(query.value, (data: ResultData) => {
+        leaveList.value = data.data.list;
+    });
+};
+
+onMounted(() => {
+    getLeave();
+});
 </script>
 
 <template>
     <div class="view">
         <back-nav-bar class="view-header" />
         <div class="view-container">
-            <van-tabs class="state-tabs" v-model:active="stateAllTabsValue"
+            <van-tabs class="state-tabs" v-model:active="query.state"
+                @change="getLeave()"
                 shrink
                 animated
                 swipeable
@@ -25,10 +47,23 @@ const categoryTabs = i18n('tabs.category');
                     :name="tab.value"
                     :title="tab.title"
                 >
-                    <van-empty image="search" description="暂无数据"></van-empty>
+                    <div class="leave-list" v-if="leaveList?.length">
+                        <leave-card v-for="item in leaveList"
+                            :key="item.id"
+                            :id="item.id"
+                            :state="item.state"
+                            :start-datetime="item.startDatetime"
+                            :end-datetime="item.endDatetime"
+                            to="/app/student/leave/detail"
+                        />
+                    </div>
+                    <van-empty v-else image="search" description="暂无数据" />
                 </van-tab>
             </van-tabs>
-            <van-tabs class="category-tabs" v-model:active="categoryTabsValue" shrink>
+            <van-tabs class="category-tabs" v-model:active="query.category"
+                @change="getLeave()"
+                shrink
+            >
                 <van-tab v-for="tab in categoryTabs"
                     title-class="tab-title"
                     :name="tab.value"
@@ -67,9 +102,15 @@ const categoryTabs = i18n('tabs.category');
                 font-weight: bold;
             }
             :deep(.van-tabs__content) {
-                padding: 8px;
+                padding: 8px 15px;
                 padding-top: calc(var(--category-tabs-height) + 8px);
                 height: calc(100% - var(--van-tabs-line-height));
+
+                .van-tab__panel {
+                    height: 100%;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
             }
         }
         .category-tabs {

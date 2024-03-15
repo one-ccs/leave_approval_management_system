@@ -38,9 +38,9 @@ service.interceptors.response.use(
             showFailToast('未登录\n即将跳转登录页...');
             userStore.clear();
             setTimeout(() => {
-                router.push('/login');
+                router.replace('/login');
             }, 800);
-            return Promise.reject(response);
+            return response;
         }
         return response;
     },

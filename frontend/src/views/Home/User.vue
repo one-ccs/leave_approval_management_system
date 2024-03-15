@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { showSuccessToast, type ButtonType, showFailToast } from 'vant';
+import { showSuccessToast, type ButtonType } from 'vant';
 import { useRouter } from 'vue-router';
-import { apiLogout, type ResultData } from '@/utils/api';
+import { apiLogout } from '@/utils/api';
+import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
-import useGlobalStore from '@/stores/global';
 
 const router = useRouter();
 const globalStore = useGlobalStore();

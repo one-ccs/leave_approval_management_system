@@ -45,6 +45,8 @@ const userStore = useUserStore();
 <style scoped lang="less">
 .view {
     .view-container {
+        padding: 15px 0;
+
         :deep(.van-cell) {
             align-items: center;
 

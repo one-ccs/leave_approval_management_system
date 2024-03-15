@@ -57,8 +57,8 @@ def cors(response):
         response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
     if request.values.get('origin') and request.values.get('originToken') == ORIGIN_TOKEN:
         response.headers['Access-Control-Allow-Origin'] = request.values.get('origin', '')
-    response.headers['Access-Control-Allow-Methods'] = 'GET,POST'
-    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with, content-type'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
 
     return response
