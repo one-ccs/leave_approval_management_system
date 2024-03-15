@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+import { useStateColor } from '@/utils/use';
 import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
-import { LeaveState } from '@/utils/interface';
-import { useRouter } from 'vue-router';
 
 const { id, state, startDatetime, endDatetime, to } = defineProps({
     id: {
@@ -29,28 +29,11 @@ const { id, state, startDatetime, endDatetime, to } = defineProps({
 
 const router = useRouter();
 const userStore = useUserStore();
-
-const iconColor = () => {
-    switch(state){
-        case LeaveState.PENDING:
-            return '#c2c2c2';
-        case LeaveState.WITHDRAWN:
-            return '#c2c2c2';
-        case LeaveState.REJECTED:
-            return '#ff8383';
-        case LeaveState.CANCEL:
-            return '#ff9632';
-        case LeaveState.CANCELING:
-            return '#ff9632';
-        case LeaveState.DONE:
-            return '#6dd080';
-    }
-};
 </script>
 
 <template>
-    <div class="leave-card" @click="router.push({ path: to, query: { id } })">
-        <div class="icon-wrapper" :style="{ color: iconColor() }">
+    <div class="leave-card van-haptics-feedback" @click="router.push({ path: to, query: { id } })">
+        <div class="icon-wrapper" :style="{ color: useStateColor(state) }">
             <van-icon name="notes-o" size="38"></van-icon>
             <div class="text">{{ i18n(state, 'field.leave.state') }}</div>
         </div>

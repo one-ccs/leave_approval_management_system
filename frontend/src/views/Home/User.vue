@@ -67,17 +67,18 @@ const buttons = [
             </van-space>
         </div>
         <van-cell-group class="cell-group translucent-half">
-            <van-cell v-for="cell in cells" :key="cell.route"
+            <van-cell v-for="cell in cells"
                 size="large"
                 :icon-prefix="iconPrefix"
                 :icon="cell.icon"
                 :title="cell.title"
                 :to="cell.route"
                 is-link
+                class="van-haptics-feedback"
             ></van-cell>
         </van-cell-group>
         <van-space class="button-group" direction="vertical" :size="8" fill>
-            <van-button v-for="button in buttons" :key="button.icon"
+            <van-button v-for="button in buttons"
                 round
                 block
                 icon-position="right"

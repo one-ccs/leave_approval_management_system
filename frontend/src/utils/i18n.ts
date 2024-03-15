@@ -82,6 +82,12 @@ const map = {
                 value: 3,
             },
         ],
+    },
+    color: {
+        success: '#6dd080',
+        danger:  '#ff8383',
+        warning: '#ff9632',
+        info:    '#c2c2c2',
     }
 };
 

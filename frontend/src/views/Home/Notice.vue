@@ -43,7 +43,10 @@ const dailyNoticeGroup = [
         <right-slide-router-view></right-slide-router-view>
         <header class="header">通知</header>
         <van-cell-group class="notice-group translucent-half" :border="false">
-            <van-cell v-for="notice in noticeGroup" :title="notice.title">
+            <van-cell v-for="notice in noticeGroup"
+                :title="notice.title"
+                class="van-haptics-feedback"
+            >
                 <template #label>{{ notice.label }}</template>
             </van-cell>
         </van-cell-group>
@@ -54,6 +57,7 @@ const dailyNoticeGroup = [
                 :title="notice.title"
                 :to="notice.route"
                 is-link
+                class="van-haptics-feedback"
             >
                 <template #label>{{ notice.label }}</template>
             </van-cell>
@@ -75,6 +79,9 @@ const dailyNoticeGroup = [
     }
     .notice-group, .daily-notice {
         .van-cell {
+            margin: 8px auto;
+            border-radius: var(--border-radius);
+
             :deep(.van-cell__title > span) {
                 color: #4D7EE0;
                 font-weight: bold;
@@ -82,9 +89,12 @@ const dailyNoticeGroup = [
             :deep(.van-cell__value > span) {
                 font-size: .8rem;
             }
-
-            margin: 8px auto;
-            border-radius: var(--border-radius);
+        }
+        .van-cell:first-child {
+            margin-top: 0;
+        }
+        .van-cell:last-child {
+            margin-bottom: 0;
         }
     }
 }

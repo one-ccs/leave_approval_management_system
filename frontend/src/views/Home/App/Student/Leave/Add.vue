@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { showFailToast, type UploaderFileListItem } from 'vant';
-import BackNavBar from '@/components/BackNavBar.vue';
+import type { Leave } from '@/utils/interface';
 import { apiLeavePut } from '@/utils/api';
-import type { Leave, ResultData } from '@/utils/interface';
+import { useLeaveDuration } from '@/utils/use';
+import BackNavBar from '@/components/BackNavBar.vue';
 
 const categoryPickerShown = ref(false);
 const startDatetimePickerShown = ref(false);
@@ -91,10 +92,9 @@ const confirmStartDatetime = () => {
     ];
     leaveForm.value.startDatetime = `${yyyy}-${mm}-${dd} ${HH}:${MM}`;
     if (leaveForm.value.endDatetime) {
-        const duration = Math.ceil(
-            (new Date(leaveForm.value.endDatetime).getTime()
-            - new Date(leaveForm.value.startDatetime).getTime())
-            / 3600 / 1000 / 24
+        const duration = useLeaveDuration(
+            leaveForm.value.startDatetime,
+            leaveForm.value.endDatetime
         );
         if (duration > 0) leaveFormShadow.value.duration = duration + ' 天';
         else {
@@ -124,10 +124,9 @@ const confirmEndDatetime = () => {
     ];
     leaveForm.value.endDatetime = `${yyyy}-${mm}-${dd} ${HH}:${MM}`;
     if (leaveForm.value.startDatetime) {
-        const duration = Math.ceil(
-            (new Date(leaveForm.value.endDatetime).getTime()
-            - new Date(leaveForm.value.startDatetime).getTime())
-            / 3600 / 1000 / 24
+        const duration = useLeaveDuration(
+            leaveForm.value.startDatetime,
+            leaveForm.value.endDatetime
         );
         if (duration > 0) leaveFormShadow.value.duration = duration + ' 天';
         else {

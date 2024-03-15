@@ -69,6 +69,16 @@ const routes: RouteRecordRaw[] = [
                                     permiss: 2,
                                 },
                                 component: () => import('@/views/Home/App/Student/Revoke.vue'),
+                                children: [
+                                    {
+                                        path: 'detail',
+                                        name: 'studentRevokeDetail',
+                                        meta: {
+                                            title: '请假详情',
+                                        },
+                                        component: () => import('@/views/Home/App/LeaveDetail.vue')
+                                    },
+                                ],
                             },
                             {
                                 path: 'history',
@@ -78,6 +88,16 @@ const routes: RouteRecordRaw[] = [
                                     permiss: 3,
                                 },
                                 component: () => import('@/views/Home/App/Student/History.vue'),
+                                children: [
+                                    {
+                                        path: 'detail',
+                                        name: 'studentHistoryDetail',
+                                        meta: {
+                                            title: '请假详情',
+                                        },
+                                        component: () => import('@/views/Home/App/LeaveDetail.vue')
+                                    },
+                                ],
                             },
                             {
                                 path: 'signIn',

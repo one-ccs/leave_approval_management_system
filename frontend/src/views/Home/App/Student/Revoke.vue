@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { Leave, LeavePageQuery, ResultData } from '@/utils/interface';
-import { apiLeaveGet } from '@/utils/api';
+import { apiLeavePageBrief } from '@/utils/api';
 import i18n from '@/utils/i18n';
+import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import LeaveCard from '@/components/LeaveCard.vue';
 
@@ -21,7 +22,7 @@ const leaveList = ref<Leave[]>([]);
 
 // 获取请假条
 const getLeave = () => {
-    apiLeaveGet(query.value, (data: ResultData) => {
+    apiLeavePageBrief(query.value, (data: ResultData) => {
         leaveList.value = data.data.list;
     });
 };
@@ -33,6 +34,7 @@ onMounted(() => {
 
 <template>
     <div class="view">
+        <right-slide-router-view></right-slide-router-view>
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <van-tabs class="state-tabs" v-model:active="query.state"
@@ -54,8 +56,9 @@ onMounted(() => {
                             :state="item.state"
                             :start-datetime="item.startDatetime"
                             :end-datetime="item.endDatetime"
-                            to="/app/student/leave/detail"
+                            to="/app/student/revoke/detail"
                         />
+                        <van-back-top></van-back-top>
                     </div>
                     <van-empty v-else image="search" description="暂无数据" />
                 </van-tab>

@@ -1,26 +1,11 @@
-export interface ResultData {
-    code: number;
-    message: string;
-    data: any;
-};
-
-export interface PageQuery {
-    pageIndex: number;
-    pageSize: number;
-    query?: string;
-};
-
-export interface LeavePageQuery extends PageQuery {
-    state: number;
-    category: number;
-};
+/* --------- po --------- */
 
 export interface User {
     id: number;
     username: string;
     passwordHash: string;
     role: number;
-    avatar?: string;
+    avatar: string;
     createDatetime: string;
 };
 
@@ -55,8 +40,8 @@ export interface Student {
 export interface Leave {
     id: number;
     userId: number;
-    state: number;
-    category: string;
+    state: LeaveState;
+    category: LeaveCategory;
     applyDatetime: string;
     startDatetime: string;
     endDatetime: string;
@@ -85,4 +70,32 @@ export enum LeaveCategory {
     SICK,         /* 病假 */
     PUBLIC,       /* 公假 */
     LEAVE_SCHOOL, /* 出校申请 */
+};
+
+/* --------- dto --------- */
+
+export type UnionUser = User & Admin & Teacher & Student & {
+    name: string;
+    admissionDate: string;
+    school: string;
+    expires: number | null;
+};
+
+/* --------- vo --------- */
+
+export interface ResultData {
+    code: number;
+    message: string;
+    data: any;
+};
+
+export interface PageQuery {
+    pageIndex: number;
+    pageSize: number;
+    query?: string;
+};
+
+export interface LeavePageQuery extends PageQuery {
+    state: number;
+    category: number;
 };

@@ -29,13 +29,14 @@ const settings = [
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <van-cell-group inset class="setting-group translucent-half">
-                <van-cell v-for="setting in settings" :key="setting.title"
+                <van-cell v-for="setting in settings"
                     size="large"
                     :icon-prefix="iconPrefix"
                     :icon="setting.icon"
                     :title="setting.title"
                     @click="setting.onClick()"
                     is-link
+                    class="van-haptics-feedback"
                 ></van-cell>
             </van-cell-group>
 

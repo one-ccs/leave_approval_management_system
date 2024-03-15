@@ -13,7 +13,9 @@ const backgroundImage = computed(() => {
     <div class="view">
         <div class="client-view">
             <router-view v-slot="{ Component, route }">
-                <component :is="Component"></component>
+                <transition name="van-fade">
+                    <component :is="Component"></component>
+                </transition>
             </router-view>
         </div>
         <tabbar></tabbar>

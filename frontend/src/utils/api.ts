@@ -62,11 +62,10 @@ export function apiLogout(success: Function = defaultSuccess, failure: Function 
     });
 }
 
-export function apiLeaveGet(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+export function apiLeaveGet(id: number, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave', {
         params: {
-            ...query,
-            category: query.category === -1 ? undefined : query.category,
+            id,
         },
         success,
         failure,
@@ -95,6 +94,17 @@ export function apiLeaveDelete(query: LeavePageQuery, success: Function = defaul
     return request('/api/leave', {
         data: query,
         method: 'DELETE',
+        success,
+        failure,
+    });
+}
+
+export function apiLeavePageBrief(query: LeavePageQuery, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/leave/brief', {
+        params: {
+            ...query,
+            category: query.category === -1 ? undefined : query.category,
+        },
         success,
         failure,
     });

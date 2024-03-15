@@ -3,38 +3,7 @@ import { localLoad, localRemove, localSave } from "@/utils/storage";
 import i18n from "@/utils/i18n";
 import usePermissStore from "./permiss";
 import pinia from "./pinia";
-
-
-export interface User {
-    avatar: string;
-    name: string;
-    username: string | undefined;
-    email: string;
-    role: number;
-    createDatetime: string;
-    expires: number | null;
-};
-
-export interface Admin extends User {
-    gender: string;
-};
-
-export interface Teacher extends User {
-    gender: string;
-    telephone: string;
-};
-
-export interface Student extends User {
-    gender: string;
-    department: string;
-    faculty: string;
-    major: string;
-    grade: string;
-    _class: string;
-    admissionDate: string;
-};
-
-export type UnionUser = Admin & Teacher & Student;
+import type { UnionUser } from "@/utils/interface";
 
 
 const permissStore = usePermissStore(pinia);
@@ -90,10 +59,10 @@ const useUserStore = defineStore('user', {
                 role: role >= 0 ? role : this._persistence.role,
                 name: name || username || this._persistence.name,
                 gender: gender || '保密',
+                _class: _class ? `${grade}${major}${_class}班` : '',
                 admissionDate: admissionDate || createDatetime || '',
                 expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };
-            if (typeof _class === 'number') this._persistence._class = `${grade}${major}${_class}班`
 
             // 修改登录状态
             this.isLogin = true;

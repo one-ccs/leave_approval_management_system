@@ -4,6 +4,7 @@
         "fontawesome",
         "fortawesome",
         "haikei",
+        "haptics",
         "permiss",
         "Pinia",
         "SQLALCHEMY",

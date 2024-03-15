@@ -3,6 +3,7 @@
 from flask import request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
+from sqlalchemy.orm import load_only
 from ..app import db
 from ..models import User, Role, Leave
 from ..views import leave_blue
@@ -18,16 +19,12 @@ def authentication():
 
 @leave_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
 def leave():
-    # 分页查询
+    # 查询
     if request.method == 'GET':
-        pageIndex, pageSize, state, category = RequestUtils \
-            .quick_data(request, ('pageIndex', 1, int), ('pageSize', 10, int), ('state', int), ('category', int))
-        query = Leave.query.filter(Leave.user_id == current_user.get_id(),
-                                   or_(Leave.state == state, state == None),
-                                   or_(Leave.category == category, category == None))
-        result = query.paginate(page=pageIndex, per_page=pageSize)
+        id = RequestUtils.quick_data(request, ('id', int))
+        result = Leave.query.filter(Leave.id == id).first()
 
-        return Result.success('查询成功', { 'total': result.total, 'list': result.items })
+        return Result.success('查询成功', result)
     # 添加
     if request.method == 'PUT':
         request_data = RequestUtils.quick_data(request)
@@ -54,4 +51,17 @@ def leave():
         if result > 0:
             return Result.success('删除成功', True)
         return Result.failure('删除失败')
-    return Result.method_not_allowed()
+
+@leave_blue.route('/brief', methods=['GET'])
+def leavePageBrief():
+    """分页查询简要信息"""
+    pageIndex, pageSize, state, category = RequestUtils \
+        .quick_data(request, ('pageIndex', 1, int), ('pageSize', 10, int), ('state', int), ('category', int))
+    query = Leave.query \
+        .options(load_only(Leave.id, Leave.state, Leave.category, Leave.start_datetime, Leave.end_datetime)) \
+        .filter(Leave.user_id == current_user.get_id(),
+            or_(Leave.state == state, state == None),
+            or_(Leave.category == category, category == None))
+    result = query.paginate(page=pageIndex, per_page=pageSize)
+
+    return Result.success('查询成功', { 'total': result.total, 'list': result.items })

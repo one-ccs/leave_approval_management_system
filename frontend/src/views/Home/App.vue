@@ -109,10 +109,9 @@ const apps = [
             :border="false"
             :column-num="2"
             icon-size="3rem"
-            clickable
         >
             <van-grid-item v-for="app in apps"
-                class="app-box"
+                class="app-box van-haptics-feedback"
                 :icon="app.icon"
                 :text="app.text"
                 :badge="app.badge"
@@ -146,6 +145,8 @@ const apps = [
 
         .app-box {
             flex-basis: calc(50% - 5px) !important;
+            border-radius: var(--border-radius);
+            overflow: hidden;
         }
         .app-box:nth-child(2n) {
             margin-left: auto;
