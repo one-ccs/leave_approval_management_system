@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiLogin, type ResultData } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
@@ -21,6 +21,7 @@ const formData = reactive({
     password: '',
     remember: false,
 });
+const passwordInputRef = ref();
 
 const onSubmit = (value: any) => {
     apiLogin(value, (data: ResultData) => {
@@ -54,8 +55,10 @@ const onSubmit = (value: any) => {
                     size="large"
                     clearable
                     :rules="formRules.username"
+                    @keypress.enter="passwordInputRef.focus()"
                 ></van-field>
                 <van-field
+                    ref="passwordInputRef"
                     v-model="formData.password"
                     name="password"
                     placeholder="请填写密码"
@@ -126,8 +129,8 @@ const onSubmit = (value: any) => {
         color: #888;
     }
     .copyright {
-        position: fixed;
-        bottom: 16px;
+        margin-top: auto;
+        margin-bottom: 8px;
         color: #333;
         font-size: .66rem;
 

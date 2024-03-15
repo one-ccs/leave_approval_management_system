@@ -52,8 +52,9 @@ onMounted(() => {
                     :name="tab.value"
                     :title="tab.title"
                 >
-                    <div class="leave-list" v-if="leaveList">
+                    <div class="leave-list" v-if="leaveList?.length">
                         <leave-card v-for="item in leaveList"
+                            :key="item.id"
                             :state="item.state"
                             :start-datetime="item.startDatetime"
                             :end-datetime="item.endDatetime"

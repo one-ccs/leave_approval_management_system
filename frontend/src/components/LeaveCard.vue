@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
+import { LeaveState } from '@/utils/interface';
 
-const { startDatetime, endDatetime } = defineProps({
+const { state, startDatetime, endDatetime } = defineProps({
     state: {
         type: Number,
         required: true,
@@ -18,18 +19,38 @@ const { startDatetime, endDatetime } = defineProps({
 });
 
 const userStore = useUserStore();
+
+const iconColor = () => {
+    switch(state){
+        case LeaveState.PENDING:
+            return '#c2c2c2';
+        case LeaveState.WITHDRAWN:
+            return '#c2c2c2';
+        case LeaveState.REJECTED:
+            return '#ff8383';
+        case LeaveState.CANCEL:
+            return '#345';
+        case LeaveState.CANCELING:
+            return '#345';
+        case LeaveState.DONE:
+            return '#6dd080';
+    }
+};
 </script>
 
 <template>
     <div class="leave-card">
-        <div class="icon-wrapper">
-            <van-icon name="notes-o" size="36"></van-icon>
+        <div class="icon-wrapper" :style="{ color: iconColor() }">
+            <van-icon name="notes-o" size="38"></van-icon>
             <div class="text">{{ i18n(state, 'field.leave.state') }}</div>
         </div>
         <div class="info-wrapper">
             <div class="title">{{ userStore.userInfo.name }}的请假申请</div>
-            <div class="start-datetime">开始时间：{{ startDatetime }}</div>
-            <div class="end-datetime">结束时间：{{ endDatetime }}</div>
+            <div class="datetime">开始时间：{{ startDatetime }}</div>
+            <div class="datetime">结束时间：{{ endDatetime }}</div>
+        </div>
+        <div class="angle-right">
+            <van-icon class-prefix="fa" name="angle-right"></van-icon>
         </div>
     </div>
 </template>
@@ -42,13 +63,12 @@ const userStore = useUserStore();
     justify-content: flex-start;
     margin: 8px auto;
     border-radius: 8px;
-    padding: 18px 36px;
+    padding: 18px;
     width: 100%;
-    background: #0005;
+    background: #fff;
 
     .icon-wrapper {
-        flex: 0 0 20%;
-        background: #0f0;
+        flex: 0 1 auto;
         text-align: center;
 
         .text {
@@ -61,10 +81,18 @@ const userStore = useUserStore();
         margin-left: 24px;
 
         .title {
-            margin-bottom: 5px;
-            font-size: 1.25rem;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
             font-weight: bold;
         }
+        .datetime {
+            margin: 3px auto;
+            color: #888;
+            font-size: .9rem;
+        }
+    }
+    .angle-right {
+        color: #888;
     }
 }
 </style>

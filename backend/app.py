@@ -8,7 +8,7 @@ from .utils import Result, _Flask
 
 
 # Origin 白名单
-ORIGIN_WHITE = ['http://127.0.0.1:5173', 'http://localhost:5173']
+ORIGIN_WHITE = ['http://127.0.0.1:5177', 'http://localhost:5177']
 # Origin Token
 ORIGIN_TOKEN = 'f0d8f7aa1448260106968a6067ea19dbfa0d2d2e067ea19dbfa0d2d2e235d37e5198842dca67e13a'
 
