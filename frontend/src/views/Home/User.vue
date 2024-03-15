@@ -107,7 +107,7 @@ const buttons = [
         align-items: center;
         justify-content: flex-start;
         margin: 50px 0;
-        border-radius: 8px;
+        border-radius: var(--border-radius);
         padding: 15px;
         background-color: #fffa;
 
@@ -124,7 +124,7 @@ const buttons = [
         }
     }
     .cell-group {
-        border-radius: var(--van-cell-group-inset-radius);
+        border-radius: var(--border-radius);
         overflow: hidden;
 
         :deep(.fa) {

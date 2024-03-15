@@ -74,7 +74,7 @@ const settings = [
             height: 100%;
 
             .image {
-                border-radius: 8px;
+                border-radius: var(--border-radius);
                 box-shadow: 1px 3px 6px 0 #333;
                 overflow: hidden;
             }

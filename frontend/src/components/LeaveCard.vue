@@ -72,7 +72,7 @@ const iconColor = () => {
     align-items: center;
     justify-content: flex-start;
     margin: 8px auto;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     padding: 24px;
     width: 100%;
     background: #fff;

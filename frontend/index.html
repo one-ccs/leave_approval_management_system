@@ -7,7 +7,60 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+        <style>
+            body, #splash {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgb(42, 44, 55);
+            }
+            .loader {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 64px;
+                height: 64px;
+                box-sizing: border-box;
+                border: 3px solid #74b1be;
+                animation: animate 2s linear infinite;
+            }
+            .loader::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: #74b1be;
+                animation: animateBg 2s linear infinite;
+            }
+            .text {
+                position: absolute;
+                top: 50%;
+                left: calc(50% + 5px);
+                color: #74b1be;
+                transform: translate(-50%, 64px);
+            }
+            @keyframes animate {
+                0% {transform: translate(-50%, -50%) rotate(0deg);}
+                25% {transform: translate(-50%, -50%) rotate(180deg);}
+                50% {transform: translate(-50%, -50%) rotate(180deg);}
+                75% {transform: translate(-50%, -50%) rotate(360deg);}
+                100% {transform: translate(-50%, -50%) rotate(360deg);}
+            }
+            @keyframes animateBg {
+                0% {height: 0;}
+                25% {height: 0;}
+                50% {height: 100%;}
+                75% {height: 100%;}
+                100% {height: 0;}
+            }
+        </style>
+        <div id="splash">
+            <div class="loader"></div>
+            <div class="text">页面加载中……</div>
+        </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

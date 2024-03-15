@@ -84,7 +84,7 @@ const dailyNoticeGroup = [
             }
 
             margin: 8px auto;
-            border-radius: var(--van-cell-group-inset-radius);
+            border-radius: var(--border-radius);
         }
     }
 }
