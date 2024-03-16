@@ -189,13 +189,13 @@ export function apiLeaveRevoke(id: number, success: Function = defaultSuccess, f
 }
 
 /**
- * 同意申请
+ * 同意请假申请
  * @param id 请假条 id
  * @param success 成功回调函数
  * @param failure 失败回调函数
  * @returns Promise
  */
-export function apiLeaveAgree(id: number, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+export function apiLeaveAgreeLeave(id: number, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave/agree', {
         data: {
             id,
@@ -207,7 +207,7 @@ export function apiLeaveAgree(id: number, success: Function = defaultSuccess, fa
 }
 
 /**
- * 驳回申请
+ * 驳回请假申请
  * @param id 请假条 id
  * @param success 成功回调函数
  * @param failure 失败回调函数
@@ -215,6 +215,24 @@ export function apiLeaveAgree(id: number, success: Function = defaultSuccess, fa
  */
 export function apiLeaveReject(id: number, success: Function = defaultSuccess, failure: Function = defaultFailure) {
     return request('/api/leave/reject', {
+        data: {
+            id,
+        },
+        method: 'POST',
+        success,
+        failure,
+    });
+}
+
+/**
+ * 同意销假申请
+ * @param id 请假条 id
+ * @param success 成功回调函数
+ * @param failure 失败回调函数
+ * @returns Promise
+ */
+export function apiLeaveAgreeRevoke(id: number, success: Function = defaultSuccess, failure: Function = defaultFailure) {
+    return request('/api/leave/agreeRevoke', {
         data: {
             id,
         },

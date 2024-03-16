@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     username        = db.Column(db.String(32), index=True, unique=True, nullable=False)
     password_hash   = db.Column(db.String(255))
     role            = db.Column(db.SmallInteger)
-    create_datetime = db.Column(db.DateTime, default=DateTimeUtils.now())
+    create_datetime = db.Column(db.DateTime, default=DateTimeUtils.now)
     avatar          = db.Column(db.String(255))
 
     def __init__(self, id=None, username=None) -> None:

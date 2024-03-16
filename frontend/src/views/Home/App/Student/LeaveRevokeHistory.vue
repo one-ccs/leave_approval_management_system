@@ -88,7 +88,7 @@ onMounted(() => {
                             :end-datetime="item.endDatetime"
                             :to="toDetail"
                         />
-                        <van-back-top v-if="tab.value === query.state" offset="120"></van-back-top>
+                        <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs"></van-back-top>
                     </div>
                     <van-empty v-else image="search" description="暂无数据" />
                 </van-tab>
@@ -147,6 +147,9 @@ onMounted(() => {
                     overflow-x: hidden;
                     overflow-y: auto;
                 }
+            }
+            :deep(.van-back-top) {
+                z-index: inherit;
             }
         }
         .category-tabs {

@@ -28,6 +28,7 @@ export function useStateColor(state: number) {
             return i18n('color.info');
         case LeaveState.REJECTED:
             return i18n('color.danger');
+        case LeaveState.APPROVING:
         case LeaveState.CANCEL:
         case LeaveState.CANCELING:
             return i18n('color.warning');

@@ -5,16 +5,16 @@ from flask_login import current_user, login_required
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
 from ..app import db
-from ..models import User, Role, Leave
+from ..models import ERole, ELeaveState, User, Leave
 from ..views import leave_blue
-from ..utils import Result, RequestUtils, ObjectUtils
+from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
 # 所有请求都需要登录 且为指定角色
 @leave_blue.before_request
 @login_required
 def authentication():
-    if User(current_user.get_id()).role not in [ Role.STUDENT, Role.TEACHER]:
+    if User(current_user.get_id()).role not in [ ERole.STUDENT, ERole.TEACHER]:
         return Result.forbidden()
 
 @leave_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
@@ -22,34 +22,51 @@ def leave():
     # 查询
     if request.method == 'GET':
         id = RequestUtils.quick_data(request, ('id', int))
+        if not id:
+            return Result.failure('请假条 id 不能为空')
         result = Leave.query.filter(Leave.id == id).first()
 
         return Result.success('查询成功', result)
     # 添加
     if request.method == 'PUT':
         request_data = RequestUtils.quick_data(request)
-        leave = Leave().withDict(**request_data, user_id=current_user.get_id())
+        start_datetime = request_data.get('startDatetime')
+        end_datetime = request_data.get('endDatetime')
+        if not start_datetime:
+            return Result.failure('缺少开始时间')
+        if not end_datetime:
+            return Result.failure('缺少结束时间')
+        duration = DateTimeUtils.diff(end_datetime, start_datetime, r'%Y-%m-%d %H:%M').total_seconds()
+        if duration < 0:
+            return Result.failure('错误， 请假时长为负')
+        # 请假天数
+        duration = int(0.5 + duration / 3600 / 24)
+        leave = Leave().withDict(**request_data,
+                                 user_id=current_user.get_id(),
+                                 duration=duration)
         # 添加并提交事务 失败自动回滚
         db.session.add(leave)
         db.session.commit()
         if leave.id:
-            return Result.success('添加成功', True)
-        return Result.failure('添加失败', False)
+            return Result.success('添加成功')
+        return Result.failure('添加失败')
     # 修改
     if request.method == 'POST':
         request_data = RequestUtils.quick_data(request)
         result = Leave.query.filter(Leave.id == request_data.get('id')).update(ObjectUtils.vars(request_data, ['id']))
         db.session.commit()
         if result > 0:
-            return Result.success('修改成功', True)
+            return Result.success('修改成功')
         return Result.failure('修改失败')
     # 删除
     if request.method == 'DELETE':
-        request_data = RequestUtils.quick_data(request)
-        result = Leave.query.filter(Leave.id == request_data.get('id')).delete()
+        id = RequestUtils.quick_data(request, ('id', int))
+        if not id:
+            return Result.failure('请假条 id 不能为空')
+        result = Leave.query.filter(Leave.id == id).delete()
         db.session.commit()
         if result > 0:
-            return Result.success('删除成功', True)
+            return Result.success('删除成功')
         return Result.failure('删除失败')
 
 @leave_blue.route('/brief', methods=['GET'])
@@ -60,8 +77,72 @@ def leavePageBrief():
     query = Leave.query \
         .options(load_only(Leave.id, Leave.state, Leave.category, Leave.start_datetime, Leave.end_datetime)) \
         .filter(Leave.user_id == current_user.get_id(),
-            or_(Leave.state == state, state == None),
-            or_(Leave.category == category, category == None))
+                or_(Leave.state == state, state == None),
+                or_(Leave.category == category, category == None))
     result = query.paginate(page=pageIndex, per_page=pageSize)
 
     return Result.success('查询成功', { 'total': result.total, 'list': result.items })
+
+@leave_blue.route('/cancel', methods=['POST'])
+def leaveCancel():
+    """撤销申请"""
+    id = RequestUtils.quick_data(request, ('id', int))
+    if not id:
+        return Result.failure('请假条 id 不能为空')
+    result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING).update({ 'state': ELeaveState.WITHDRAWN })
+    db.session.commit()
+    if result > 0:
+        Result.success('撤销申请成功')
+    Result.failure('撤销申请失败')
+
+@leave_blue.route('/revoke', methods=['POST'])
+def leaveRevoke():
+    """申请销假"""
+    id = RequestUtils.quick_data(request, ('id', int))
+    if not id:
+        return Result.failure('请假条 id 不能为空')
+    result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.CANCEL).update({ 'state': ELeaveState.CANCELING })
+    db.session.commit()
+    if result > 0:
+        Result.success('申请销假成功')
+    Result.failure('申请销假失败')
+
+@leave_blue.route('/agreeLeave', methods=['POST'])
+def leaveAgreeLeave():
+    """同意请假申请"""
+    id = RequestUtils.quick_data(request, ('id', int))
+    if not id:
+        return Result.failure('请假条 id 不能为空')
+    # 请假时长 < 3 天, 待销假
+    result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING, Leave.duration < 3).update({ 'state': ELeaveState.CANCEL })
+    # 请假时长 >= 3 天, 审批中
+    if not result:
+        result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING).update({ 'state': ELeaveState.APPROVING })
+    db.session.commit()
+    if result > 0:
+        Result.success('同意申请成功')
+    Result.failure('同意申请失败')
+
+@leave_blue.route('/reject', methods=['POST'])
+def leaveReject():
+    """驳回请假申请"""
+    id = RequestUtils.quick_data(request, ('id', int))
+    if not id:
+        return Result.failure('请假条 id 不能为空')
+    result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING).update({ 'state': ELeaveState.REJECTED })
+    db.session.commit()
+    if result > 0:
+        Result.success('驳回申请成功')
+    Result.failure('驳回申请失败')
+
+@leave_blue.route('/agree', methods=['POST'])
+def leaveAgreeRevoke():
+    """同意请假申请"""
+    id = RequestUtils.quick_data(request, ('id', int))
+    if not id:
+        return Result.failure('请假条 id 不能为空')
+    result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.CANCELING).update({ 'state': ELeaveState.DONE })
+    db.session.commit()
+    if result > 0:
+        Result.success('同意销假申请成功')
+    Result.failure('同意销假申请失败')

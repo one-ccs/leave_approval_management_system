@@ -1,17 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Union
 from datetime import datetime, timedelta
 import re
 
 
 class DateTimeUtils(object):
-    format = r'%Y-%m-%d %H:%M:%S'
-
-    @staticmethod
-    def set_format(format: str):
-        """设置字符串日期时间的默认格式"""
-        DateTimeUtils.format = format
-        return DateTimeUtils
 
     @staticmethod
     def now() -> datetime:
@@ -19,58 +13,67 @@ class DateTimeUtils(object):
         return datetime.now()
 
     @staticmethod
-    def str_now() -> str:
+    def str_now(format=r'%Y-%m-%d %H:%M:%S') -> str:
         """返回字符串格式的当前时间"""
-        return datetime.now().strftime(DateTimeUtils.format)
+        return datetime.now().strftime(format)
 
     @staticmethod
-    def diff(minuend: str, minus: str) -> timedelta:
-        """返回 minuend 减去 minus 的时间差"""
-        return datetime.strptime(minuend, DateTimeUtils.format) - datetime.strptime(minus, DateTimeUtils.format)
+    def diff(minuend: str, minus: str, format=r'%Y-%m-%d %H:%M:%S') -> timedelta:
+        """返回 minuend 减去 minus 的时间差 (单位 s)"""
+        return (datetime.strptime(minuend, format) - datetime.strptime(minus, format))
 
     @staticmethod
-    def stime2year(stime: str) -> int:
+    def strftime(time: datetime, format=r'%Y-%m-%d %H:%M:%S') -> str:
+        """datetime 时间格式转字符串"""
+        return datetime.strftime(time, format)
+
+    @staticmethod
+    def strptime(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> datetime:
+        """字符串时间格式转 datetime"""
+        return datetime.strptime(stime, format)
+
+    @staticmethod
+    def stime2year(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> int:
         """返回字符串时间格式中的 年"""
-        return datetime.strptime(stime, DateTimeUtils.format).year
+        return datetime.strptime(stime, format).year
 
     @staticmethod
-    def stime2month(stime: str) -> int:
+    def stime2month(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> int:
         """返回字符串时间格式中的 月"""
-        return datetime.strptime(stime, DateTimeUtils.format).month
+        return datetime.strptime(stime, format).month
 
     @staticmethod
-    def stime2day(stime: str) -> int:
+    def stime2day(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> int:
         """返回字符串时间格式中的 日"""
-        return datetime.strptime(stime, DateTimeUtils.format).day
+        return datetime.strptime(stime, format).day
 
     @staticmethod
-    def stime2hour(stime: str) -> int:
+    def stime2hour(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> int:
         """返回字符串时间格式中的 时"""
-        return datetime.strptime(stime, DateTimeUtils.format).hour
+        return datetime.strptime(stime, format).hour
 
     @staticmethod
-    def stime2minute(stime: str) -> int:
+    def stime2minute(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> int:
         """返回字符串时间格式中的 分"""
-        return datetime.strptime(stime, DateTimeUtils.format).minute
+        return datetime.strptime(stime, format).minute
 
     @staticmethod
-    def stime2second(stime: str) -> int:
+    def stime2second(stime: str, format=r'%Y-%m-%d %H:%M:%S') -> int:
         """返回字符串时间格式中的 秒"""
-        return datetime.strptime(stime, DateTimeUtils.format).second
+        return datetime.strptime(stime, format).second
 
 
 class RequestUtils(object):
 
     @staticmethod
-    def quick_data(request, *keys) -> tuple:
-        """将 request 中的请求参数按照 values, form, json, args 的优先级解构为元组
+    def quick_data(request, *keys) -> Union[tuple, dict]:
+        """将 request 中的请求参数按照 values, form, args, json 的优先级解构为元组, 若为 json 则直接返回 dict
 
-        :param keys 字段列表
-               字段列表为空时, 直接返回整个数据
-               字段列表为字符串时, 直接返回获取到的值 (str)
-               字段列表为长度为 2 的元组时, 索引 0 为字段名, 索引 1 为字段类型
-               字段列表为长度为 3 的元组时, 索引 0 为字段名, 索引 1 为默认值, 索引 2 为字段类型
-        :return 返回包含所有获取到的值的元组
+        :param keys: None 直接返回整个数据
+        :param keys: str 直接返回获取到的值 (str 类型)
+        :param keys: (key: str, type: T) 索引 0 为字段名, 索引 1 为字段类型
+        :param keys: (key: str, default: any, type: T) 索引 0 为字段名, 索引 1 为默认值, 索引 2 为字段类型
+        :return -> (tuple | dict) 返回元组或字典
         """
         data = None
         if len(request.values):
@@ -82,6 +85,7 @@ class RequestUtils(object):
         else:
             try:
                 data = request.get_json(force=True)
+                return data
             except Exception as e:
                 return None
         if not keys:

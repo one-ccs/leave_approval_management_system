@@ -46,6 +46,7 @@ export interface Leave {
     applyDatetime: string;
     startDatetime: string;
     endDatetime: string;
+    duration: number;
     leaveReason: string;
     annexUrl: string;
     a1Datetime: string;
@@ -60,6 +61,7 @@ export interface Leave {
 export enum LeaveState {
     PENDING,      /* 待审批 */
     WITHDRAWN,    /* 已撤回 */
+    APPROVING,    /* 审批中 */
     REJECTED,     /* 已驳回 */
     CANCEL,       /* 待销假 */
     CANCELING,    /* 销假中 */
