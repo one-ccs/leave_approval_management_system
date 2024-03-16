@@ -74,7 +74,6 @@ onMounted(() => {
                 shrink
                 animated
                 swipeable
-                lazy-render
             >
                 <van-tab v-for="tab in stateAllTabs"
                     title-class="tab-title"
@@ -82,15 +81,14 @@ onMounted(() => {
                     :title="tab.title"
                 >
                     <div class="leave-list" v-if="leaveList?.length">
-                        <leave-card v-for="item in leaveList"
-                            :key="item.id"
+                        <leave-card v-for="item in leaveList" :key="item.id"
                             :id="item.id"
                             :state="item.state"
                             :start-datetime="item.startDatetime"
                             :end-datetime="item.endDatetime"
                             :to="toDetail"
                         />
-                        <van-back-top></van-back-top>
+                        <van-back-top v-if="tab.value === query.state" offset="120"></van-back-top>
                     </div>
                     <van-empty v-else image="search" description="暂无数据" />
                 </van-tab>

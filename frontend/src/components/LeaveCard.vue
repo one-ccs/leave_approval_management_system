@@ -66,7 +66,7 @@ const userStore = useUserStore();
 
         .text {
             margin-top: 5px;
-            font-size: .85rem;
+            font-size: .8rem;
         }
     }
     .info-wrapper {
@@ -75,13 +75,19 @@ const userStore = useUserStore();
 
         .title {
             margin-bottom: 8px;
-            font-size: 1.15rem;
+            font-size: 1rem;
             font-weight: bold;
         }
         .datetime {
             margin: 3px auto;
             color: #888;
-            font-size: .9rem;
+            font-size: .8rem;
+        }
+        .datetime:first-child {
+            margin-top: 0;
+        }
+        .datetime:last-child {
+            margin-bottom: 0;
         }
     }
     .angle-right {
