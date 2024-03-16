@@ -59,7 +59,7 @@ const useUserStore = defineStore('user', {
                 role: role >= 0 ? role : this._persistence.role,
                 name: name || username || this._persistence.name,
                 gender: gender || '保密',
-                _class: _class ? `${grade}${major}${_class}班` : '',
+                _class: _class ? _class.length > 2 ? _class : `${grade}${major}${_class}班` : '',
                 admissionDate: admissionDate || createDatetime || '',
                 expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };

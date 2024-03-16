@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
                                     title: '请假',
                                     permiss: 1,
                                 },
-                                component: () => import('@/views/Home/App/Student/Leave.vue'),
+                                component: () => import('@/views/Home/App/Student/LeaveRevokeHistory.vue'),
                                 children: [
                                     {
                                         path: 'add',
@@ -68,7 +68,7 @@ const routes: RouteRecordRaw[] = [
                                     title: '销假',
                                     permiss: 2,
                                 },
-                                component: () => import('@/views/Home/App/Student/Revoke.vue'),
+                                component: () => import('@/views/Home/App/Student/LeaveRevokeHistory.vue'),
                                 children: [
                                     {
                                         path: 'detail',
@@ -87,7 +87,7 @@ const routes: RouteRecordRaw[] = [
                                     title: '请假历史',
                                     permiss: 3,
                                 },
-                                component: () => import('@/views/Home/App/Student/History.vue'),
+                                component: () => import('@/views/Home/App/Student/LeaveRevokeHistory.vue'),
                                 children: [
                                     {
                                         path: 'detail',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import type { Leave, LeavePageQuery, ResultData } from '@/utils/interface';
 import { apiLeavePageBrief } from '@/utils/api';
 import i18n from '@/utils/i18n';
@@ -8,11 +8,39 @@ import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import LeaveCard from '@/components/LeaveCard.vue';
 
+const route = useRoute();
 const router = useRouter();
 
 // 标签栏列表
-const stateTabs = i18n('tabs.state.leave');
+const stateAllTabs = (() => {
+    let result = [];
+    if (String(route.name).includes('studentLeave')) {
+        result = i18n('tabs.state.leave');
+    }
+    if (String(route.name).includes('studentRevoke')) {
+        result = i18n('tabs.state.revoke');
+    }
+    if (String(route.name).includes('studentHistory')) {
+        result = [...i18n('tabs.state.leave'), ...i18n('tabs.state.revoke')];
+    }
+    return result;
+})();
 const categoryTabs = i18n('tabs.category');
+
+// 跳转详情链接
+const toDetail = (() => {
+    let result = '';
+    if (String(route.name).includes('studentLeave')) {
+        result = '/app/student/leave/detail';
+    }
+    if (String(route.name).includes('studentRevoke')) {
+        result = '/app/student/revoke/detail';
+    }
+    if (String(route.name).includes('studentHistory')) {
+        result = '/app/student/history/detail';
+    }
+    return result;
+})();
 
 // 查询参数
 const query = ref<LeavePageQuery>({
@@ -38,7 +66,8 @@ onMounted(() => {
 <template>
     <div class="view">
         <right-slide-router-view></right-slide-router-view>
-        <back-nav-bar class="view-header" right-text="新建申请" @click-right="router.push('/app/student/leave/add')"></back-nav-bar>
+        <back-nav-bar v-if="route.name === 'studentLeave'" class="view-header" right-text="新建申请" @click-right="router.push('/app/student/leave/add')" />
+        <back-nav-bar v-else class="view-header" />
         <div class="view-container">
             <van-tabs class="state-tabs" v-model:active="query.state"
                 @change="getLeave()"
@@ -47,7 +76,7 @@ onMounted(() => {
                 swipeable
                 lazy-render
             >
-                <van-tab v-for="tab in stateTabs"
+                <van-tab v-for="tab in stateAllTabs"
                     title-class="tab-title"
                     :name="tab.value"
                     :title="tab.title"
@@ -59,7 +88,7 @@ onMounted(() => {
                             :state="item.state"
                             :start-datetime="item.startDatetime"
                             :end-datetime="item.endDatetime"
-                            to="/app/student/leave/detail"
+                            :to="toDetail"
                         />
                         <van-back-top></van-back-top>
                     </div>

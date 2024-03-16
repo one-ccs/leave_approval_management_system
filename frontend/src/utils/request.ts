@@ -66,7 +66,7 @@ interface RequestConfig {
 /**
  * 封装通用请求逻辑并设置默认值, 支持回调函数、Promise、async/await 方式调用
  * @param url 请求链接
- * @param config 配置
+ * @param config 配置 (默认 "GET" "FORM")
  */
 async function request(url: string, config?: RequestConfig) {
     let {

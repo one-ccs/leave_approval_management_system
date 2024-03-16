@@ -50,8 +50,11 @@ const userStore = useUserStore();
         :deep(.van-cell) {
             align-items: center;
 
-            .van-cell__title, .van-cell__value {
-                flex: auto;
+            .van-cell__title {
+                flex: 0 0 auto;
+            }
+            .van-cell__value {
+                flex: 1 1 auto;
             }
         }
     }

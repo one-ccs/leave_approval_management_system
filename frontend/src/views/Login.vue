@@ -70,7 +70,7 @@ const onSubmit = (value: any) => {
                     :rules="formRules.password"
                 ></van-field>
             </van-cell-group>
-            <van-cell-group inset class="d-flex align-items-center justify-content-between mt-1">
+            <van-cell-group inset class="d-flex align-items-center justify-content-between mt-1 translucent">
                 <van-field name="remember" class="p-1 w-50">
                     <template #input>
                         <van-checkbox v-model="formData.remember" shape="square">记住密码</van-checkbox>
