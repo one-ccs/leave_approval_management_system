@@ -49,12 +49,16 @@ export interface Leave {
     duration: number;
     leaveReason: string;
     annexUrl: string;
-    a1Datetime: string;
-    approver1Id: number;
-    a2Datetime: string;
-    approver2Id: number;
+    cancelDatetime: string;
     revokeDatetime: string;
+    revokeLongitude: number;
+    revokeLatitude: number;
+    approver1Id: number;
+    a1Datetime: string;
+    approver2Id: number;
+    a2Datetime: string;
     revokeId: number;
+    revokeDatetime: string;
     rejectReason: string;
 };
 

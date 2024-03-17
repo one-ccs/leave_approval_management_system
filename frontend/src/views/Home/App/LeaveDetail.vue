@@ -104,6 +104,11 @@ onMounted(() => {
                     </div>
                     <div class="cell">
                         <van-icon class="icon"></van-icon>
+                        <div class="title">请假原因</div>
+                        <div class="text">{{ leaveDetail?.leaveReason }}</div>
+                    </div>
+                    <div class="cell">
+                        <van-icon class="icon"></van-icon>
                         <div class="title">是否离校</div>
                         <div class="text"></div>
                     </div>
