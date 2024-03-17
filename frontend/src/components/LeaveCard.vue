@@ -32,13 +32,16 @@ const userStore = useUserStore();
 </script>
 
 <template>
-    <div class="leave-card van-haptics-feedback" @click="router.push({ path: to, query: { id } })">
+    <div class="leave-card van-haptics-feedback" @click="router.push(to)">
         <div class="icon-wrapper" :style="{ color: useStateColor(state) }">
             <van-icon name="notes-o" size="38"></van-icon>
             <div class="text">{{ i18n(state, 'field.leave.state') }}</div>
         </div>
         <div class="info-wrapper">
-            <div class="title">{{ userStore.userInfo.name }}的请假申请</div>
+            <div class="title">
+                <div class="text">{{ userStore.userInfo.name }}的请假申请</div>
+                <div class="no">(No.{{ id }})</div>
+            </div>
             <div class="datetime">开始时间：{{ startDatetime }}</div>
             <div class="datetime">结束时间：{{ endDatetime }}</div>
         </div>
@@ -70,13 +73,29 @@ const userStore = useUserStore();
         }
     }
     .info-wrapper {
-        flex: 1 0 auto;
+        flex: 1 1 auto;
+        flex-basis: 30%;
         margin-left: 24px;
+        max-width: calc(100% - 24px - 38px - 16px);
 
         .title {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             margin-bottom: 8px;
-            font-size: 1rem;
-            font-weight: bold;
+
+            .text {
+                font-size: 1rem;
+                font-weight: bold;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .no {
+                margin-left: 5px;
+                font-size: .8rem;
+                white-space: nowrap;
+            }
         }
         .datetime {
             margin: 3px auto;
@@ -91,6 +110,7 @@ const userStore = useUserStore();
         }
     }
     .angle-right {
+        flex: 0 0 auto;
         color: #888;
     }
 }

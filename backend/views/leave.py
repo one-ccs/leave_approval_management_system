@@ -5,8 +5,8 @@ from flask_login import current_user, login_required
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
 from ..app import db
-from ..models import ERole, ELeaveState, User, Leave
 from ..views import leave_blue
+from ..models import ERole, ELeaveState, User, Leave
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
@@ -14,7 +14,12 @@ from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 @leave_blue.before_request
 @login_required
 def authentication():
-    if User(current_user.get_id()).role not in [ ERole.STUDENT, ERole.TEACHER]:
+    role = User(current_user.get_id()).role
+    if request.path in ['/api/leave', '/api/leave/brief'] and role not in [ ERole.STUDENT, ERole.TEACHER]:
+        return Result.forbidden()
+    if request.path in ['/api/leave/cancel', '/api/leave/revoke'] and role not in [ ERole.STUDENT ]:
+        return Result.forbidden()
+    if request.path in ['/api/leave/agreeLeave', '/api/leave/reject', '/api/leave/agreeRevoke'] and role not in [ ERole.TEACHER ]:
         return Result.forbidden()
 
 @leave_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
@@ -36,7 +41,11 @@ def leave():
             return Result.failure('缺少开始时间')
         if not end_datetime:
             return Result.failure('缺少结束时间')
-        duration = DateTimeUtils.diff(end_datetime, start_datetime, r'%Y-%m-%d %H:%M').total_seconds()
+        duration = -1
+        try:
+            duration = DateTimeUtils.diff(end_datetime, start_datetime, r'%Y-%m-%d %H:%M').total_seconds()
+        except:
+            duration = DateTimeUtils.diff(end_datetime, start_datetime).total_seconds()
         if duration < 0:
             return Result.failure('错误， 请假时长为负')
         # 请假天数
@@ -92,8 +101,8 @@ def leaveCancel():
     result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING).update({ 'state': ELeaveState.WITHDRAWN })
     db.session.commit()
     if result > 0:
-        Result.success('撤销申请成功')
-    Result.failure('撤销申请失败')
+        return Result.success('撤销申请成功')
+    return Result.failure('撤销申请失败')
 
 @leave_blue.route('/revoke', methods=['POST'])
 def leaveRevoke():
@@ -104,8 +113,8 @@ def leaveRevoke():
     result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.CANCEL).update({ 'state': ELeaveState.CANCELING })
     db.session.commit()
     if result > 0:
-        Result.success('申请销假成功')
-    Result.failure('申请销假失败')
+        return Result.success('申请销假成功')
+    return Result.failure('申请销假失败')
 
 @leave_blue.route('/agreeLeave', methods=['POST'])
 def leaveAgreeLeave():
@@ -120,8 +129,8 @@ def leaveAgreeLeave():
         result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING).update({ 'state': ELeaveState.APPROVING })
     db.session.commit()
     if result > 0:
-        Result.success('同意申请成功')
-    Result.failure('同意申请失败')
+        return Result.success('同意申请成功')
+    return Result.failure('同意申请失败')
 
 @leave_blue.route('/reject', methods=['POST'])
 def leaveReject():
@@ -132,17 +141,17 @@ def leaveReject():
     result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.PENDING).update({ 'state': ELeaveState.REJECTED })
     db.session.commit()
     if result > 0:
-        Result.success('驳回申请成功')
-    Result.failure('驳回申请失败')
+        return Result.success('驳回申请成功')
+    return Result.failure('驳回申请失败')
 
-@leave_blue.route('/agree', methods=['POST'])
+@leave_blue.route('/agreeRevoke', methods=['POST'])
 def leaveAgreeRevoke():
-    """同意请假申请"""
+    """同意销假申请"""
     id = RequestUtils.quick_data(request, ('id', int))
     if not id:
         return Result.failure('请假条 id 不能为空')
     result = Leave.query.filter(Leave.id == id, Leave.state == ELeaveState.CANCELING).update({ 'state': ELeaveState.DONE })
     db.session.commit()
     if result > 0:
-        Result.success('同意销假申请成功')
-    Result.failure('同意销假申请失败')
+        return Result.success('同意销假申请成功')
+    return Result.failure('同意销假申请失败')

@@ -38,7 +38,7 @@ service.interceptors.response.use(
             showFailToast('未登录\n即将跳转登录页...');
             userStore.clear();
             setTimeout(() => {
-                router.replace('/login');
+                location.href = '/login';
             }, 800);
             return response;
         }
@@ -58,9 +58,9 @@ interface RequestConfig {
     headers?: { [key: string]: string };
     token?: string,
     tokenType?: 'Bearer';
-    success?: Function;
-    failure?: Function;
-    error?: Function;
+    successCallback?: Function;
+    failureCallback?: Function;
+    errorCallback?: Function;
 }
 
 /**
@@ -77,9 +77,9 @@ async function request(url: string, config?: RequestConfig) {
         headers = {},
         token = '',
         tokenType = 'Bearer',
-        success,
-        failure,
-        error
+        successCallback,
+        failureCallback,
+        errorCallback
     } = (config || {});
 
     if (method.toLocaleLowerCase() === 'GET' && Object.keys(data).length !== 0) console.error('RequestError: "GET" 方法不允许携带 "data" 参数，请检查你的配置。');
@@ -90,12 +90,12 @@ async function request(url: string, config?: RequestConfig) {
     if (token && tokenType === 'Bearer') headers['Authorization'] = `Bearer ${token}`;
 
     return service({ url, method, params, data, headers }).then((res: AxiosResponse) => {
-        if (res.data.code === 200 && success) success(res.data);
-        if (res.data.code !== 200 && failure) failure(res.data, res.data.code, url);
+        if (res.data.code === 200 && successCallback) successCallback(res.data);
+        if (res.data.code !== 200 && failureCallback) failureCallback(res.data, res.data.code, url);
 
         return Promise.resolve(res.data);
     }).catch((err: AxiosError) => {
-        if (error) error(err);
+        if (errorCallback) errorCallback(err);
 
         return Promise.reject(err);
     });

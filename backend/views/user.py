@@ -4,8 +4,8 @@ from flask import request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
 from ..app import db, login_manager
-from ..models import ERole, User, Admin, Teacher, Student
 from ..views import user_blue
+from ..models import ERole, User, Admin, Teacher, Student
 from ..utils import Result, RequestUtils
 
 
@@ -94,7 +94,7 @@ def register():
                 db.session.commit()
             except IntegrityError:
                 return Result.failure('账号已存在')
-            return Result.success('注册成功', True)
+            return Result.success('注册成功')
     return Result.method_not_allowed()
 
 @user_blue.route('/logout', methods=['POST'])
@@ -103,6 +103,6 @@ def logout():
     """ 登出视图 """
     if request.method == 'POST':
         if logout_user():
-            return Result.success('登出成功', True)
+            return Result.success('登出成功')
         return Result.failure('登出失败')
     return Result.method_not_allowed()

@@ -1,4 +1,4 @@
-import { LeaveState } from "./interface";
+import { ELeaveState } from "./interface";
 import i18n from "./i18n";
 
 
@@ -23,16 +23,16 @@ export function useLeaveDuration(startDatetime: string, endDatetime: string) {
  */
 export function useStateColor(state: number) {
     switch(state){
-        case LeaveState.PENDING:
-        case LeaveState.WITHDRAWN:
+        case ELeaveState.PENDING:
+        case ELeaveState.WITHDRAWN:
             return i18n('color.info');
-        case LeaveState.REJECTED:
+        case ELeaveState.REJECTED:
             return i18n('color.danger');
-        case LeaveState.APPROVING:
-        case LeaveState.CANCEL:
-        case LeaveState.CANCELING:
+        case ELeaveState.APPROVING:
+        case ELeaveState.CANCEL:
+        case ELeaveState.CANCELING:
             return i18n('color.warning');
-        case LeaveState.DONE:
+        case ELeaveState.DONE:
             return i18n('color.success');
     }
 };

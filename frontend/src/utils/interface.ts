@@ -41,8 +41,8 @@ export interface Student {
 export interface Leave {
     id: number;
     userId: number;
-    state: LeaveState;
-    category: LeaveCategory;
+    state: ELeaveState;
+    category: ELeaveCategory;
     applyDatetime: string;
     startDatetime: string;
     endDatetime: string;
@@ -58,7 +58,7 @@ export interface Leave {
     rejectReason: string;
 };
 
-export enum LeaveState {
+export enum ELeaveState {
     PENDING,      /* 待审批 */
     WITHDRAWN,    /* 已撤回 */
     APPROVING,    /* 审批中 */
@@ -68,7 +68,7 @@ export enum LeaveState {
     DONE,         /* 已完成 */
 };
 
-export enum LeaveCategory {
+export enum ELeaveCategory {
     PERSONAL,     /* 事假 */
     SICK,         /* 病假 */
     PUBLIC,       /* 公假 */

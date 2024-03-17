@@ -7,6 +7,7 @@ import i18n from '@/utils/i18n';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import LeaveCard from '@/components/LeaveCard.vue';
+import { showFailToast, showSuccessToast } from 'vant';
 
 const route = useRoute();
 const router = useRouter();
@@ -21,26 +22,28 @@ const stateAllTabs = (() => {
         result = i18n('tabs.state.revoke');
     }
     if (String(route.name).includes('studentHistory')) {
-        result = [...i18n('tabs.state.leave'), ...i18n('tabs.state.revoke')];
+        result = [...i18n('tabs.state.leave'), ...i18n('tabs.state.revoke')
+            , { title: '已完成', value: 6 }];
+        result.splice(4, 1);
     }
     return result;
 })();
 const categoryTabs = i18n('tabs.category');
 
 // 跳转详情链接
-const toDetail = (() => {
+const toDetail = (id: number) => {
     let result = '';
     if (String(route.name).includes('studentLeave')) {
-        result = '/app/student/leave/detail';
+        result = '/app/student/leave/detail?id=' + id;
     }
     if (String(route.name).includes('studentRevoke')) {
-        result = '/app/student/revoke/detail';
+        result = '/app/student/revoke/detail?id=' + id;
     }
     if (String(route.name).includes('studentHistory')) {
-        result = '/app/student/history/detail';
+        result = '/app/student/history/detail?id=' + id;
     }
     return result;
-})();
+};
 
 // 查询参数
 const query = ref<LeavePageQuery>({
@@ -50,11 +53,17 @@ const query = ref<LeavePageQuery>({
     category: -1,
 });
 const leaveList = ref<Leave[]>([]);
+const loading = ref(true);
 
 // 获取请假条
 const getLeave = () => {
     apiLeavePageBrief(query.value, (data: ResultData) => {
         leaveList.value = data.data.list;
+        loading.value = false;
+        showSuccessToast(data.message);
+    }, (data: ResultData) => {
+        loading.value = false;
+        showFailToast(data.message);
     });
 };
 
@@ -80,17 +89,21 @@ onMounted(() => {
                     :name="tab.value"
                     :title="tab.title"
                 >
-                    <div class="leave-list" v-if="leaveList?.length">
-                        <leave-card v-for="item in leaveList" :key="item.id"
-                            :id="item.id"
-                            :state="item.state"
-                            :start-datetime="item.startDatetime"
-                            :end-datetime="item.endDatetime"
-                            :to="toDetail"
-                        />
-                        <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs"></van-back-top>
-                    </div>
-                    <van-empty v-else image="search" description="暂无数据" />
+                    <van-pull-refresh v-model="loading" @refresh="getLeave()">
+                        <van-skeleton :loading="loading" :row="12" animate round>
+                            <div class="leave-list" v-if="leaveList?.length">
+                                <leave-card v-for="item in leaveList" :key="item.id"
+                                    :id="item.id"
+                                    :state="item.state"
+                                    :start-datetime="item.startDatetime"
+                                    :end-datetime="item.endDatetime"
+                                    :to="toDetail(item.id)"
+                                />
+                                <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs"></van-back-top>
+                            </div>
+                            <van-empty v-else image="search" description="暂无数据" />
+                        </van-skeleton>
+                    </van-pull-refresh>
                 </van-tab>
             </van-tabs>
             <van-tabs class="category-tabs" v-model:active="query.category"
@@ -134,8 +147,10 @@ onMounted(() => {
             :deep(.tab-title) {
                 font-size: .85rem;
             }
-            :deep(.tab-title.van-tab--active .van-tab__text) {
-                font-weight: bold;
+            :deep(.tab-title.van-tab--active) {
+                .van-tab__text {
+                    font-weight: bold;
+                }
             }
             :deep(.van-tabs__content) {
                 padding: 8px 15px;
@@ -146,6 +161,13 @@ onMounted(() => {
                     height: 100%;
                     overflow-x: hidden;
                     overflow-y: auto;
+
+                    .van-skeleton {
+                        --van-skeleton-paragraph-height: 103px;
+                        --van-skeleton-paragraph-background: #fff;
+                        --van-radius-max: 8px;
+                        --van-padding-md: 0;
+                    }
                 }
             }
             :deep(.van-back-top) {

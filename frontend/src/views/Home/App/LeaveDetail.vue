@@ -1,18 +1,51 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { LeaveState, type Leave, type ResultData } from '@/utils/interface';
-import { apiLeaveGet } from '@/utils/api';
+import { showConfirmDialog, showSuccessToast } from 'vant';
+import { ELeaveState, type Leave, type ResultData } from '@/utils/interface';
+import { apiLeaveCancel, apiLeaveGet, apiLeaveRevoke } from '@/utils/api';
 import { useLeaveDuration, useStateColor } from '@/utils/use';
 import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
+import { getCurrentPosition } from '@/utils/advanced';
 
 const route = useRoute();
 const userStore = useUserStore();
 
 const leaveDetail = ref<Leave>();
+const cancelFlag = ref(false);
+const revokeFlag = ref(false);
+
+const onCancelClick = () => {
+    showConfirmDialog({
+        title: '提示',
+        message: '确定要撤销申请吗？',
+    }).then(() => {
+        apiLeaveCancel(leaveDetail.value?.id!, (data: ResultData) => {
+            cancelFlag.value = true;
+            leaveDetail.value!.state = ELeaveState.WITHDRAWN;
+            showSuccessToast(data.message);
+        });
+    }).catch(() => {});
+};
+const onRevokeClick = () => {
+    showConfirmDialog({
+        title: '提示',
+        message: '确定要申请销假吗？',
+    }).then(() => {
+        getCurrentPosition((pos) => {
+
+            console.log(pos);
+        });
+        // apiLeaveRevoke(leaveDetail.value?.id!, (data: ResultData) => {
+        //     revokeFlag.value = true;
+        //     leaveDetail.value!.state = ELeaveState.CANCELING;
+        //     showSuccessToast(data.message);
+        // });
+    }).catch(() => {});
+};
 
 onMounted(() => {
     apiLeaveGet(Number(route.query.id), (data: ResultData) => {
@@ -98,7 +131,8 @@ onMounted(() => {
                     round
                     plain
                     hairline
-                    :disabled="leaveDetail?.state !== LeaveState.PENDING"
+                    :disabled="leaveDetail?.state !== ELeaveState.PENDING || cancelFlag"
+                    @click="onCancelClick()"
                 >撤销申请</van-button>
                 <van-button
                     class="button revoke"
@@ -106,7 +140,8 @@ onMounted(() => {
                     round
                     plain
                     hairline
-                    :disabled="leaveDetail?.state !== LeaveState.CANCEL"
+                    :disabled="leaveDetail?.state !== ELeaveState.CANCEL || revokeFlag"
+                    @click="onRevokeClick()"
                 >申请销假</van-button>
             </div>
         </div>
@@ -119,7 +154,7 @@ onMounted(() => {
 
     .info-wrapper, .contact-wrapper, .flow-wrapper {
         margin: 16px auto;
-        padding: 16px 8px;
+        padding: 24px 16px;
         border-radius: var(--border-radius);
         background: #fff;
     }
@@ -140,6 +175,8 @@ onMounted(() => {
             }
         }
         .info {
+            font-size: .9rem;
+
             .cell {
                 display: flex;
                 align-items: center;

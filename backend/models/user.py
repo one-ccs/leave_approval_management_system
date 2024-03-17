@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     id              = db.Column(db.Integer, primary_key=True)
     username        = db.Column(db.String(32), index=True, unique=True, nullable=False)
     password_hash   = db.Column(db.String(255))
+    email           = db.Column(db.String(255))
     role            = db.Column(db.SmallInteger)
     create_datetime = db.Column(db.DateTime, default=DateTimeUtils.now)
     avatar          = db.Column(db.String(255))
@@ -25,6 +26,7 @@ class User(db.Model, UserMixin):
             self.id = user.id
             self.username = user.username
             self.password_hash = user.password_hash
+            self.email = user.email
             self.role = user.role
             self.create_datetime = user.create_datetime
             self.avatar = user.avatar

@@ -51,17 +51,17 @@ const map = {
                 },
                 {
                     title: '已完成',
-                    value: 5,
+                    value: 6,
                 },
             ],
             revoke: [
                 {
                     title: '待销假',
-                    value: 3,
+                    value: 4,
                 },
                 {
                     title: '销假中',
-                    value: 4,
+                    value: 5,
                 },
             ],
         },
