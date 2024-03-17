@@ -12,12 +12,18 @@ const { title, rightText } = defineProps({
 
 const router = useRouter();
 const route = useRoute();
+
+const back = () => {
+    // 从修改密码界面进入编辑资料页面 回退时 退到进入修改密码之前
+    if (router.options.history.state.back === '/user/password') return router.go(-2);
+    router.back();
+};
 </script>
 
 <template>
     <van-nav-bar
         left-arrow
-        @click-left="router.back()"
+        @click-left="back()"
         :right-text="rightText"
     >
         <template #title>

@@ -159,7 +159,7 @@ const onSubmit = () => {
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <van-form @submit="onSubmit()" required>
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-field
                         v-model="leaveFormShadow.category"
                         name="category"
@@ -183,7 +183,7 @@ const onSubmit = () => {
                     </van-popup>
                 </van-cell-group>
 
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-field
                         v-model="leaveForm.startDatetime"
                         name="startDatetime"
@@ -242,7 +242,7 @@ const onSubmit = () => {
                     ></van-field>
                 </van-cell-group>
 
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-field
                         label="是否离校"
                         input-align="right"
@@ -253,7 +253,7 @@ const onSubmit = () => {
                     </van-field>
                 </van-cell-group>
 
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-field
                         v-model="leaveForm.leaveReason"
                         rows="3"
@@ -269,7 +269,7 @@ const onSubmit = () => {
                     />
                 </van-cell-group>
 
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-field
                         name="annex"
                         label="上传图片"
@@ -300,7 +300,7 @@ const onSubmit = () => {
                     </van-field>
                 </van-cell-group>
 
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-cell title="审批流程"></van-cell>
                     <van-cell
                         v-if="durationValue > 0"
@@ -319,7 +319,7 @@ const onSubmit = () => {
                     ></van-cell>
                 </van-cell-group>
 
-                <van-cell-group inset class="mt-2">
+                <van-cell-group inset>
                     <van-button round block type="primary" native-type="submit">提交</van-button>
                 </van-cell-group>
             </van-form>
@@ -328,21 +328,19 @@ const onSubmit = () => {
 </template>
 
 <style scoped lang="less">
-.view {
-
-    .view-container {
-        padding: 15px 0;
-
-        .preview-cover {
-            position: absolute;
-            bottom: 0;
-            padding: 0 5px;
-            width: 100%;
-            color: #fff;
-            font-size: .8rem;
-            text-align: center;
-            background: #0005;
-        }
+.view-container {
+    .van-cell-group {
+        margin-top: 16px;
+    }
+    .preview-cover {
+        position: absolute;
+        bottom: 0;
+        padding: 0 5px;
+        width: 100%;
+        color: #fff;
+        font-size: .8rem;
+        text-align: center;
+        background: #0005;
     }
 }
 </style>

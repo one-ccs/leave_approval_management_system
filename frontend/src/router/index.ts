@@ -238,6 +238,24 @@ const routes: RouteRecordRaw[] = [
                             title: '编辑资料',
                         },
                         component: () => import('@/views/Home/User/Modify.vue'),
+                        children: [
+                            {
+                                path: 'avatar',
+                                name: 'modifyAvatar',
+                                meta: {
+                                    title: '修改头像',
+                                },
+                                component: () => import('@/views/Home/User/Modify/Avatar.vue'),
+                            },
+                            {
+                                path: 'telephone',
+                                name: 'modifyTelephone',
+                                meta: {
+                                    title: '手机号操作',
+                                },
+                                component: () => import('@/views/Home/User/Modify/Telephone.vue'),
+                            },
+                        ],
                     },
                     {
                         path: 'password',

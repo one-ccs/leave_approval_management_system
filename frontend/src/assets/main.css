@@ -5,6 +5,16 @@
 .van-nav-bar {
     width: 100%;
 }
+.van-cell {
+    align-items: center;
+}
+.van-cell__title {
+    flex: 1 0 auto !important;
+    margin-right: 8px;
+}
+.van-cell__value {
+    flex: 1 1 auto !important;
+}
 
 .translucent {
     --van-cell-group-background: #0000;

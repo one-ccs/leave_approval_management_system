@@ -168,7 +168,7 @@ onMounted(() => {
             align-content: flex-start;
 
             .title {
-                margin: 0 5px;
+                margin: 0 5px 0 9px;
                 font-weight: bold;
             }
             .tag {
