@@ -4,7 +4,7 @@ from flask import request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
-from ..app import db
+from ..plugins import db
 from ..views import leave_blue
 from ..models import ERole, ELeaveState, User, Leave
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils

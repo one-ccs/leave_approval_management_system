@@ -2,18 +2,18 @@
 # -*- coding: utf-8 -*-
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from ..app import db
+from ..plugins import db
 from ..utils import DateTimeUtils, ObjectUtils
 
 
 class User(db.Model, UserMixin):
-    id              = db.Column(db.Integer, primary_key=True)
-    username        = db.Column(db.String(32), index=True, unique=True, nullable=False)
-    password_hash   = db.Column(db.String(255))
-    email           = db.Column(db.String(255))
-    role            = db.Column(db.SmallInteger)
-    create_datetime = db.Column(db.DateTime, default=DateTimeUtils.now)
-    avatar          = db.Column(db.String(255))
+    id              = db.Column(db.Integer, primary_key=True, comment='用户 id')
+    username        = db.Column(db.String(32), index=True, unique=True, nullable=False, comment='用户名')
+    password_hash   = db.Column(db.String(255), nullable=False, comment='密码')
+    email           = db.Column(db.String(255), comment='电子邮件')
+    role            = db.Column(db.SmallInteger, default=0, comment='角色')
+    avatar          = db.Column(db.String(255), comment='头像链接')
+    create_datetime = db.Column(db.DateTime, default=DateTimeUtils.now, comment='创建时间')
 
     def __init__(self, id=None, username=None) -> None:
         """ 若初始化时指定 id 或 username 将用数据库数据初始化 """

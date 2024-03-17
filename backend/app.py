@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request, url_for, redirect
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from datetime import timedelta
 from .utils import Result, _Flask
 
@@ -38,11 +36,6 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DATABASE_OPTIONS["user"]}:{DATABASE_OPTIONS["password"]}@{DATABASE_OPTIONS["host"]}:{DATABASE_OPTIONS["port"]}/{DATABASE_OPTIONS["database"]}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-
-db = SQLAlchemy(app)
-db.rows2dict = (lambda rows, keys: [dict(zip(keys, row)) for row in rows])
-
-login_manager = LoginManager(app)
 
 
 @app.after_request

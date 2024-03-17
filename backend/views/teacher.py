@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, session, make_response, render_template, url_for, redirect
 from os import path
-from ..app import db
+from ..plugins import db
 from ..views import teacher_blue
 from ..utils import DateTimeUtils
 

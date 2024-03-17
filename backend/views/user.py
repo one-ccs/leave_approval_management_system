@@ -3,7 +3,7 @@
 from flask import request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
-from ..app import db, login_manager
+from ..plugins import db, login_manager
 from ..views import user_blue
 from ..models import ERole, User, Admin, Teacher, Student
 from ..utils import Result, RequestUtils

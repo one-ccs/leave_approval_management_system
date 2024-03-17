@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from ..app import db
+from ..plugins import db
 from ..utils import ObjectUtils
 
 
 class Student(db.Model):
     """学生表"""
-    id         = db.Column(db.Integer, primary_key=True)
-    user_id    = db.Column(db.Integer, db.ForeignKey("user.id"))
-    teacher_id = db.Column(db.Integer, db.ForeignKey("teacher.id"))
-    name       = db.Column(db.String(32))
-    gender     = db.Column(db.String(2))
-    department = db.Column(db.String(38))
-    faculty    = db.Column(db.String(38))
-    major      = db.Column(db.String(38))
-    grade      = db.Column(db.String(38))
-    _class     = db.Column(db.String(38))
+    id         = db.Column(db.Integer, primary_key=True, comment='学生 id')
+    user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='用户 id')
+    teacher_id = db.Column(db.Integer, db.ForeignKey("teacher.id"), comment='教师 id')
+    name       = db.Column(db.String(32), comment='姓名')
+    gender     = db.Column(db.String(2), comment='性别')
+    department = db.Column(db.String(38), comment='学部')
+    faculty    = db.Column(db.String(38), comment='学系')
+    major      = db.Column(db.String(38), comment='专业')
+    grade      = db.Column(db.String(38), comment='年级')
+    _class     = db.Column(db.String(38), comment='班级')
 
     def __repr__(self):
         return ObjectUtils.repr(self, ('_sa_instance_state',))

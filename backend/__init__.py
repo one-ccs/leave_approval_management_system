@@ -4,11 +4,13 @@ from .app import UPLOAD_FOLDER
 from .app import ALLOWED_IMAGE_EXTENSIONS
 
 from .app import app
-from .app import db
+from .plugins import db
+from .plugins import login_manager
+from .plugins import migrate
 
-
-__all__ = ('UPLOAD_FOLDER', 'ALLOWED_IMAGE_EXTENSIONS', 'app', 'db')
-
+db.init_app(app)
+login_manager.init_app(app)
+migrate.init_app(app, db)
 
 from .views import errorhandler_blue
 from .views import user_blue
