@@ -14,13 +14,18 @@ def error_1(e):
 def error_2(e):
     return Result.error_404('模板 404')
 
-@errorhandler_blue.app_errorhandler(ValueError)
+@errorhandler_blue.app_errorhandler(KeyError)
 def error_3(e):
+    print(e)
+    return Result.failure('键错误')
+
+@errorhandler_blue.app_errorhandler(ValueError)
+def error_4(e):
     print(e)
     return Result.failure('值错误')
 
 @errorhandler_blue.app_errorhandler(MethodNotAllowed)
-def error_3(e):
+def error_5(e):
     return Result.method_not_allowed()
 
 @errorhandler_blue.app_errorhandler(NotFound)

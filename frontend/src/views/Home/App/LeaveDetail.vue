@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { showConfirmDialog, showSuccessToast } from 'vant';
+import { showConfirmDialog, showFailToast, showSuccessToast } from 'vant';
 import { ELeaveState, type Leave, type ResultData } from '@/utils/interface';
 import { apiLeaveCancel, apiLeaveGet, apiLeaveRevoke } from '@/utils/api';
 import { useLeaveDuration, useStateColor } from '@/utils/use';
@@ -36,14 +36,15 @@ const onRevokeClick = () => {
         message: '确定要申请销假吗？',
     }).then(() => {
         getCurrentPosition((pos) => {
-
-            console.log(pos);
+            apiLeaveRevoke(leaveDetail.value?.id!, {
+                longitude: pos.coords.longitude,
+                latitude: pos.coords.latitude,
+            }, (data: ResultData) => {
+                revokeFlag.value = true;
+                leaveDetail.value!.state = ELeaveState.CANCELING;
+                showSuccessToast(data.message);
+            });
         });
-        // apiLeaveRevoke(leaveDetail.value?.id!, (data: ResultData) => {
-        //     revokeFlag.value = true;
-        //     leaveDetail.value!.state = ELeaveState.CANCELING;
-        //     showSuccessToast(data.message);
-        // });
     }).catch(() => {});
 };
 

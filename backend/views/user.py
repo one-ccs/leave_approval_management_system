@@ -51,8 +51,11 @@ def login():
             return Result.success('不存在该用户', False)
     # 用户登录
     if request.method == 'POST':
-        username, password = RequestUtils.quick_data(request, 'username', 'password')
-
+        username, password = RequestUtils.quick_data(
+            request,
+            'username',
+            'password',
+        )
         if not username or not password:
             return Result.failure('请输入账号和密码')
         else:

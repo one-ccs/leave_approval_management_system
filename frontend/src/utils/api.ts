@@ -173,16 +173,19 @@ export function apiLeaveCancel(id: number, successCallback: Function = defaultSu
 /**
  * 申请销假
  * @param id 请假条 id
+ * @param position 定位 { longitude: 经度, latitude: 纬度 }
  * @param successCallback 成功回调函数
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveRevoke(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude: number }, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
     return request('/api/leave/revoke', {
         data: {
             id,
+            coords,
         },
         method: 'POST',
+        contentType: 'JSON',
         successCallback,
         failureCallback,
     });

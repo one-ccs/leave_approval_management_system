@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 from typing import Union
 from datetime import datetime, timedelta
-import re
+from re import compile
+from functools import reduce
+from operator import getitem
 
 
 class DateTimeUtils(object):
@@ -67,14 +69,20 @@ class RequestUtils(object):
 
     @staticmethod
     def quick_data(request, *keys) -> Union[tuple, dict]:
-        """将 request 中的请求参数按照 values, form, args, json 的优先级解构为元组, 若为 json 则直接返回 dict
+        """将 request 中的请求参数按照 values, form, args, json 的优先级解构为元组
 
-        :param keys: None 直接返回整个数据
-        :param keys: str 直接返回获取到的值 (str 类型)
+        例 <json>::
+            quick_data(request, 'id', 'coords.longitude', 'coords.latitude')
+        例 <form>::
+            quick_data(request, ('id', int), ('coords[longitude]', float), ('coords[latitude]',float))
+
+        :param keys: None 直接返回整个数据 (dict 类型或 ImmutableMultiDict[str, str] 类型)
+        :param keys: str 返回取到的值
         :param keys: (key: str, type: T) 索引 0 为字段名, 索引 1 为字段类型
-        :param keys: (key: str, default: any, type: T) 索引 0 为字段名, 索引 1 为默认值, 索引 2 为字段类型
+        :param keys: (key: str, type: T, default: any) 索引 0 为字段名, 索引 1 为字段类型, 索引 2 为默认值
         :return -> (tuple | dict) 返回元组或字典
         """
+        # 获取请求数据
         data = None
         if len(request.values):
             data = request.values
@@ -83,25 +91,22 @@ class RequestUtils(object):
         elif len(request.args):
             data = request.args
         else:
-            try:
-                data = request.get_json(force=True)
-                return data
-            except Exception as e:
-                return None
-        if not keys:
+            data = request.get_json(force=True, silent=True)
+        # 直接返回
+        if not keys or not data:
             return data
+        # 解析为元组
         values = []
         for key in keys:
-            if (isinstance(key, list) or isinstance(key, tuple)):
+            if isinstance(key, str):
+                values.append(ObjectUtils.get_value_from_dict(data, key))
+            elif isinstance(key, list) or isinstance(key, tuple):
                 if len(key) == 2:
-                    values.append(data.get(key[0], None, key[1]))
-                    continue
-                if len(key) == 3:
-                    values.append(data.get(key[0], key[1], key[2]))
-                    continue
-                continue
-            values.append(data.get(key))
-
+                    value = ObjectUtils.get_value_from_dict(data, key[0])
+                    values.append(key[1](value) if value else None)
+                elif len(key) == 3:
+                    value = ObjectUtils.get_value_from_dict(data, key[0], key[2])
+                    values.append(key[1](value) if value else None)
         return tuple(values)
 
 
@@ -164,13 +169,22 @@ class ObjectUtils(object):
                 setattr(obj, k, v)
         return obj
 
+    @staticmethod
+    def get_value_from_dict(data_dict: dict, key_string: str, default = None) -> any:
+        """根据带点字符串的层级取出字典中的数据"""
+        keys = key_string.split('.')
+        try:
+            return reduce(getitem, keys, data_dict)
+        except:
+            return default
+
 
 class StringUtils(object):
 
     @staticmethod
     def camel_to_snake(camel_str: str) -> str:
         """将驼峰形式命名的字符串转换为下划线形式"""
-        pattern = re.compile(r'(?<!^)(?=[A-Z])')
+        pattern = compile(r'(?<!^)(?=[A-Z])')
         return pattern.sub('_', camel_str).lower()
 
     @staticmethod
