@@ -64,6 +64,84 @@ const map = {
                     value: 5,
                 },
             ],
+            history: [
+                {
+                    title: '待审批',
+                    value: 0,
+                },
+                {
+                    title: '已撤回',
+                    value: 1,
+                },
+                {
+                    title: '审批中',
+                    value: 2,
+                },
+                {
+                    title: '已驳回',
+                    value: 3,
+                },
+                {
+                    title: '待销假',
+                    value: 4,
+                },
+                {
+                    title: '销假中',
+                    value: 5,
+                },
+                {
+                    title: '已完成',
+                    value: 6,
+                },
+            ],
+            approve: [
+                {
+                    title: '待审批',
+                    value: 0,
+                },
+                {
+                    title: '二审中',
+                    value: 2,
+                },
+                {
+                    title: '已驳回',
+                    value: 3,
+                },
+                {
+                    title: '待销假',
+                    value: 4,
+                },
+                {
+                    title: '销假中',
+                    value: 5,
+                },
+                {
+                    title: '已完成',
+                    value: 6,
+                },
+            ],
+            approve2: [
+                {
+                    title: '待审批',
+                    value: 2,
+                },
+                {
+                    title: '已驳回',
+                    value: 3,
+                },
+                {
+                    title: '待销假',
+                    value: 4,
+                },
+                {
+                    title: '销假中',
+                    value: 5,
+                },
+                {
+                    title: '已完成',
+                    value: 6,
+                },
+            ],
         },
         category: [
             {
@@ -89,10 +167,11 @@ const map = {
         ],
     },
     color: {
-        success: '#6dd080',
-        danger:  '#ff8383',
-        warning: '#ff9632',
-        info:    '#c2c2c2',
+        primary: '#1989FA',
+        success: '#07C160',
+        default: '#c2c2c2',
+        warning: '#FF976A',
+        danger:  '#EE0A24',
     }
 };
 

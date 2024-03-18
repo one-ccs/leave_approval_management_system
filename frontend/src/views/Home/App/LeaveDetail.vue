@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { showConfirmDialog, showFailToast, showSuccessToast } from 'vant';
+import { showConfirmDialog, showSuccessToast } from 'vant';
 import { ELeaveState, type Leave, type ResultData } from '@/utils/interface';
-import { apiLeaveCancel, apiLeaveGet, apiLeaveRevoke } from '@/utils/api';
+import { apiLeaveAgreeLeave, apiLeaveAgreeRevoke, apiLeaveCancel, apiLeaveGet, apiLeaveReject, apiLeaveRevoke } from '@/utils/api';
 import { useLeaveDuration, useStateColor } from '@/utils/use';
 import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
@@ -14,9 +14,16 @@ import { getCurrentPosition } from '@/utils/advanced';
 const route = useRoute();
 const userStore = useUserStore();
 
-const leaveDetail = ref<Leave>();
+interface LeaveExtra extends Leave {
+    grade: string;
+    major: string;
+    _class: string;
+}
+const leaveDetail = ref<LeaveExtra>();
 const cancelFlag = ref(false);
 const revokeFlag = ref(false);
+const rejectFlag = ref(false);
+const agreeFlag = ref(false);
 
 const onCancelClick = () => {
     showConfirmDialog({
@@ -47,6 +54,40 @@ const onRevokeClick = () => {
         });
     }).catch(() => {});
 };
+const onRejectClick = () => {
+    showConfirmDialog({
+        title: '提示',
+        message: '确定要驳回申请吗？',
+    }).then(() => {
+        apiLeaveReject(leaveDetail.value?.id!, (data: ResultData) => {
+            rejectFlag.value = true;
+            leaveDetail.value!.state = ELeaveState.REJECTED;
+            showSuccessToast(data.message);
+        });
+    }).catch(() => {});
+};
+const onAgreeClick = () => {
+    const stateZh = leaveDetail.value?.state === ELeaveState.PENDING ? '请假' : '销假';
+    showConfirmDialog({
+        title: '提示',
+        message: `确定要同意${stateZh}申请吗？`,
+    }).then(() => {
+        // 同意请假申请
+        if (leaveDetail.value?.state === ELeaveState.PENDING) {
+            agreeFlag.value= true;
+            leaveDetail.value.duration < 3 ?
+                leaveDetail.value.state = ELeaveState.CANCEL :
+                leaveDetail.value.state = ELeaveState.APPROVING;
+            apiLeaveAgreeLeave(leaveDetail.value.id);
+        }
+        // 同意销假申请
+        if (leaveDetail.value?.state === ELeaveState.CANCELING) {
+            agreeFlag.value = true;
+            leaveDetail.value.state = ELeaveState.DONE;
+            apiLeaveAgreeRevoke(leaveDetail.value.id);
+        }
+    }).catch(() => {});
+};
 
 onMounted(() => {
     apiLeaveGet(Number(route.query.id), (data: ResultData) => {
@@ -64,7 +105,13 @@ onMounted(() => {
                 <div class="header">
                     <van-image class="avatar" :src="userStore.userInfo.avatar" round width="50" height="50"></van-image>
                     <div class="title">{{ userStore.userInfo.name }}的请假申请</div>
-                    <van-tag class="tag" plain :color="useStateColor(leaveDetail?.state!)">{{ i18n(leaveDetail?.state!, 'field.leave.state') }}</van-tag>
+                    <van-tag
+                        class="tag"
+                        plain
+                        :color="useStateColor(leaveDetail?.state!)"
+                    >
+                        {{ i18n(leaveDetail?.state!, 'field.leave.state') }}
+                    </van-tag>
                 </div>
                 <div class="info">
                     <div class="cell">
@@ -77,10 +124,20 @@ onMounted(() => {
                         <div class="title">提交时间</div>
                         <div class="text">{{ leaveDetail?.applyDatetime }}</div>
                     </div>
+                    <div class="cell" v-if="leaveDetail?.rejectDatetime">
+                        <van-icon class="icon"></van-icon>
+                        <div class="title">驳回时间</div>
+                        <div class="text">{{ leaveDetail?.rejectDatetime }}</div>
+                    </div>
+                    <div class="cell" v-if="leaveDetail?.rejectReason">
+                        <van-icon class="icon"></van-icon>
+                        <div class="title">驳回原因</div>
+                        <div class="text">{{ leaveDetail?.rejectReason }}</div>
+                    </div>
                     <div class="cell">
                         <van-icon class="icon"></van-icon>
                         <div class="title">所属班级</div>
-                        <div class="text">{{ `${userStore.userInfo.department}/${userStore.userInfo.faculty}/${userStore.userInfo.major}/${userStore.userInfo._class}` }}</div>
+                        <div class="text">{{ `${leaveDetail?.grade}${leaveDetail?.major}${leaveDetail?._class}班` }}</div>
                     </div>
                     <div class="cell">
                         <van-icon class="icon"></van-icon>
@@ -100,7 +157,7 @@ onMounted(() => {
                     <div class="cell">
                         <van-icon class="icon"></van-icon>
                         <div class="title">请假时长</div>
-                        <div class="text">{{ useLeaveDuration(leaveDetail?.startDatetime!, leaveDetail?.endDatetime!) }}天</div>
+                        <div class="text">{{ leaveDetail?.duration }}天</div>
                     </div>
                     <div class="cell">
                         <van-icon class="icon"></van-icon>
@@ -132,6 +189,7 @@ onMounted(() => {
             </div>
             <div class="button-group">
                 <van-button
+                    v-permiss="0x100"
                     class="button cancel"
                     type="default"
                     round
@@ -141,6 +199,7 @@ onMounted(() => {
                     @click="onCancelClick()"
                 >撤销申请</van-button>
                 <van-button
+                    v-permiss="0x100"
                     class="button revoke"
                     type="primary"
                     round
@@ -149,6 +208,27 @@ onMounted(() => {
                     :disabled="leaveDetail?.state !== ELeaveState.CANCEL || revokeFlag"
                     @click="onRevokeClick()"
                 >申请销假</van-button>
+
+                <van-button
+                    v-permiss="0x200"
+                    class="button reject"
+                    type="danger"
+                    round
+                    plain
+                    hairline
+                    :disabled="leaveDetail?.state !== ELeaveState.PENDING || rejectFlag"
+                    @click="onRejectClick()"
+                >驳回申请</van-button>
+                <van-button
+                    v-permiss="0x200"
+                    class="button agree"
+                    type="success"
+                    round
+                    plain
+                    hairline
+                    :disabled="leaveDetail?.state !== ELeaveState.PENDING && leaveDetail?.state !== ELeaveState.CANCELING || agreeFlag"
+                    @click="onAgreeClick()"
+                >同意申请</van-button>
             </div>
         </div>
     </div>
@@ -201,6 +281,8 @@ onMounted(() => {
         }
     }
     .button-group {
+        position: sticky;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -211,12 +293,18 @@ onMounted(() => {
             margin: 0 5px;
         }
         .button.cancel {
-            --van-button-default-border-color: #888;
+            --van-button-default-border-color: #c2c2c2;
 
-            background-color: #0001;
+            background-color: #c2c2c222;
         }
         .button.revoke {
-            background-color: #56A9FB33;
+            background-color: #1989FA22;
+        }
+        .button.reject {
+            background-color: #EE0A2422;
+        }
+        .button.agree {
+            background-color: #07C16022;
         }
     }
 }

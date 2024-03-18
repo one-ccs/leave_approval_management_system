@@ -25,10 +25,11 @@ export function useStateColor(state: number) {
     switch(state){
         case ELeaveState.PENDING:
         case ELeaveState.WITHDRAWN:
-            return i18n('color.info');
+            return i18n('color.default');
         case ELeaveState.REJECTED:
             return i18n('color.danger');
         case ELeaveState.APPROVING:
+            return i18n('color.primary')
         case ELeaveState.CANCEL:
         case ELeaveState.CANCELING:
             return i18n('color.warning');

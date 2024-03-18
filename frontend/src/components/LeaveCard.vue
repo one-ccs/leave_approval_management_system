@@ -9,6 +9,10 @@ const { id, state, startDatetime, endDatetime, to } = defineProps({
         type: Number,
         required: true,
     },
+    name: {
+        type: String,
+        required: true,
+    },
     state: {
         type: Number,
         required: true,
@@ -39,7 +43,7 @@ const userStore = useUserStore();
         </div>
         <div class="info-wrapper">
             <div class="title">
-                <div class="text">{{ userStore.userInfo.name }}的请假申请</div>
+                <div class="text">{{ name }}的请假申请</div>
                 <div class="no">(No.{{ id }})</div>
             </div>
             <div class="datetime">开始时间：{{ startDatetime }}</div>
@@ -82,7 +86,7 @@ const userStore = useUserStore();
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            margin-bottom: 8px;
+            margin-bottom: 9px;
 
             .text {
                 font-size: 1rem;
@@ -98,11 +102,11 @@ const userStore = useUserStore();
             }
         }
         .datetime {
-            margin: 3px auto;
+            margin: 5px auto;
             color: #888;
             font-size: .8rem;
         }
-        .datetime:first-child {
+        .datetime:nth-last-child(2) {
             margin-top: 0;
         }
         .datetime:last-child {

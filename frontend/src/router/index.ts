@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
                                     title: '请假',
                                     permiss: 1,
                                 },
-                                component: () => import('@/views/Home/App/Student/LeaveRevokeHistory.vue'),
+                                component: () => import('@/views/Home/App/LeaveRevokeHistoryApprove.vue'),
                                 children: [
                                     {
                                         path: 'add',
@@ -68,7 +68,7 @@ const routes: RouteRecordRaw[] = [
                                     title: '销假',
                                     permiss: 2,
                                 },
-                                component: () => import('@/views/Home/App/Student/LeaveRevokeHistory.vue'),
+                                component: () => import('@/views/Home/App/LeaveRevokeHistoryApprove.vue'),
                                 children: [
                                     {
                                         path: 'detail',
@@ -87,7 +87,7 @@ const routes: RouteRecordRaw[] = [
                                     title: '请假历史',
                                     permiss: 3,
                                 },
-                                component: () => import('@/views/Home/App/Student/LeaveRevokeHistory.vue'),
+                                component: () => import('@/views/Home/App/LeaveRevokeHistoryApprove.vue'),
                                 children: [
                                     {
                                         path: 'detail',
@@ -130,7 +130,17 @@ const routes: RouteRecordRaw[] = [
                                     title: '请假审批',
                                     permiss: 5,
                                 },
-                                component: () => import('@/views/Home/App/Teacher/Approve.vue'),
+                                component: () => import('@/views/Home/App/LeaveRevokeHistoryApprove.vue'),
+                                children: [
+                                    {
+                                        path: 'detail',
+                                        name: 'teacherApproveDetail',
+                                        meta: {
+                                            title: '请假详情',
+                                        },
+                                        component: () => import('@/views/Home/App/LeaveDetail.vue')
+                                    },
+                                ],
                             },
                             {
                                 path: 'attendance',

@@ -6,7 +6,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import load_only
 from ..plugins import db
 from ..views import leave_blue
-from ..models import ERole, ELeaveState, User, Leave
+from ..models import ERole, ELeaveState, Teacher, Student, Leave
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
@@ -14,7 +14,7 @@ from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 @leave_blue.before_request
 @login_required
 def authentication():
-    role = User(current_user.get_id()).role
+    role = current_user.role
     if request.path in [
         '/api/leave',
         '/api/leave/brief',
@@ -39,9 +39,20 @@ def leave():
         id = RequestUtils.quick_data(request, ('id', int))
         if not id:
             return Result.failure('请假条 id 不能为空')
-        result = Leave.query.filter(Leave.id == id).first()
-
-        return Result.success('查询成功', result)
+        result = Leave.query.join(
+            Student,
+            Leave.user_id == Student.user_id
+        ).add_columns(
+            Student.grade,
+            Student.major,
+            Student._class,
+        ).filter(Leave.id == id).first()
+        return Result.success('查询成功', {
+            **result[0].vars(),
+            'grade': result[1],
+            'major': result[2],
+            '_class': result[3],
+        })
     # 添加
     if request.method == 'PUT':
         request_data = RequestUtils.quick_data(request)
@@ -67,7 +78,7 @@ def leave():
         duration = int(0.5 + duration / 3600 / 24)
         leave = Leave().withDict(
             **request_data,
-            user_id=current_user.get_id(),
+            user_id=current_user.id,
             duration=duration,
         )
         # 添加并提交事务 失败自动回滚
@@ -107,23 +118,41 @@ def leavePageBrief():
         ('state', int),
         ('category', int),
     )
-    query = Leave.query \
-        .options(load_only(
-            Leave.id,
-            Leave.state,
-            Leave.category,
-            Leave.start_datetime,
-            Leave.end_datetime,
-        )).filter(
-            Leave.user_id == current_user.get_id(),
+    query = Leave.query.options(load_only(
+        Leave.id,
+        Leave.state,
+        Leave.category,
+        Leave.start_datetime,
+        Leave.end_datetime,
+    )).add_columns(
+        Student.name,
+    )
+    if current_user.role == ERole.STUDENT:
+        query = query.join(
+            Student,
+            Student.user_id == Leave.user_id,
+        ).filter(
+            Leave.user_id == current_user.id,
             or_(Leave.state == state, state == None),
-            or_(Leave.category == category, category == None,
-        ))
+            or_(Leave.category == category, category == None),
+        )
+    if current_user.role == ERole.TEACHER:
+        query = query.join(
+            Student,
+            Student.user_id == Leave.user_id,
+        ).join(
+            Teacher,
+            Teacher.id == Student.teacher_id,
+        ).filter(
+            Teacher.user_id == current_user.id,
+            or_(Leave.state == state, state == None),
+            or_(Leave.category == category, category == None),
+        )
     result = query.paginate(page=pageIndex, per_page=pageSize)
 
     return Result.success('查询成功', {
         'total': result.total,
-        'list': result.items
+        'list': [ { **item[0].vars(), 'name': item[1] } for item in result.items ],
     })
 
 @leave_blue.route('/cancel', methods=['POST'])
@@ -134,8 +163,7 @@ def leaveCancel():
         return Result.failure('请假条 id 不能为空')
     result = Leave.query.filter(
         Leave.id == id,
-        Leave.state ==
-        ELeaveState.PENDING
+        Leave.state == ELeaveState.PENDING,
     ).update({
         'state': ELeaveState.WITHDRAWN,
     })
@@ -200,7 +228,7 @@ def leaveAgreeLeave():
 @leave_blue.route('/reject', methods=['POST'])
 def leaveReject():
     """驳回请假申请"""
-    id = RequestUtils.quick_data(request, ('id', int))
+    id, reject_reason = RequestUtils.quick_data(request, ('id', int), 'rejectReason')
     if not id:
         return Result.failure('请假条 id 不能为空')
     result = Leave.query.filter(
@@ -208,6 +236,9 @@ def leaveReject():
         Leave.state == ELeaveState.PENDING
     ).update({
         'state': ELeaveState.REJECTED,
+        'reject_id': current_user.id,
+        'reject_datetime': DateTimeUtils.now(),
+        'reject_reason': reject_reason,
     })
     db.session.commit()
     if result > 0:

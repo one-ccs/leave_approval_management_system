@@ -58,7 +58,7 @@ export interface Leave {
     approver2Id: number;
     a2Datetime: string;
     revokeId: number;
-    revokeDatetime: string;
+    rejectDatetime: string;
     rejectReason: string;
 };
 

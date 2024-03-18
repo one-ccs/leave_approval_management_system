@@ -22,9 +22,10 @@ const stateAllTabs = (() => {
         result = i18n('tabs.state.revoke');
     }
     if (String(route.name).includes('studentHistory')) {
-        result = [...i18n('tabs.state.leave'), ...i18n('tabs.state.revoke')
-            , { title: '已完成', value: 6 }];
-        result.splice(4, 1);
+        result = i18n('tabs.state.history');
+    }
+    if (String(route.name).includes('teacherApprove')) {
+        result = i18n('tabs.state.approve');
     }
     return result;
 })();
@@ -42,6 +43,9 @@ const toDetail = (id: number) => {
     if (String(route.name).includes('studentHistory')) {
         result = '/app/student/history/detail?id=' + id;
     }
+    if (String(route.name).includes('teacherApprove')) {
+        result = '/app/teacher/approve/detail?id=' + id;
+    }
     return result;
 };
 
@@ -52,13 +56,20 @@ const query = ref<LeavePageQuery>({
     state: 0,
     category: -1,
 });
-const leaveList = ref<Leave[]>([]);
+interface LeaveExtra extends Leave {
+    name: string;
+}
+const leaveList = ref<LeaveExtra[]>([]);
 const loading = ref(true);
 
 // 获取请假条
 const getLeave = () => {
     apiLeavePageBrief(query.value, (data: ResultData) => {
-        leaveList.value = data.data.list;
+        // 获取请假条并根据 id 升序 排序
+        leaveList.value = data.data.list.sort((
+            a: { id: number },
+            b: { id: number },
+        ) => a.id - b.id);
         loading.value = false;
         showSuccessToast(data.message);
     }, (data: ResultData) => {
@@ -94,6 +105,7 @@ onMounted(() => {
                             <div class="leave-list" v-if="leaveList?.length">
                                 <leave-card v-for="item in leaveList" :key="item.id"
                                     :id="item.id"
+                                    :name="item.name"
                                     :state="item.state"
                                     :start-datetime="item.startDatetime"
                                     :end-datetime="item.endDatetime"
@@ -167,6 +179,10 @@ onMounted(() => {
                         --van-skeleton-paragraph-background: #fff;
                         --van-radius-max: 8px;
                         --van-padding-md: 0;
+                    }
+                    .van-pull-refresh {
+                        min-height: 100%;
+
                     }
                 }
             }

@@ -51,7 +51,7 @@ class User(db.Model, UserMixin):
             return True
         return False
 
-    def vars(self, ignore=None, ignore_default=('_sa_instance_state', 'id', 'password_hash')):
+    def vars(self, ignore=None, ignore_default=('_sa_instance_state', 'password_hash')):
         if ignore is None:
             ignore = ignore_default
         return ObjectUtils.vars(self, ignore, style='camel')
