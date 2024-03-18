@@ -50,18 +50,21 @@ const dailyNoticeGroup = [
                 <template #label>{{ notice.label }}</template>
             </van-cell>
         </van-cell-group>
-        <van-cell-group class="daily-notice translucent-half" title="日常通知" :border="false">
-            <van-cell v-for="notice in dailyNoticeGroup"
-                value="查看全部"
-                :icon="notice.icon"
-                :title="notice.title"
-                :to="notice.route"
-                is-link
-                class="van-haptics-feedback"
-            >
-                <template #label>{{ notice.label }}</template>
-            </van-cell>
-        </van-cell-group>
+
+        <div v-permiss="0x100">
+            <van-cell-group class="daily-notice translucent-half" title="日常通知" :border="false">
+                <van-cell v-for="notice in dailyNoticeGroup"
+                    value="查看全部"
+                    :icon="notice.icon"
+                    :title="notice.title"
+                    :to="notice.route"
+                    is-link
+                    class="van-haptics-feedback"
+                >
+                    <template #label>{{ notice.label }}</template>
+                </van-cell>
+            </van-cell-group>
+        </div>
     </div>
 </template>
 
@@ -91,10 +94,15 @@ const dailyNoticeGroup = [
             }
         }
         .van-cell:first-child {
-            margin-top: 0;
+            margin-top: 10px;
         }
         .van-cell:last-child {
             margin-bottom: 0;
+        }
+    }
+    .daily-notice {
+        .van-cell:first-child {
+            margin-top: 0;
         }
     }
 }

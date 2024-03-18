@@ -221,8 +221,8 @@ const routes: RouteRecordRaw[] = [
                                 component: () => import('@/views/Home/App/Admin/Lost.vue'),
                             },
                             {
-                                path: 'userInfo',
-                                name: 'adminLost',
+                                path: 'admin',
+                                name: 'adminAdmin',
                                 meta: {
                                     title: '管理员信息',
                                     permiss: 14,

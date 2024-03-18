@@ -56,7 +56,7 @@ const apps = [
     },
     {
         icon: 'user-circle-o',
-        text: '辅导员信息',
+        text: '教师信息',
         route: '/app/teacher/teacher',
         badge: '',
         permiss: 8,
@@ -95,6 +95,13 @@ const apps = [
         route: '/app/admin/lost',
         badge: '',
         permiss: 13,
+    },
+    {
+        icon: 'user-circle-o',
+        text: '管理员信息',
+        route: '/app/admin/admin',
+        badge: '',
+        permiss: 14,
     },
 ];
 </script>
@@ -151,7 +158,7 @@ const apps = [
         .app-box:nth-child(2n) {
             margin-left: auto;
         }
-        .app-box:nth-child(n+3) {
+        .app-box {
             margin-top: 10px;
         }
     }
