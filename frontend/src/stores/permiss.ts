@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
+import type { RoleEn } from "@/utils/interface";
 
-export type RoleEn = 'student' | 'teacher' | 'admin';
 
 const usePermissStore = defineStore('permiss', {
     state: () => ({

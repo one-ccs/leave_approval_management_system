@@ -1,19 +1,21 @@
 import { defineStore } from "pinia";
+import type { UnionUser } from "@/utils/interface";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 import i18n from "@/utils/i18n";
-import usePermissStore from "./permiss";
 import pinia from "./pinia";
-import type { UnionUser } from "@/utils/interface";
+import usePermissStore from "./permiss";
+import useGlobalStore from "./global";
 
 
 const permissStore = usePermissStore(pinia);
+const globalStore = useGlobalStore(pinia);
 
 const useUserStore = defineStore('user', {
     state: () => ({
         isInit: false,
         isLogin: false,
         _persistence: <UnionUser>{
-            avatar: '/static/img/avatar.jpg',
+            avatar: globalStore.defaultAvatarUrl,
             name: '小哆啦',
             role: 0,
             expires: null,

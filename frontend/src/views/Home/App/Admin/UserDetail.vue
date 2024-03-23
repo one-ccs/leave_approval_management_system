@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import BackNavBar from '@/components/BackNavBar.vue';
+</script>
+
+<template>
+    <div class="view">
+        <back-nav-bar class="view-header"></back-nav-bar>
+        <div class="view-container">
+            ud
+        </div>
+    </div>
+</template>
+
+<style scoped lang="less">
+</style>

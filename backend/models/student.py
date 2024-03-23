@@ -20,7 +20,7 @@ class Student(db.Model):
     def __repr__(self):
         return ObjectUtils.repr(self, ('_sa_instance_state',))
 
-    def vars(self, ignore=None, ignore_default=('_sa_instance_state', 'id', 'user_id', 'teacher_id')):
+    def vars(self, ignore=None, ignore_default=('_sa_instance_state', )):
         if ignore is None:
             ignore = ignore_default
         return ObjectUtils.vars(self, ignore, style='camel')

@@ -62,6 +62,14 @@ export interface Leave {
     rejectReason: string;
 };
 
+export type RoleEn = 'student' | 'teacher' | 'admin';
+
+export enum ERole {
+    admin = 9,
+    teacher = 1,
+    student = 0,
+};
+
 export enum ELeaveState {
     PENDING,      /* 待审批 */
     WITHDRAWN,    /* 已撤回 */
@@ -81,8 +89,9 @@ export enum ELeaveCategory {
 
 /* --------- dto --------- */
 
-export type UnionUser = User & Admin & Teacher & Student & {
+export interface UnionUser extends User, Admin, Teacher, Student {
     name: string;
+    teacherName: string;
     admissionDate: string;
     school: string;
     expires: number | null;
@@ -90,7 +99,7 @@ export type UnionUser = User & Admin & Teacher & Student & {
 
 /* --------- vo --------- */
 
-export interface ResultData {
+export interface ResponseData {
     code: number;
     message: string;
     data: any;
@@ -102,7 +111,7 @@ export interface PageQuery {
     query?: string;
 };
 
-export interface UserPageQuery extends PageQuery {
+export interface TimeRangePageQuery extends PageQuery {
     startDatetime: string;
     endDatetime: string;
 };

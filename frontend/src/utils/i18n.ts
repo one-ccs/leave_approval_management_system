@@ -175,7 +175,16 @@ const map = {
     }
 };
 
-export default (key: string | number, path?: string) => {
+
+
+/**
+ * 返回 map 路径中查找到的值, 没有返回默认值
+ * @param key 键名
+ * @param path 路径 (以英文句号 . 分隔)
+ * @param _default 默认值
+ * @returns
+ */
+export default function(key: string | number, path?: string, _default: any = null) {
     if (path) key = `${path}.${key}`;
-    return String(key).split('.').reduce((o: any, i: string) => o[i], map);
-};
+    return String(key).split('.').reduce((o: any, i: string) => o && o[i], map) || _default;
+}

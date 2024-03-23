@@ -69,7 +69,7 @@ const userStore = useUserStore();
     box-shadow: 0 2px 5px 0 #3333;
 
     .icon-wrapper {
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         text-align: center;
 
         .text {
@@ -78,8 +78,7 @@ const userStore = useUserStore();
         }
     }
     .info-wrapper {
-        flex: 1 1 auto;
-        flex-basis: 30%;
+        flex: 1 0 auto;
         margin-left: 24px;
         max-width: calc(100% - 24px - 38px - 16px);
 

@@ -2,14 +2,14 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { showConfirmDialog, showSuccessToast } from 'vant';
-import { ELeaveState, type Leave, type ResultData } from '@/utils/interface';
+import { ELeaveState, type Leave, type ResponseData } from '@/utils/interface';
 import { apiLeaveAgreeLeave, apiLeaveAgreeRevoke, apiLeaveCancel, apiLeaveGet, apiLeaveReject, apiLeaveRevoke } from '@/utils/api';
-import { useLeaveDuration, useStateColor } from '@/utils/use';
+import { useStateColor } from '@/utils/use';
+import { getCurrentPosition } from '@/utils/advanced';
 import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
-import { getCurrentPosition } from '@/utils/advanced';
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -30,7 +30,7 @@ const onCancelClick = () => {
         title: '提示',
         message: '确定要撤销申请吗？',
     }).then(() => {
-        apiLeaveCancel(leaveDetail.value?.id!, (data: ResultData) => {
+        apiLeaveCancel(leaveDetail.value?.id!, (data: ResponseData) => {
             cancelFlag.value = true;
             leaveDetail.value!.state = ELeaveState.WITHDRAWN;
             showSuccessToast(data.message);
@@ -46,7 +46,7 @@ const onRevokeClick = () => {
             apiLeaveRevoke(leaveDetail.value?.id!, {
                 longitude: pos.coords.longitude,
                 latitude: pos.coords.latitude,
-            }, (data: ResultData) => {
+            }, (data: ResponseData) => {
                 revokeFlag.value = true;
                 leaveDetail.value!.state = ELeaveState.CANCELING;
                 showSuccessToast(data.message);
@@ -59,7 +59,7 @@ const onRejectClick = () => {
         title: '提示',
         message: '确定要驳回申请吗？',
     }).then(() => {
-        apiLeaveReject(leaveDetail.value?.id!, (data: ResultData) => {
+        apiLeaveReject(leaveDetail.value?.id!, (data: ResponseData) => {
             rejectFlag.value = true;
             leaveDetail.value!.state = ELeaveState.REJECTED;
             showSuccessToast(data.message);
@@ -90,7 +90,7 @@ const onAgreeClick = () => {
 };
 
 onMounted(() => {
-    apiLeaveGet(Number(route.query.id), (data: ResultData) => {
+    apiLeaveGet(Number(route.query.id), (data: ResponseData) => {
         leaveDetail.value = data.data;
     });
 });

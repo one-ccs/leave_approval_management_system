@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { Leave, LeavePageQuery, ResultData } from '@/utils/interface';
+import { showFailToast, showSuccessToast } from 'vant';
+import type { Leave, LeavePageQuery, ResponseData } from '@/utils/interface';
 import { apiLeavePageBrief } from '@/utils/api';
 import i18n from '@/utils/i18n';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import LeaveCard from '@/components/LeaveCard.vue';
-import { showFailToast, showSuccessToast } from 'vant';
-import { reactive } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -70,14 +69,14 @@ const refreshing = ref(false);
 const getLeave = () => {
     loading.value = true;
 
-    apiLeavePageBrief(query, (data: ResultData) => {
+    apiLeavePageBrief(query, (data: ResponseData) => {
         finished.value = data.data.finished;
         leaveList.push(...data.data.list);
         loading.value = false;
         refreshing.value = false;
         query.pageIndex += 1;
         showSuccessToast(data.message);
-    }, (data: ResultData) => {
+    }, (data: ResponseData) => {
         refreshing.value = false;
         error.value = true;
         loading.value = false;

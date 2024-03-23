@@ -183,6 +183,16 @@ const routes: RouteRecordRaw[] = [
                                     permiss: 9,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Student.vue'),
+                                children: [
+                                    {
+                                        path: 'detail',
+                                        name: 'adminStudentDetail',
+                                        meta: {
+                                            title: '学生详情',
+                                        },
+                                        component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
+                                    },
+                                ],
                             },
                             {
                                 path: 'teacher',
@@ -192,6 +202,16 @@ const routes: RouteRecordRaw[] = [
                                     permiss: 10,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Teacher.vue'),
+                                children: [
+                                    {
+                                        path: 'detail',
+                                        name: 'adminTeacherDetail',
+                                        meta: {
+                                            title: '教师详情',
+                                        },
+                                        component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
+                                    },
+                                ],
                             },
                             {
                                 path: 'permission',

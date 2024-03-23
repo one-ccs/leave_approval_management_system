@@ -5,6 +5,7 @@ const useGlobalStore = defineStore('global', {
     state: () => ({
         isInit: false,
         isUpdate: false,
+        defaultAvatarUrl: '/static/img/avatar.jpg',
         backgroundImages: [
             '/static/img/bg/blob-scene-haikei.svg',
             '/static/img/bg/blurry-gradient-haikei.svg',

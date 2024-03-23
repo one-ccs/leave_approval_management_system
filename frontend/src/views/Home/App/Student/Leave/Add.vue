@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { showFailToast, showSuccessToast, type UploaderFileListItem } from 'vant';
-import type { Leave, ResultData, LeaveAddForm } from '@/utils/interface';
+import type { Leave, ResponseData, LeaveAddForm } from '@/utils/interface';
 import { apiLeavePut } from '@/utils/api';
 import { useLeaveDuration } from '@/utils/use';
 import BackNavBar from '@/components/BackNavBar.vue';
@@ -153,7 +153,7 @@ const pictureOversize = (file: any) => {
     showFailToast('文件大小不能超过 1024 KB')
 };
 const onSubmit = () => {
-    apiLeavePut(leaveForm as unknown as Leave, (data: ResultData) => {
+    apiLeavePut(leaveForm as unknown as Leave, (data: ResponseData) => {
         showSuccessToast(data.message);
         router.back();
     });

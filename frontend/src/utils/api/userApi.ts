@@ -1,6 +1,6 @@
 import { closeToast, showLoadingToast } from 'vant';
 import { defaultSuccessCallback, defaultFailureCallback } from '.';
-import type { ResultData, User, UserPageQuery, LoginUser } from '../interface';
+import type { ResponseData, User, LoginUser, TimeRangePageQuery } from '../interface';
 import request from '../request';
 import encryptMD5 from '../encryptMD5';
 
@@ -83,7 +83,7 @@ export function apiUserDelete(id: number, successCallback: Function = defaultSuc
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiUserPageQuery(query: UserPageQuery, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
+export function apiUserPageQuery(query: TimeRangePageQuery, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/user', {
         data: {
             ...query,
@@ -114,11 +114,11 @@ export function apiLogin(user: LoginUser, successCallback: Function = defaultSuc
             password: encryptMD5(user.password),
             remember: user.remember,
         },
-        successCallback: (data: ResultData) => {
+        successCallback: (data: ResponseData) => {
             closeToast();
             successCallback && successCallback(data);
         },
-        failureCallback: (data: ResultData) => {
+        failureCallback: (data: ResponseData) => {
             closeToast();
             failureCallback && failureCallback(data);
         }

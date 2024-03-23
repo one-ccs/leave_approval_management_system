@@ -38,7 +38,7 @@ def page_query():
         or_(start_datetime >= User.create_datetime, start_datetime == None),
         or_(end_datetime <= User.create_datetime, end_datetime == None),
     )
-    result = query.paginate(page=page_index, per_page=page_size)
+    result = query.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,

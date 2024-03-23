@@ -51,6 +51,7 @@ def leave():
             Student.major,
             Student._class,
         ).filter(Leave.id == id).first()
+
         return Result.success('查询成功', {
             **result[0].vars(),
             'grade': result[1],
@@ -152,7 +153,7 @@ def page_brief():
             or_(Leave.state == state, state == None),
             or_(Leave.category == category, category == None),
         )
-    result = query.paginate(page=page_index, per_page=page_size)
+    result = query.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,

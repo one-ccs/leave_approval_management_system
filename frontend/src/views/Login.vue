@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { ResultData } from '@/utils/interface';
+import type { ResponseData } from '@/utils/interface';
 import { apiLogin } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
@@ -25,7 +25,7 @@ const formData = reactive({
 const passwordInputRef = ref();
 
 const onSubmit = (value: any) => {
-    apiLogin(value, (data: ResultData) => {
+    apiLogin(value, (data: ResponseData) => {
         userStore.clear().setUser(data.data).save();
         router.push('/');
     });

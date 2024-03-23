@@ -8,6 +8,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './assets/main.css';
 
 import { createApp } from 'vue';
+import { Lazyload } from 'vant';
 
 import App from './App.vue';
 import router from './router';
@@ -27,6 +28,7 @@ const app = createApp(App);
 
 app.use(pinia);
 app.use(router);
+app.use(Lazyload);
 
 // 自定义权限指令
 const permissStore = usePermissStore();

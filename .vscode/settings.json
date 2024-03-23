@@ -5,6 +5,7 @@
         "fortawesome",
         "haikei",
         "haptics",
+        "Lazyload",
         "permiss",
         "Pinia",
         "SQLALCHEMY",
