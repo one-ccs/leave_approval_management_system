@@ -37,5 +37,6 @@ const emit = defineEmits<{
 <style scoped lang="less">
     .time-range-query {
         background-color: #fff;
+        box-shadow: var(--box-shadow-light);
     }
 </style>

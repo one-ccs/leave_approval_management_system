@@ -58,13 +58,13 @@ const globalStore = useGlobalStore();
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin: 8px auto;
+    margin: 8px auto 0;
     border-radius: var(--border-radius);
     padding: 15px;
     width: 100%;
     font-size: .95rem;
     background: #fff;
-    box-shadow: 0 2px 5px 0 #3333;
+    box-shadow: var(--box-shadow-light-2);
 
     .avatar {
         flex: 0 0 auto;
@@ -101,5 +101,8 @@ const globalStore = useGlobalStore();
         flex: 0 0 auto;
         color: #888;
     }
+}
+.user-card:first-child {
+    margin-top: 0;
 }
 </style>

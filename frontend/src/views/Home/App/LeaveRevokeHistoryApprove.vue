@@ -196,9 +196,9 @@ const onChange = () => {
                     overflow-x: hidden;
                     overflow-y: auto;
 
-                    /* .van-pull-refresh {
+                    .van-pull-refresh {
                         min-height: 100%;
-                    } */
+                    }
                 }
             }
             :deep(.van-back-top) {
