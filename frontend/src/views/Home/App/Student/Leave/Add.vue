@@ -2,16 +2,17 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { showFailToast, showSuccessToast, type UploaderFileListItem } from 'vant';
-import type { Leave, ResultData } from '@/utils/interface';
+import type { Leave, ResultData, LeaveAddForm } from '@/utils/interface';
 import { apiLeavePut } from '@/utils/api';
 import { useLeaveDuration } from '@/utils/use';
 import BackNavBar from '@/components/BackNavBar.vue';
+import { reactive } from 'vue';
 
 const router = useRouter();
 const categoryPickerShown = ref(false);
 const startDatetimePickerShown = ref(false);
 const endDatetimePickerShown = ref(false);
-const leaveForm = ref({
+const leaveForm = reactive<LeaveAddForm>({
     category: 0,
     startDatetime: '',
     endDatetime: '',
@@ -70,7 +71,7 @@ const category = [
 
 const confirmCategory = ({ selectedOptions }: any) => {
     categoryPickerShown.value = false;
-    leaveForm.value.category = selectedOptions[0].value;
+    leaveForm.category = selectedOptions[0].value;
     leaveFormShadow.value.category = selectedOptions[0].text;
 };
 const openStartDatetimePicker = () => {
@@ -92,15 +93,15 @@ const confirmStartDatetime = () => {
         ...leaveFormShadow.value.startDatetime.date,
         ...leaveFormShadow.value.startDatetime.time,
     ];
-    leaveForm.value.startDatetime = `${yyyy}-${mm}-${dd} ${HH}:${MM}`;
-    if (leaveForm.value.endDatetime) {
+    leaveForm.startDatetime = `${yyyy}-${mm}-${dd} ${HH}:${MM}`;
+    if (leaveForm.endDatetime) {
         const duration = useLeaveDuration(
-            leaveForm.value.startDatetime,
-            leaveForm.value.endDatetime
+            leaveForm.startDatetime,
+            leaveForm.endDatetime
         );
         if (duration > 0) leaveFormShadow.value.duration = duration + ' 天';
         else {
-            leaveForm.value.startDatetime = '';
+            leaveForm.startDatetime = '';
             showFailToast('时间选择有误');
         }
     }
@@ -124,15 +125,15 @@ const confirmEndDatetime = () => {
         ...leaveFormShadow.value.endDatetime.date,
         ...leaveFormShadow.value.endDatetime.time,
     ];
-    leaveForm.value.endDatetime = `${yyyy}-${mm}-${dd} ${HH}:${MM}`;
-    if (leaveForm.value.startDatetime) {
+    leaveForm.endDatetime = `${yyyy}-${mm}-${dd} ${HH}:${MM}`;
+    if (leaveForm.startDatetime) {
         const duration = useLeaveDuration(
-            leaveForm.value.startDatetime,
-            leaveForm.value.endDatetime
+            leaveForm.startDatetime,
+            leaveForm.endDatetime
         );
         if (duration > 0) leaveFormShadow.value.duration = duration + ' 天';
         else {
-            leaveForm.value.endDatetime = '';
+            leaveForm.endDatetime = '';
             showFailToast('时间选择有误');
         }
     }
@@ -152,7 +153,7 @@ const pictureOversize = (file: any) => {
     showFailToast('文件大小不能超过 1024 KB')
 };
 const onSubmit = () => {
-    apiLeavePut(leaveForm.value as unknown as Leave, (data: ResultData) => {
+    apiLeavePut(leaveForm as unknown as Leave, (data: ResultData) => {
         showSuccessToast(data.message);
         router.back();
     });

@@ -66,6 +66,7 @@ const userStore = useUserStore();
     padding: 24px;
     width: 100%;
     background: #fff;
+    box-shadow: 0 2px 5px 0 #3333;
 
     .icon-wrapper {
         flex: 0 1 auto;

@@ -1,6 +1,5 @@
 import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { showFailToast } from 'vant';
-import router from '@/router';
 import useUserStore from '@/stores/user';
 import pinia from '@/stores/pinia';
 
@@ -38,6 +37,7 @@ service.interceptors.response.use(
             showFailToast('未登录\n即将跳转登录页...');
             userStore.clear();
             setTimeout(() => {
+                // 使用 location.href 跳转 而不是 router 防止某些情况下页面不改变的 bug
                 location.href = '/login';
             }, 800);
             return response;
@@ -80,14 +80,18 @@ async function request(url: string, config?: RequestConfig) {
         successCallback,
         failureCallback,
         errorCallback
-    } = (config || {});
+    } = config || {};
 
-    if (method.toLocaleLowerCase() === 'GET' && Object.keys(data).length !== 0) console.error('RequestError: "GET" 方法不允许携带 "data" 参数，请检查你的配置。');
+    if (method.toLocaleLowerCase() === 'GET' && Object.keys(data).length !== 0) {
+        console.warn('RequestError: "GET" 方法不允许携带 "data" 参数，请检查你的配置。');
+    }
     if (!('Content-Type' in headers)) {
         if (contentType === 'FORM') headers['Content-Type'] = 'multipart/form-data';
         if (contentType === 'JSON') headers['Content-Type'] = 'application/json';
     }
-    if (token && tokenType === 'Bearer') headers['Authorization'] = `Bearer ${token}`;
+    if (token && tokenType === 'Bearer') {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
 
     return service({ url, method, params, data, headers }).then((res: AxiosResponse) => {
         if (res.data.code === 200 && successCallback) successCallback(res.data);

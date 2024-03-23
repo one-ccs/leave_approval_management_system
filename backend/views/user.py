@@ -3,6 +3,7 @@
 from typing import Union
 from flask import request
 from flask_login import login_user, logout_user, login_required
+from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from ..plugins import db, login_manager
 from ..views import user_blue
@@ -34,9 +35,42 @@ def load_user(user_id):
     """
     return User(user_id)
 
-@user_blue.route('/')
+@user_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
+@login_required
 def root():
-    return Result.success('成功', True)
+    if request.method == 'GET':
+        pass
+    if request.method == 'PUT':
+        pass
+    if request.method == 'POST':
+        pass
+    if request.method == 'DELETE':
+        pass
+    return Result.failure()
+
+@user_blue.route('/pageQuery', methods=['GET'])
+@login_required
+def page_query():
+    """分页查询"""
+    page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(
+        request,
+        ('pageIndex', int, 1),
+        ('pageSize', int, 10),
+        'query',
+        'startDatetime',
+        'endDatetime',
+    )
+    query = User.query.filter(
+        User.username.like(query),
+        or_(start_datetime >= User.create_datetime, start_datetime == None),
+        or_(end_datetime <= User.create_datetime, end_datetime == None),
+    )
+    result = query.paginate(page=page_index, per_page=page_size)
+
+    return Result.success('查询成功', {
+        'total': result.total,
+        'list': result.items,
+    })
 
 @user_blue.route('/login', methods=['GET', 'POST'])
 def login():

@@ -8,6 +8,7 @@ import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import LeaveCard from '@/components/LeaveCard.vue';
 import { showFailToast, showSuccessToast } from 'vant';
+import { reactive } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -50,7 +51,7 @@ const toDetail = (id: number) => {
 };
 
 // 查询参数
-const query = ref<LeavePageQuery>({
+const query = reactive<LeavePageQuery>({
     pageIndex: 1,
     pageSize: 10,
     state: 0,
@@ -59,7 +60,7 @@ const query = ref<LeavePageQuery>({
 interface LeaveExtra extends Leave {
     name: string;
 }
-const leaveList = ref<LeaveExtra[]>([]);
+const leaveList = reactive<LeaveExtra[]>([]);
 const loading = ref(false);
 const finished = ref(false);
 const error = ref(false);
@@ -69,12 +70,12 @@ const refreshing = ref(false);
 const getLeave = () => {
     loading.value = true;
 
-    apiLeavePageBrief(query.value, (data: ResultData) => {
+    apiLeavePageBrief(query, (data: ResultData) => {
         finished.value = data.data.finished;
-        leaveList.value.push(...data.data.list);
+        leaveList.push(...data.data.list);
         loading.value = false;
         refreshing.value = false;
-        query.value.pageIndex += 1;
+        query.pageIndex += 1;
         showSuccessToast(data.message);
     }, (data: ResultData) => {
         refreshing.value = false;
@@ -85,14 +86,14 @@ const getLeave = () => {
 };
 // 刷新操作
 const onRefresh = () => {
-    query.value.pageIndex = 1;
-    leaveList.value = [];
+    query.pageIndex = 1;
+    leaveList.length = 0;
     getLeave();
 };
 // tab 改变操作
 const onChange = () => {
-    query.value.pageIndex = 1;
-    leaveList.value = [];
+    query.pageIndex = 1;
+    leaveList.length = 0;
     getLeave();
 };
 </script>

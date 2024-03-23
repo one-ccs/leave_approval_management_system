@@ -102,7 +102,28 @@ export interface PageQuery {
     query?: string;
 };
 
+export interface UserPageQuery extends PageQuery {
+    startDatetime: string;
+    endDatetime: string;
+};
+
 export interface LeavePageQuery extends PageQuery {
     state: number;
     category: number;
+};
+
+export interface LoginUser {
+    username: string;
+    email?: string;
+    password: string;
+    captcha?: string;
+    remember: boolean;
+};
+
+export interface LeaveAddForm {
+    category: number;
+    startDatetime: string;
+    endDatetime: string;
+    leaveSchool: boolean;
+    leaveReason: string;
 };

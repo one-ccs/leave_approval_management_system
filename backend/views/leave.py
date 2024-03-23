@@ -112,10 +112,10 @@ def leave():
             return Result.success('删除成功')
         return Result.failure('删除失败')
 
-@leave_blue.route('/brief', methods=['GET'])
-def leavePageBrief():
+@leave_blue.route('/pageBrief', methods=['GET'])
+def page_brief():
     """分页查询简要信息"""
-    pageIndex, pageSize, state, category = RequestUtils.quick_data(
+    page_index, page_size, state, category = RequestUtils.quick_data(
         request,
         ('pageIndex', int, 1),
         ('pageSize', int, 10),
@@ -152,7 +152,7 @@ def leavePageBrief():
             or_(Leave.state == state, state == None),
             or_(Leave.category == category, category == None),
         )
-    result = query.paginate(page=pageIndex, per_page=pageSize)
+    result = query.paginate(page=page_index, per_page=page_size)
 
     return Result.success('查询成功', {
         'total': result.total,
@@ -161,7 +161,7 @@ def leavePageBrief():
     })
 
 @leave_blue.route('/cancel', methods=['POST'])
-def leaveCancel():
+def cancel():
     """撤销申请"""
     id = RequestUtils.quick_data(request, ('id', int))
     if not id:
@@ -178,7 +178,7 @@ def leaveCancel():
     return Result.failure('撤销申请失败')
 
 @leave_blue.route('/revoke', methods=['POST'])
-def leaveRevoke():
+def revoke():
     """申请销假"""
     id, longitude, latitude = RequestUtils.quick_data(
         request,
@@ -204,7 +204,7 @@ def leaveRevoke():
     return Result.failure('申请销假失败')
 
 @leave_blue.route('/agreeLeave', methods=['POST'])
-def leaveAgreeLeave():
+def agree_leave():
     """同意请假申请"""
     id = RequestUtils.quick_data(request, ('id', int))
     if not id:
@@ -231,7 +231,7 @@ def leaveAgreeLeave():
     return Result.failure('同意申请失败')
 
 @leave_blue.route('/reject', methods=['POST'])
-def leaveReject():
+def reject():
     """驳回请假申请"""
     id, reject_reason = RequestUtils.quick_data(request, ('id', int), 'rejectReason')
     if not id:
@@ -251,7 +251,7 @@ def leaveReject():
     return Result.failure('驳回申请失败')
 
 @leave_blue.route('/agreeRevoke', methods=['POST'])
-def leaveAgreeRevoke():
+def agree_revoke():
     """同意销假申请"""
     id = RequestUtils.quick_data(request, ('id', int))
     if not id:

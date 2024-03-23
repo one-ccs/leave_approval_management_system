@@ -1,72 +1,7 @@
-import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from 'vant';
-import type { ResultData, LeavePageQuery, Leave } from './interface';
-import request from './request';
-import encryptMD5 from './encryptMD5';
+import { defaultSuccessCallback, defaultFailureCallback } from '.';
+import type { Leave, LeavePageQuery } from '../interface';
+import request from '../request';
 
-
-/**
- * 默认成功处理函数
- * @param message 提示消息
- */
-function defaultSuccess(data: ResultData) {
-    showSuccessToast(data.message);
-}
-
-/**
- * 默认失败处理函数
- * @param url 请求地址
- * @param code 状态码
- */
-function defaultFailure(data: ResultData, status: number, url: string) {
-    if (data.code === 401) return;
-    showFailToast(data.message);
-}
-
-/**
- * 登录
- * @param username 用户名
- * @param password 密码
- * @param remember 是否记住
- * @param successCallback 成功回调函数
- * @param failureCallback 失败回调函数
- * @returns Promise
- */
-export function apiLogin(user: any, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
-    showLoadingToast({
-        message: '登录中...',
-        forbidClick: true,
-    });
-    return request('/api/user/login', {
-        method: 'POST',
-        data: {
-            username: user.username,
-            password: encryptMD5(user.password),
-            remember: user.remember,
-        },
-        successCallback: (data: ResultData) => {
-            closeToast();
-            successCallback && successCallback(data);
-        },
-        failureCallback: (data: ResultData) => {
-            closeToast();
-            failureCallback && failureCallback(data);
-        }
-    });
-}
-
-/**
- * 登出
- * @param successCallback 成功回调函数
- * @param failureCallback 失败回调函数
- * @returns Promise
- */
-export function apiLogout(successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
-    return request('/api/user/logout', {
-        method: 'POST',
-        successCallback,
-        failureCallback,
-    });
-}
 
 /**
  * 获取请假条详情
@@ -75,7 +10,7 @@ export function apiLogout(successCallback: Function = defaultSuccess, failureCal
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveGet(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave', {
         params: {
             id,
@@ -92,9 +27,11 @@ export function apiLeaveGet(id: number, successCallback: Function = defaultSucce
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeavePut(data: Leave, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeavePut(leave: Leave, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave', {
-        data,
+        data: {
+            ...leave,
+        },
         method: 'PUT',
         successCallback,
         failureCallback,
@@ -108,9 +45,11 @@ export function apiLeavePut(data: Leave, successCallback: Function = defaultSucc
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeavePost(data: Leave, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeavePost(leave: Leave, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave', {
-        data,
+        data: {
+            ...leave,
+        },
         method: 'POST',
         successCallback,
         failureCallback,
@@ -124,7 +63,7 @@ export function apiLeavePost(data: Leave, successCallback: Function = defaultSuc
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveDelete(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveDelete(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave', {
         data: {
             id,
@@ -142,8 +81,8 @@ export function apiLeaveDelete(id: number, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeavePageBrief(query: LeavePageQuery, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
-    return request('/api/leave/brief', {
+export function apiLeavePageBrief(query: LeavePageQuery, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
+    return request('/api/leave/pageBrief', {
         params: {
             ...query,
             category: query.category === -1 ? undefined : query.category,
@@ -160,7 +99,7 @@ export function apiLeavePageBrief(query: LeavePageQuery, successCallback: Functi
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveCancel(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveCancel(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave/cancel', {
         data: {
             id,
@@ -179,7 +118,7 @@ export function apiLeaveCancel(id: number, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude: number }, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude: number }, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave/revoke', {
         data: {
             id,
@@ -199,7 +138,7 @@ export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveAgreeLeave(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveAgreeLeave(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave/agreeLeave', {
         data: {
             id,
@@ -217,7 +156,7 @@ export function apiLeaveAgreeLeave(id: number, successCallback: Function = defau
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveReject(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveReject(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave/reject', {
         data: {
             id,
@@ -235,7 +174,7 @@ export function apiLeaveReject(id: number, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveAgreeRevoke(id: number, successCallback: Function = defaultSuccess, failureCallback: Function = defaultFailure) {
+export function apiLeaveAgreeRevoke(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/leave/agreeRevoke', {
         data: {
             id,

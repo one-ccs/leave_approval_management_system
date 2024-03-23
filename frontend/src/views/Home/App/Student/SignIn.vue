@@ -112,6 +112,7 @@ const notices = ref([
                     border-radius: var(--border-radius);
                     padding: 24px 18px;
                     background-color: #fff;
+                    box-shadow: 0 0 5px 0 #3333;
 
                     .notice-icon {
                         opacity: .8;

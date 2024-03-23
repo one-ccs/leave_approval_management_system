@@ -29,7 +29,7 @@ app = _Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOL
 app.url_map.strict_slashes = False
 app.config['SECRET_KEY'] = MAIN_KEY
 app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=1800)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=3600 * 24)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 ## Flask-SQLalchemy
