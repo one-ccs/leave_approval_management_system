@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Union
 from flask import request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy.exc import IntegrityError
@@ -31,7 +32,7 @@ def load_user(user_id):
         flask_login.UserMixin 的类, 主要是该类默认提供了 get_id 方法,
         用于在登录成功后获取用户 id
     """
-    return User.query.get(user_id)
+    return User(user_id)
 
 @user_blue.route('/')
 def root():
@@ -66,7 +67,7 @@ def login():
             if not user.check_password_hash(password):
                 return Result.failure('登录失败\n密码错误')
             # 获取详细信息
-            any_user = None
+            any_user: Union[Admin, Teacher, Student] = None
             if user.role == ERole.ADMIN:
                 any_user = Admin.query.filter_by(user_id=user.id).first()
             elif user.role == ERole.TEACHER:

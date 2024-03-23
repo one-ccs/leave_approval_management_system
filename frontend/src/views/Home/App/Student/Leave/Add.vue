@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { showFailToast, type UploaderFileListItem } from 'vant';
-import type { Leave } from '@/utils/interface';
+import { useRouter } from 'vue-router';
+import { showFailToast, showSuccessToast, type UploaderFileListItem } from 'vant';
+import type { Leave, ResultData } from '@/utils/interface';
 import { apiLeavePut } from '@/utils/api';
 import { useLeaveDuration } from '@/utils/use';
 import BackNavBar from '@/components/BackNavBar.vue';
 
+const router = useRouter();
 const categoryPickerShown = ref(false);
 const startDatetimePickerShown = ref(false);
 const endDatetimePickerShown = ref(false);
@@ -150,7 +152,10 @@ const pictureOversize = (file: any) => {
     showFailToast('文件大小不能超过 1024 KB')
 };
 const onSubmit = () => {
-    apiLeavePut(leaveForm.value as unknown as Leave);
+    apiLeavePut(leaveForm.value as unknown as Leave, (data: ResultData) => {
+        showSuccessToast(data.message);
+        router.back();
+    });
 };
 </script>
 

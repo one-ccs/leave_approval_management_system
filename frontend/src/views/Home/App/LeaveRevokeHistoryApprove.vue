@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { Leave, LeavePageQuery, ResultData } from '@/utils/interface';
 import { apiLeavePageBrief } from '@/utils/api';
@@ -60,27 +60,41 @@ interface LeaveExtra extends Leave {
     name: string;
 }
 const leaveList = ref<LeaveExtra[]>([]);
-const loading = ref(true);
+const loading = ref(false);
+const finished = ref(false);
+const error = ref(false);
+const refreshing = ref(false);
 
 // 获取请假条
 const getLeave = () => {
+    loading.value = true;
+
     apiLeavePageBrief(query.value, (data: ResultData) => {
-        // 获取请假条并根据 id 升序 排序
-        leaveList.value = data.data.list.sort((
-            a: { id: number },
-            b: { id: number },
-        ) => a.id - b.id);
+        finished.value = data.data.finished;
+        leaveList.value.push(...data.data.list);
         loading.value = false;
+        refreshing.value = false;
+        query.value.pageIndex += 1;
         showSuccessToast(data.message);
     }, (data: ResultData) => {
+        refreshing.value = false;
+        error.value = true;
         loading.value = false;
         showFailToast(data.message);
     });
 };
-
-onMounted(() => {
+// 刷新操作
+const onRefresh = () => {
+    query.value.pageIndex = 1;
+    leaveList.value = [];
     getLeave();
-});
+};
+// tab 改变操作
+const onChange = () => {
+    query.value.pageIndex = 1;
+    leaveList.value = [];
+    getLeave();
+};
 </script>
 
 <template>
@@ -90,7 +104,7 @@ onMounted(() => {
         <back-nav-bar v-else class="view-header" />
         <div class="view-container">
             <van-tabs class="state-tabs" v-model:active="query.state"
-                @change="getLeave()"
+                @change="onChange()"
                 shrink
                 animated
                 swipeable
@@ -100,26 +114,34 @@ onMounted(() => {
                     :name="tab.value"
                     :title="tab.title"
                 >
-                    <van-pull-refresh v-model="loading" @refresh="getLeave()">
-                        <van-skeleton :loading="loading" :row="12" animate round>
-                            <div class="leave-list" v-if="leaveList?.length">
-                                <leave-card v-for="item in leaveList" :key="item.id"
-                                    :id="item.id"
-                                    :name="item.name"
-                                    :state="item.state"
-                                    :start-datetime="item.startDatetime"
-                                    :end-datetime="item.endDatetime"
-                                    :to="toDetail(item.id)"
-                                />
-                                <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs"></van-back-top>
-                            </div>
-                            <van-empty v-else image="search" description="暂无数据" />
-                        </van-skeleton>
+                    <van-pull-refresh v-model="refreshing" @refresh="onRefresh()">
+                        <van-list
+                            class="leave-list"
+                            v-model:loading="loading"
+                            v-model:error="error"
+                            error-text="请求失败，点击重新加载"
+                            :finished="finished"
+                            @load="getLeave()"
+                        >
+                            <leave-card v-for="item in leaveList" :key="item.id"
+                                :id="item.id"
+                                :name="item.name"
+                                :state="item.state"
+                                :start-datetime="item.startDatetime"
+                                :end-datetime="item.endDatetime"
+                                :to="toDetail(item.id)"
+                            />
+                            <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs"></van-back-top>
+                            <template #finished>
+                                <span v-if="leaveList.length">没有更多了</span>
+                                <van-empty v-else image="search" description="暂无数据" />
+                            </template>
+                        </van-list>
                     </van-pull-refresh>
                 </van-tab>
             </van-tabs>
             <van-tabs class="category-tabs" v-model:active="query.category"
-                @change="getLeave()"
+                @change="onChange()"
                 shrink
             >
                 <van-tab v-for="tab in categoryTabs"
@@ -174,16 +196,9 @@ onMounted(() => {
                     overflow-x: hidden;
                     overflow-y: auto;
 
-                    .van-skeleton {
-                        --van-skeleton-paragraph-height: 103px;
-                        --van-skeleton-paragraph-background: #fff;
-                        --van-radius-max: 8px;
-                        --van-padding-md: 0;
-                    }
-                    .van-pull-refresh {
+                    /* .van-pull-refresh {
                         min-height: 100%;
-
-                    }
+                    } */
                 }
             }
             :deep(.van-back-top) {

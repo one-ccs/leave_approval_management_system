@@ -14,6 +14,10 @@ from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 @leave_blue.before_request
 @login_required
 def authentication():
+    # 预检请求 OPTIONS current_user 为 AnonymousUserMixin
+    if current_user.is_anonymous and request.method == 'OPTIONS':
+        return
+    # 实际请求
     role = current_user.role
     if request.path in [
         '/api/leave',
@@ -152,6 +156,7 @@ def leavePageBrief():
 
     return Result.success('查询成功', {
         'total': result.total,
+        'finished': not result.has_next,
         'list': [ { **item[0].vars(), 'name': item[1] } for item in result.items ],
     })
 
