@@ -15,7 +15,6 @@ const useUserStore = defineStore('user', {
         isInit: false,
         isLogin: false,
         _persistence: <UnionUser>{
-            avatar: globalStore.defaultAvatarUrl,
             name: '小哆啦',
             role: 0,
             expires: null,
@@ -57,7 +56,6 @@ const useUserStore = defineStore('user', {
             const { avatar, name, username, role, gender, _class, grade, admissionDate, createDatetime, major } = user;
             this._persistence = {
                 ...user,
-                avatar: avatar || this._persistence.avatar,
                 role: role >= 0 ? role : this._persistence.role,
                 name: name || username || this._persistence.name,
                 gender: gender || '保密',

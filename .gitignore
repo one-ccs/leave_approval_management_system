@@ -2,6 +2,7 @@ __pycache__
 .vscodecounter
 .history
 .venv
+upload
 
 *.vsdx
 *.doc*

@@ -18,12 +18,10 @@ DATABASE_OPTIONS = {
     'password': MAIN_KEY,
     'database': 'leave_approval_management_system',
 }
-TEMPLATE_FOLDER = '../frontend/templates'
-STATIC_FOLDER = '../frontend/static'
-UPLOAD_FOLDER = './frontend/static/user_upload'
+UPLOAD_FOLDER = './upload'
 ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png', 'webp', 'gif'])
 
-app = _Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
+app = _Flask(__name__)
 
 # Flask
 app.url_map.strict_slashes = False

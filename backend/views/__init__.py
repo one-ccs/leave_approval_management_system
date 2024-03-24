@@ -10,6 +10,7 @@ student_blue = Blueprint('student', __name__, url_prefix='/api/student')
 leave_blue = Blueprint('leave', __name__, url_prefix='/api/leave')
 notice_blue = Blueprint('notice', __name__, url_prefix='/api/notice')
 upload_blue = Blueprint('upload', __name__, url_prefix='/api/upload')
+file_blue = Blueprint('file', __name__, url_prefix='/api/file')
 
 from . import errorhandler
 from . import user
@@ -19,3 +20,4 @@ from . import student
 from . import leave
 from . import notice
 from . import upload
+from . import file

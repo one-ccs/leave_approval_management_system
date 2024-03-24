@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Union
+from flask import Request
 from datetime import datetime, timedelta
 from re import compile
 from functools import reduce
@@ -68,33 +69,33 @@ class DateTimeUtils(object):
 class RequestUtils(object):
 
     @staticmethod
-    def quick_data(request, *keys) -> Union[tuple, dict]:
-        """将 request 中的请求参数按照 values, form, args, json 的优先级解构为元组
+    def quick_data(request: Request, *keys) -> Union[tuple, dict, any]:
+        """将 request 中的 args, values, form, files, json 解构为元组
 
         例 <json>::
             quick_data(request, 'id', 'coords.longitude', 'coords.latitude')
         例 <form>::
             quick_data(request, ('id', int), ('coords[longitude]', float), ('coords[latitude]',float))
 
-        :param keys: None 直接返回整个数据 (dict 类型或 ImmutableMultiDict[str, str] 类型)
+        :param keys: None 直接返回整个数据 (dict 类型)
         :param keys: str 返回取到的值
         :param keys: (key: str, type: T) 索引 0 为字段名, 索引 1 为字段类型
         :param keys: (key: str, type: T, default: any) 索引 0 为字段名, 索引 1 为字段类型, 索引 2 为默认值
-        :return -> (tuple | dict) 返回元组或字典
+        :return -> (tuple | dict | any) 返回元组或字典, 当结果列表长度为 1 时直接返回
         """
         # 获取请求数据
-        data = None
-        if len(request.values):
-            data = request.values
-        elif len(request.form):
-            data = request.form
-        elif len(request.args):
-            data = request.args
-        else:
-            data = request.get_json(force=True, silent=True)
+        json_data = request.get_json(force=True, silent=True)
+        data = {
+            **request.args.to_dict(),
+            **request.values.to_dict(),
+            **request.form.to_dict(),
+            **request.files.to_dict(),
+        }
+        if json_data:
+            data.update(json_data)
         # 直接返回
         if not keys or not data:
-            return data
+            return data if len(data.items()) else None
         # 解析为元组
         values = []
         for key in keys:
@@ -107,7 +108,7 @@ class RequestUtils(object):
                 elif len(key) == 3:
                     value = ObjectUtils.get_value_from_dict(data, key[0], key[2])
                     values.append(key[1](value) if value else None)
-        return tuple(values)
+        return values[0] if len(values) == 1 else tuple(values)
 
 
 class ObjectUtils(object):
@@ -171,7 +172,11 @@ class ObjectUtils(object):
 
     @staticmethod
     def get_value_from_dict(data_dict: dict, key_string: str, default = None) -> any:
-        """根据带点字符串的层级取出字典中的数据"""
+        """根据带点字符串的层级取出字典中的数据
+        :param data_dict 类字典类型
+        :param key_string 以英文句号分隔的字符串
+        :param default 默认值
+        """
         keys = key_string.split('.')
         try:
             return reduce(getitem, keys, data_dict)

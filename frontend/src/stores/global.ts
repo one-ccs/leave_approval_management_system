@@ -5,6 +5,7 @@ const useGlobalStore = defineStore('global', {
     state: () => ({
         isInit: false,
         isUpdate: false,
+        apiHost: 'http://127.0.0.1:5001/api',
         defaultAvatarUrl: '/static/img/avatar.jpg',
         backgroundImages: [
             '/static/img/bg/blob-scene-haikei.svg',

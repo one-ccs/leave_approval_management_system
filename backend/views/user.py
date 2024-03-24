@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 from typing import Union
 from flask import request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from ..plugins import db, login_manager
 from ..views import user_blue
 from ..models import ERole, User, Admin, Teacher, Student
-from ..utils import Result, RequestUtils
+from ..utils import Result, RequestUtils, ObjectUtils
 
 
 # 会话保护模式 [None|'basic'|'strong']
@@ -55,7 +55,14 @@ def root():
     if request.method == 'PUT':
         pass
     if request.method == 'POST':
-        pass
+        request_data = RequestUtils.quick_data(request)
+        result = User.query.filter(
+            User.id == request_data.get('id', current_user.id),
+        ).update(ObjectUtils.vars(request_data, ['id']))
+        db.session.commit()
+        if result > 0:
+            return Result.success('修改成功')
+        return Result.failure('修改失败')
     if request.method == 'DELETE':
         pass
     return Result.failure()

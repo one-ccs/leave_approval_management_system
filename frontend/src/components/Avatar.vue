@@ -30,7 +30,7 @@ const globalStore = useGlobalStore();
 <template>
     <van-image
         class="avatar"
-        :src="src || globalStore.defaultAvatarUrl"
+        :src="src ? `${globalStore.apiHost}/file${src}` : globalStore.defaultAvatarUrl"
         :width="size"
         :height="size"
         :error-icon="globalStore.defaultAvatarUrl"

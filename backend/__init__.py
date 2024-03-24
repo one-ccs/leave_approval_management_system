@@ -20,6 +20,7 @@ from .views import student_blue
 from .views import leave_blue
 from .views import notice_blue
 from .views import upload_blue
+from .views import file_blue
 
 app.register_blueprint(errorhandler_blue)
 app.register_blueprint(user_blue)
@@ -29,3 +30,4 @@ app.register_blueprint(student_blue)
 app.register_blueprint(leave_blue)
 app.register_blueprint(notice_blue)
 app.register_blueprint(upload_blue)
+app.register_blueprint(file_blue)

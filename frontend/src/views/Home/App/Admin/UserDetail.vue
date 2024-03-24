@@ -5,6 +5,7 @@ import { ERole, type ResponseData, type UnionUser } from '@/utils/interface';
 import { apiUserGet } from '@/utils/api';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
+import Avatar from '@/components/Avatar.vue';
 
 const route = useRoute();
 const user = ref({} as UnionUser);
@@ -26,9 +27,10 @@ onMounted(() => {
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <van-cell-group inset>
-                <van-cell title="头像" is-link :to="`${route.path}/modifyAvatar`">
+                <van-cell title="头像" is-link :to="`${route.path}/modifyAvatar?id=${route.query.id}`">
                     <template #value>
-                        <avatar :src="user.avatar" size="66"></avatar>
+                        <!-- 加上 key 属性在头像链接改变后重新显示 -->
+                        <avatar :src="user.avatar" size="66" :key="user.avatar"></avatar>
                     </template>
                 </van-cell>
             </van-cell-group>

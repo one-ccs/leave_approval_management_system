@@ -1,17 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import request, session
-from ..app import UPLOAD_FOLDER
+from flask import request
+from flask_login import login_required
+from werkzeug.utils import secure_filename
+from os import path
+from ..app import UPLOAD_FOLDER, ALLOWED_IMAGE_EXTENSIONS
 from ..views import upload_blue
-from ..utils import Result
+from ..utils import Result, RequestUtils
 
-@upload_blue.route('/upload/<path:key>', methods=['POST'])
-def upload(key):
-    if key == 'avatar':
-        file_data = request.files.get('file_data')
-        if file_data:
-            filename = f'{session.get("role").get("rid")}.webp'
-            file_data.save(f'{UPLOAD_FOLDER}/avatar/{filename}')
-        return Result.success(True, '头像上传成功')
-    else:
-        return Result.forbidden()
+
+@upload_blue.route('/avatar', methods=['POST'])
+@login_required
+def upload():
+    file, filename = RequestUtils.quick_data(request, 'file', 'filename')
+
+    if not file:
+        return Result.failure('上传文件为空')
+    if not filename:
+        return Result.failure('文件名参数为空')
+
+    suffix = path.splitext(file.filename)[1][1:]
+    if suffix not in ALLOWED_IMAGE_EXTENSIONS:
+        return Result.failure('不支持的文件格式')
+
+    filename = secure_filename(f'{filename}.{suffix}')
+    file.save(f'{UPLOAD_FOLDER}/image/avatar/{filename}')
+
+    return Result.success('头像上传成功', f'/image/avatar/{filename}')

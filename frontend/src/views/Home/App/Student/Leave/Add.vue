@@ -336,7 +336,7 @@ const onSubmit = () => {
 <style scoped lang="less">
 .view-container {
     .van-cell-group {
-        margin-top: 16px;
+        margin-top: 15px;
     }
     .preview-cover {
         position: absolute;
