@@ -23,6 +23,7 @@ def root():
     return Result.failure()
 
 @student_blue.route('/pageQuery', methods=['GET'])
+@login_required
 def page_query():
     """分页查询"""
     page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(
@@ -33,7 +34,7 @@ def page_query():
         'startDatetime',
         'endDatetime',
     )
-    query = Student.query.join(
+    query_wrapper = Student.query.join(
         User,
         User.id == Student.user_id,
     ).join(
@@ -55,7 +56,7 @@ def page_query():
         Student.major.asc(),
         Student._class.asc(),
     ).add_columns(User.username, User.avatar, User.role, Teacher.name)
-    result = query.paginate(page=page_index, per_page=page_size, error_out=False)
+    result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,

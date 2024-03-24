@@ -23,6 +23,7 @@ def root():
     return Result.failure()
 
 @teacher_blue.route('/pageQuery', methods=['GET'])
+@login_required
 def page_query():
     """分页查询"""
     page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(
@@ -33,14 +34,29 @@ def page_query():
         'startDatetime',
         'endDatetime',
     )
-    query = User.query.filter(
-        User.username.like(query),
-        or_(start_datetime >= User.create_datetime, start_datetime == None),
-        or_(end_datetime <= User.create_datetime, end_datetime == None),
-    )
-    result = query.paginate(page=page_index, per_page=page_size, error_out=False)
+    query_wrapper = Teacher.query.join(
+        User,
+        User.id == Teacher.user_id,
+    ).filter(
+        or_(
+            or_(
+                User.username.contains(query),
+                Teacher.name.contains(query),
+                Teacher.telephone.contains(query),
+            ),
+            query == None, query == '',
+        ),
+        or_(start_datetime >= User.create_datetime, start_datetime == None, start_datetime == ''),
+        or_(end_datetime <= User.create_datetime, end_datetime == None, end_datetime == ''),
+    ).add_columns(User.username, User.avatar, User.role)
+    result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,
-        'list': result.items,
+        'list': [ {
+            **item[0].vars(),
+            'username': item[1],
+            'avatar': item[2],
+            'role': item[3],
+        } for item in result.items ],
     })

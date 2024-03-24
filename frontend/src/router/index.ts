@@ -214,11 +214,30 @@ const routes: RouteRecordRaw[] = [
                                 ],
                             },
                             {
+                                path: 'adminManager',
+                                name: 'adminAdminManager',
+                                meta: {
+                                    title: '管理员管理',
+                                    permiss: 11,
+                                },
+                                component: () => import('@/views/Home/App/Admin/Admin.vue'),
+                                children: [
+                                    {
+                                        path: 'detail',
+                                        name: 'adminAdminManagerDetail',
+                                        meta: {
+                                            title: '管理员详情',
+                                        },
+                                        component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
+                                    },
+                                ],
+                            },
+                            {
                                 path: 'permission',
                                 name: 'adminPermission',
                                 meta: {
                                     title: '权限管理',
-                                    permiss: 11,
+                                    permiss: 12,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Permission.vue'),
                             },
@@ -227,7 +246,7 @@ const routes: RouteRecordRaw[] = [
                                 name: 'adminNotice',
                                 meta: {
                                     title: '通知管理',
-                                    permiss: 12,
+                                    permiss: 13,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Notice.vue'),
                             },
@@ -236,7 +255,7 @@ const routes: RouteRecordRaw[] = [
                                 name: 'adminLost',
                                 meta: {
                                     title: '失物招领管理',
-                                    permiss: 13,
+                                    permiss: 14,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Lost.vue'),
                             },
@@ -245,7 +264,7 @@ const routes: RouteRecordRaw[] = [
                                 name: 'adminAdmin',
                                 meta: {
                                     title: '管理员信息',
-                                    permiss: 14,
+                                    permiss: 15,
                                 },
                                 component: () => import('@/views/Home/App/UserInfo.vue'),
                             },

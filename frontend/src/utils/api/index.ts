@@ -22,6 +22,7 @@ export function defaultFailureCallback(data: ResponseData, status: number, url: 
 }
 
 export * from './userApi';
+export * from './adminApi';
 export * from './teacherApi';
 export * from './studentApi';
 export * from './leaveApi';

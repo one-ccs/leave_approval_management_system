@@ -1,5 +1,5 @@
 import { defaultFailureCallback, defaultSuccessCallback } from ".";
-import type { Teacher } from "../interface";
+import type { Teacher, TimeRangePageQuery } from "../interface";
 import request from "../request";
 
 
@@ -41,6 +41,16 @@ export function apiTeacherDelete(id: number, successCallback: Function = default
         method: 'DELETE',
         data: {
             id,
+        },
+        successCallback,
+        failureCallback,
+    });
+}
+
+export function apiTeacherPageQuery(query: TimeRangePageQuery, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
+    return request('/api/teacher/pageQuery', {
+        params: {
+            ...query,
         },
         successCallback,
         failureCallback,

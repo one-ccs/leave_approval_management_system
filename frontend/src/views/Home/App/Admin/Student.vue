@@ -25,6 +25,11 @@ const getPageUser = () => {
         userList.push(...data.data.list);
     });
 };
+// 搜索事件
+const onSearch = () => {
+    query.pageIndex = 1;
+    getPageUser();
+};
 
 onMounted(() => {
     getPageUser();
@@ -39,9 +44,9 @@ onMounted(() => {
             <time-range-query
                 class="time-range-query"
                 v-model="query"
-                @search="getPageUser()"
+                @search="onSearch()"
             />
-            <template v-if="userList.length">
+            <div v-if="userList.length" class="container">
                 <div class="user-list">
                     <user-card v-for="user in userList" :key="user.id"
                         :user="user"
@@ -58,7 +63,7 @@ onMounted(() => {
                     force-ellipses
                     @change="getPageUser()"
                 />
-            </template>
+            </div>
             <van-empty v-else image="search" description="暂无数据" />
         </div>
     </div>
@@ -71,13 +76,15 @@ onMounted(() => {
         top: 0;
         z-index: 1;
     }
-    .user-list {
-        padding: 15px;
-    }
-    .van-pagination {
-        z-index: 1;
-        position: sticky;
-        bottom: 0;
+    .container {
+        .user-list {
+            padding: 15px;
+        }
+        .van-pagination {
+            z-index: 1;
+            position: sticky;
+            bottom: 0;
+        }
     }
 }
 </style>

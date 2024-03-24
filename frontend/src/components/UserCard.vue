@@ -46,6 +46,34 @@ const globalStore = useGlobalStore();
                 <span class="text">：{{ `${user.grade}${user.major}${user._class}班` }}</span>
             </div>
         </div>
+        <div class="info-wrapper" v-if="user.role === ERole.teacher">
+            <div class="info-item">
+                <span class="label">职工号</span>
+                <span class="text">：{{ user.username }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">姓名</span>
+                <span class="text">：{{ user.name }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">联系方式</span>
+                <span class="text">：{{ user.telephone }}</span>
+            </div>
+        </div>
+        <div class="info-wrapper" v-if="user.role === ERole.admin">
+            <div class="info-item">
+                <span class="label">用户名</span>
+                <span class="text">：{{ user.username }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">姓名</span>
+                <span class="text">：{{ user.name }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">性别</span>
+                <span class="text">：{{ user.gender }}</span>
+            </div>
+        </div>
         <div class="angle-right">
             <van-icon class-prefix="fa" name="angle-right"></van-icon>
         </div>
@@ -82,7 +110,7 @@ const globalStore = useGlobalStore();
 
             .label {
                 display: inline-block;
-                width: 3rem;
+                width: 3.8rem;
                 text-align: justify;
                 text-align-last: justify;
                 white-space: nowrap;
