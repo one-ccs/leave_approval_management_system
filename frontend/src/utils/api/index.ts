@@ -26,3 +26,4 @@ export * from './adminApi';
 export * from './teacherApi';
 export * from './studentApi';
 export * from './leaveApi';
+export * from './noticeApi';

@@ -60,6 +60,7 @@ const router = useRouter();
         border-radius: var(--border-radius);
         padding: 18px;
         background-color: #fff;
+        box-shadow: var(--box-shadow-light);
 
         .title-wrapper {
             display: flex;

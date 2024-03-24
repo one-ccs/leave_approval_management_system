@@ -30,6 +30,16 @@ const routes: RouteRecordRaw[] = [
                             title: '系统通知',
                         },
                         component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                        children: [
+                            {
+                                path: 'detail',
+                                name: 'noticeSystemDetail',
+                                meta: {
+                                    title: '通知详情',
+                                },
+                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                            },
+                        ],
                     },
                     {
                         path: 'school',
@@ -38,6 +48,16 @@ const routes: RouteRecordRaw[] = [
                             title: '学校通知',
                         },
                         component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                        children: [
+                            {
+                                path: 'detail',
+                                name: 'noticeSchoolDetail',
+                                meta: {
+                                    title: '通知详情',
+                                },
+                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                            },
+                        ],
                     },
                     {
                         path: 'college',
@@ -46,6 +66,16 @@ const routes: RouteRecordRaw[] = [
                             title: '学院通知',
                         },
                         component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                        children: [
+                            {
+                                path: 'detail',
+                                name: 'noticeCollegeDetail',
+                                meta: {
+                                    title: '通知详情',
+                                },
+                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                            },
+                        ],
                     },
                     {
                         path: 'teacher',
@@ -54,6 +84,16 @@ const routes: RouteRecordRaw[] = [
                             title: '辅导员通知',
                         },
                         component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                        children: [
+                            {
+                                path: 'detail',
+                                name: 'noticeTeacherDetail',
+                                meta: {
+                                    title: '通知详情',
+                                },
+                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                            },
+                        ],
                     },
                 ],
             },

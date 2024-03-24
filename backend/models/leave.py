@@ -7,7 +7,7 @@ from ..utils import ObjectUtils, DateTimeUtils
 class Leave(db.Model):
     """请假条表"""
     id         = db.Column(db.Integer, primary_key=True, comment='请假条 id')
-    user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='用户 id')
+    user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='请假用户 id')
     state      = db.Column(db.SmallInteger, default=0, comment='请假条状态 (0 待审批|1 已撤回|2 审批中|3 已驳回|4 待销假|5 销假中|6 已完成)')
     category   = db.Column(db.SmallInteger, comment='请假条类别 (0 事假|1 病假|2 公假|3 出校申请)')
     apply_datetime   = db.Column(db.DateTime, default=DateTimeUtils.now, comment='申请时间')

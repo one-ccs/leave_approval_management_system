@@ -5,4 +5,5 @@ from .admin import Admin
 from .teacher import Teacher
 from .student import Student
 from .leave import Leave
+from .notice import Notice
 from .enum import ERole, ELeaveState, ELeaveCategory

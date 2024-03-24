@@ -3,7 +3,7 @@
 
 <template>
     <div class="view">
-        about
+        <van-empty image="search" description="页面建设中" />
     </div>
 </template>
 

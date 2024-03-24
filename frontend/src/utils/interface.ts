@@ -63,6 +63,14 @@ export interface Leave {
     rejectReason: string;
 };
 
+export interface Notice {
+    id: number;
+    userId: number;
+    title: string;
+    content: string;
+    releaseDatetime: string;
+};
+
 export type RoleEn = 'student' | 'teacher' | 'admin';
 
 export enum ERole {
