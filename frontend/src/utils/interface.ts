@@ -15,6 +15,7 @@ export interface Admin {
     userId: number;
     name: string;
     gender: string;
+    telephone: string;
 };
 
 export interface Teacher {

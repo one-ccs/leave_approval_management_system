@@ -57,7 +57,7 @@ const globalStore = useGlobalStore();
             </div>
             <div class="info-item">
                 <span class="label">联系方式</span>
-                <span class="text">：{{ user.telephone }}</span>
+                <span class="text">：{{ user.telephone || '/' }}</span>
             </div>
         </div>
         <div class="info-wrapper" v-if="user.role === ERole.admin">
@@ -70,8 +70,8 @@ const globalStore = useGlobalStore();
                 <span class="text">：{{ user.name }}</span>
             </div>
             <div class="info-item">
-                <span class="label">性别</span>
-                <span class="text">：{{ user.gender }}</span>
+                <span class="label">联系方式</span>
+                <span class="text">：{{ user.telephone || '/' }}</span>
             </div>
         </div>
         <div class="angle-right">
