@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ERole, type UnionUser } from '@/utils/interface';
-import useGlobalStore from '@/stores/global';
+import Avatar from './Avatar.vue';
 
-const { user } = defineProps({
+const { user, to } = defineProps({
     user: {
         type: Object as () => UnionUser,
         required: true,
@@ -15,19 +15,11 @@ const { user } = defineProps({
 });
 
 const router = useRouter();
-const globalStore = useGlobalStore();
 </script>
 
 <template>
     <div class="user-card van-haptics-feedback" @click="router.push(to)">
-        <van-image class="avatar" lazy-load :src="user.avatar || '/failImage'" round width="50" height="50">
-            <template #loading>
-                <van-loading type="spinner" size="24" />
-            </template>
-            <template #error>
-                <van-image :src="globalStore.defaultAvatarUrl"></van-image>
-            </template>
-        </van-image>
+        <avatar :src="user.avatar" size="50" loading-size="24"></avatar>
         <div class="info-wrapper" v-if="user.role === ERole.student">
             <div class="info-item">
                 <span class="label">学号</span>
@@ -94,9 +86,6 @@ const globalStore = useGlobalStore();
     background: #fff;
     box-shadow: var(--box-shadow-light-2);
 
-    .avatar {
-        flex: 0 0 auto;
-    }
     .info-wrapper {
         flex: 1 0 auto;
         margin-left: 15px;

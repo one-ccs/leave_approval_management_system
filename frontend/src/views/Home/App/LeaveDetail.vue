@@ -10,6 +10,7 @@ import i18n from '@/utils/i18n';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
+import Avatar from '@/components/Avatar.vue';
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -103,7 +104,7 @@ onMounted(() => {
         <div class="view-container">
             <div class="info-wrapper">
                 <div class="header">
-                    <van-image class="avatar" :src="userStore.userInfo.avatar" round width="50" height="50"></van-image>
+                    <avatar :src="userStore.userInfo.avatar" size="50"></avatar>
                     <div class="title">{{ userStore.userInfo.name }}的请假申请</div>
                     <van-tag
                         class="tag"

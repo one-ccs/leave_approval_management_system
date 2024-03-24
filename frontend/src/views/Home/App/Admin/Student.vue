@@ -48,9 +48,9 @@ onMounted(() => {
             />
             <div v-if="userList.length" class="container">
                 <div class="user-list">
-                    <user-card v-for="user in userList" :key="user.id"
+                    <user-card v-for="user in userList" :key="user.userId"
                         :user="user"
-                        :to="`/app/admin/student/detail?id=${user.id}`"
+                        :to="`/app/admin/student/detail?id=${user.userId}`"
                     />
                     <van-back-top offset="120" bottom="56" teleport=".view-container" z-index="1"></van-back-top>
                 </div>

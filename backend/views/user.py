@@ -39,7 +39,19 @@ def load_user(user_id):
 @login_required
 def root():
     if request.method == 'GET':
-        pass
+        id = RequestUtils.quick_data(request, ('id', int))
+        user = User(id)
+        # 获取详细信息
+        any_user: Union[Admin, Teacher, Student] = None
+        if user.role == ERole.ADMIN:
+            any_user = Admin.query.filter_by(user_id=user.id).first()
+        elif user.role == ERole.TEACHER:
+            any_user = Teacher.query.filter_by(user_id=user.id).first()
+        elif user.role == ERole.STUDENT:
+            any_user = Student.query.filter_by(user_id=user.id).first()
+        else:
+            return Result.failure('未知角色')
+        return Result.success('查询成功', { **user.vars(), **any_user.vars()})
     if request.method == 'PUT':
         pass
     if request.method == 'POST':
@@ -60,12 +72,12 @@ def page_query():
         'startDatetime',
         'endDatetime',
     )
-    query = User.query.filter(
+    query_wrapper = User.query.filter(
         User.username.like(query),
         or_(start_datetime >= User.create_datetime, start_datetime == None),
         or_(end_datetime <= User.create_datetime, end_datetime == None),
     )
-    result = query.paginate(page=page_index, per_page=page_size, error_out=False)
+    result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,
@@ -112,8 +124,7 @@ def login():
                 return Result.failure('登录失败\n角色数据异常\n请联系管理员')
             # 登录用户
             if login_user(user):
-                data = { **user.vars(), **any_user.vars()}
-                return Result.success('登录成功', data)
+                return Result.success('登录成功', { **user.vars(), **any_user.vars()})
     return Result.method_not_allowed()
 
 @user_blue.route('/register', methods=['POST'])

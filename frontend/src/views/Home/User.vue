@@ -5,6 +5,7 @@ import { apiLogout } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
+import Avatar from '@/components/Avatar.vue';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
@@ -59,7 +60,7 @@ const buttons = [
     <div class="client-wrapper">
         <right-slide-router-view />
         <div class="user-card">
-            <van-image class="avatar" :src="userStore.userInfo.avatar" round width="72" height="72"></van-image>
+            <avatar :src="userStore.userInfo.avatar" size="72"></avatar>
             <van-space class="info" direction="vertical" :size="5">
                 <div class="name">{{ userStore.userInfo.name }}</div>
                 <div class="role">{{ userStore.roleZh }}</div>
@@ -112,16 +113,16 @@ const buttons = [
         padding: 15px;
         background-color: #fffa;
 
-        .avatar {
-            flex: 0 0 auto;
-            margin-right: 15px;
-        }
-        .name {
-            font-size: 1.25rem;
-        }
-        .role, .major {
-            color: #333;
-            font-size: .85rem;
+        .info {
+            margin-left: 15px;
+
+            .name {
+                font-size: 1.25rem;
+            }
+            .role, .major {
+                color: #333;
+                font-size: .85rem;
+            }
         }
     }
     .cell-group {

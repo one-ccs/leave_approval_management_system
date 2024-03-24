@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('./src/components/Avatar.vue')['default']
     BackNavBar: typeof import('./src/components/BackNavBar.vue')['default']
     LeaveCard: typeof import('./src/components/LeaveCard.vue')['default']
     NoticeCard: typeof import('./src/components/NoticeCard.vue')['default']

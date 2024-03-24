@@ -123,7 +123,7 @@ def page_brief():
         ('state', int),
         ('category', int),
     )
-    query = Leave.query.options(load_only(
+    query_wrapper = Leave.query.options(load_only(
         Leave.id,
         Leave.state,
         Leave.category,
@@ -133,7 +133,7 @@ def page_brief():
         Student.name,
     )
     if current_user.role == ERole.STUDENT:
-        query = query.join(
+        query_wrapper = query_wrapper.join(
             Student,
             Student.user_id == Leave.user_id,
         ).filter(
@@ -142,7 +142,7 @@ def page_brief():
             or_(Leave.category == category, category == None),
         )
     if current_user.role == ERole.TEACHER:
-        query = query.join(
+        query_wrapper = query_wrapper.join(
             Student,
             Student.user_id == Leave.user_id,
         ).join(
@@ -153,7 +153,7 @@ def page_brief():
             or_(Leave.state == state, state == None),
             or_(Leave.category == category, category == None),
         )
-    result = query.paginate(page=page_index, per_page=page_size, error_out=False)
+    result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,

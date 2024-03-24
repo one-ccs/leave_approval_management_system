@@ -275,6 +275,16 @@ const routes: RouteRecordRaw[] = [
                                             title: '学生详情',
                                         },
                                         component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
+                                        children: [
+                                            {
+                                                path: 'modifyAvatar',
+                                                name: 'adminStudentDetailModifyAvatar',
+                                                meta: {
+                                                    title: '修改头像',
+                                                },
+                                                component: () => import('@/views/Home/User/Modify/Avatar.vue'),
+                                            },
+                                        ],
                                     },
                                 ],
                             },
@@ -294,6 +304,16 @@ const routes: RouteRecordRaw[] = [
                                             title: '教师详情',
                                         },
                                         component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
+                                        children: [
+                                            {
+                                                path: 'modifyAvatar',
+                                                name: 'adminTeacherDetailModifyAvatar',
+                                                meta: {
+                                                    title: '修改头像',
+                                                },
+                                                component: () => import('@/views/Home/User/Modify/Avatar.vue'),
+                                            },
+                                        ],
                                     },
                                 ],
                             },
@@ -313,6 +333,16 @@ const routes: RouteRecordRaw[] = [
                                             title: '管理员详情',
                                         },
                                         component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
+                                        children: [
+                                            {
+                                                path: 'modifyAvatar',
+                                                name: 'adminAdminDetailModifyAvatar',
+                                                meta: {
+                                                    title: '修改头像',
+                                                },
+                                                component: () => import('@/views/Home/User/Modify/Avatar.vue'),
+                                            },
+                                        ],
                                     },
                                 ],
                             },

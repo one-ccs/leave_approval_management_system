@@ -2,6 +2,7 @@
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
+import Avatar from '@/components/Avatar.vue';
 
 const userStore = useUserStore();
 </script>
@@ -14,7 +15,7 @@ const userStore = useUserStore();
             <van-cell-group inset>
                 <van-cell title="头像">
                     <template #value>
-                        <van-image class="avatar" :src="userStore.userInfo.avatar" round width="66" height="66"></van-image>
+                        <avatar :src="userStore.userInfo.avatar" size="66"></avatar>
                     </template>
                 </van-cell>
             </van-cell-group>
