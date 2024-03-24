@@ -17,9 +17,14 @@ import pinia from './stores/pinia';
 import useGlobalStore from './stores/global';
 import usePermissStore from './stores/permiss';
 import useUserStore from './stores/user';
+import useNoticeStore from './stores/notice';
 
 
-// 初始化 store
+// 异步初始化 store
+setTimeout(() => {
+    useNoticeStore().init();
+}, 0);
+// 同步初始化 store
 useGlobalStore().init();
 useUserStore().init();
 

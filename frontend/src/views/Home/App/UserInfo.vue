@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import BackNavBar from '@/components/BackNavBar.vue';
 import useUserStore from '@/stores/user';
+import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
+import BackNavBar from '@/components/BackNavBar.vue';
 
 const userStore = useUserStore();
 </script>
 
 <template>
     <div class="view">
+        <right-slide-router-view />
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <van-cell-group inset>
@@ -36,7 +38,7 @@ const userStore = useUserStore();
             </van-cell-group>
 
             <van-cell-group v-permiss="0x100" inset>
-                <van-cell title="学籍档案" is-link/>
+                <van-cell title="学籍档案" is-link to="/app/student/student/record" />
             </van-cell-group>
         </div>
     </div>

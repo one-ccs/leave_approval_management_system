@@ -115,7 +115,7 @@ const apps = [
 
 <template>
     <div class="client-wrapper">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <header class="header">应用</header>
         <van-grid
             class="app-grids translucent-half"

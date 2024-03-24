@@ -8,18 +8,22 @@ const noticeGroup = [
     {
         title: '系统通知',
         label: noticeStore.systemNotice,
+        route: '/notice/system',
     },
     {
         title: '学校通知',
         label: noticeStore.schoolNotice,
+        route: '/notice/school',
     },
     {
         title: '学院通知',
         label: noticeStore.collegeNotice,
+        route: '/notice/college',
     },
     {
         title: '辅导员通知',
         label: noticeStore.teacherNotice,
+        route: '/notice/teacher',
     },
 ];
 const dailyNoticeGroup = [
@@ -40,12 +44,13 @@ const dailyNoticeGroup = [
 
 <template>
     <div class="client-wrapper">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <header class="header">通知</header>
         <van-cell-group class="notice-group translucent-half" :border="false">
             <van-cell v-for="notice in noticeGroup"
-                :title="notice.title"
                 class="van-haptics-feedback"
+                :title="notice.title"
+                :to="notice.route"
             >
                 <template #label>{{ notice.label }}</template>
             </van-cell>

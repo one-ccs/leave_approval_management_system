@@ -57,7 +57,7 @@ const buttons = [
 
 <template>
     <div class="client-wrapper">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <div class="user-card">
             <van-image class="avatar" :src="userStore.userInfo.avatar" round width="72" height="72"></van-image>
             <van-space class="info" direction="vertical" :size="5">

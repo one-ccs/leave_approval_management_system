@@ -6,7 +6,7 @@ import BackNavBar from '@/components/BackNavBar.vue';
     <div class="view">
         <back-nav-bar class="view-header" />
         <div class="view-container">
-            <van-empty description="敬请期待" />
+            <van-empty description="页面建设中" />
         </div>
     </div>
 </template>

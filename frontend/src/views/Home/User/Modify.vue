@@ -8,7 +8,7 @@ const userStore = useUserStore();
 
 <template>
     <div class="view">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <van-cell-group inset>

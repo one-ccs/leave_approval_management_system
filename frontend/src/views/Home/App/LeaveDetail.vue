@@ -98,7 +98,7 @@ onMounted(() => {
 
 <template>
     <div class="view">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <back-nav-bar class="view-header"></back-nav-bar>
         <div class="view-container">
             <div class="info-wrapper">

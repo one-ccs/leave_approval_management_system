@@ -19,7 +19,7 @@ const globalStore = useGlobalStore();
 </script>
 
 <template>
-    <div class="user-card" @click="router.push(to)">
+    <div class="user-card van-haptics-feedback" @click="router.push(to)">
         <van-image class="avatar" lazy-load :src="user.avatar || '/failImage'" round width="50" height="50">
             <template #loading>
                 <van-loading type="spinner" size="24" />

@@ -99,7 +99,7 @@ const onChange = () => {
 
 <template>
     <div class="view">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <back-nav-bar v-if="route.name === 'studentLeave'" class="view-header" right-text="新建申请" @click-right="router.push('/app/student/leave/add')" />
         <back-nav-bar v-else class="view-header" />
         <div class="view-container">

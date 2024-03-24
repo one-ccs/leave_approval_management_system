@@ -22,6 +22,40 @@ const routes: RouteRecordRaw[] = [
                     title: '通知',
                 },
                 component: () => import('@/views/Home/Notice.vue'),
+                children: [
+                    {
+                        path: 'system',
+                        name: 'noticeSystem',
+                        meta: {
+                            title: '系统通知',
+                        },
+                        component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                    },
+                    {
+                        path: 'school',
+                        name: 'noticeSchool',
+                        meta: {
+                            title: '学校通知',
+                        },
+                        component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                    },
+                    {
+                        path: 'college',
+                        name: 'noticeCollege',
+                        meta: {
+                            title: '学院通知',
+                        },
+                        component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                    },
+                    {
+                        path: 'teacher',
+                        name: 'noticeTeacher',
+                        meta: {
+                            title: '辅导员通知',
+                        },
+                        component: () => import('@/views/Home/Notice/NoticeList.vue'),
+                    },
+                ],
             },
             {
                 path: 'app',
@@ -116,6 +150,16 @@ const routes: RouteRecordRaw[] = [
                                     permiss: 4,
                                 },
                                 component: () => import('@/views/Home/App/UserInfo.vue'),
+                                children: [
+                                    {
+                                        path: 'record',
+                                        name: 'studentStudentRecord',
+                                        meta: {
+                                            title: '学籍档案',
+                                        },
+                                        component: () => import('@/views/Home/App/Student/Record.vue'),
+                                    },
+                                ],
                             },
                         ],
                     },

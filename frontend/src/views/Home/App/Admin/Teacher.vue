@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
     <div class="view">
-        <right-slide-router-view></right-slide-router-view>
+        <right-slide-router-view />
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <time-range-query

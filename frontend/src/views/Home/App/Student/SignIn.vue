@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import BackNavBar from '@/components/BackNavBar.vue';
+import { reactive } from 'vue';
 import useUserStore from '@/stores/user';
+import BackNavBar from '@/components/BackNavBar.vue';
+import SignInCard from '@/components/SignInCard.vue';
 
 const userStore = useUserStore();
-const notices = ref([
+const notices = reactive([
     {
         datetime: '2024-3-5 21:53:41',
         state: 0,
@@ -62,30 +63,16 @@ const notices = ref([
     <div class="view">
         <back-nav-bar class="view-header" />
         <div class="view-container">
-            <div class="notice-list">
-                <div class="notice-item" v-for="notice in notices">
-                    <div class="notice-datetime">{{ notice.datetime }}</div>
-                    <div class="notice-card">
-                        <van-icon class="notice-icon" name="clock-o" size="2.8rem"></van-icon>
-                        <div class="notice-content">
-                            <div class="notice-title">
-                                <van-button
-                                    class="state"
-                                    plain
-                                    round
-                                    tag="div"
-                                    size="mini"
-                                    :type="notice.state ? 'success' : 'warning'"
-                                    :text="notice.state ? '已签到' : '待签到'"
-                                ></van-button>
-                                <div class="title">{{ notice.title }}</div>
-                            </div>
-                            <div class="notice-describe">{{ userStore.userInfo.major }}</div>
-                        </div>
-                    </div>
-                </div>
+            <div  v-if="notices.length"class="notice-list">
+                <sign-in-card v-for="notice in notices"
+                    :datetime="notice.datetime"
+                    :state="notice.state"
+                    :title="notice.title"
+                    :describe="userStore.userInfo._class"
+                />
+                <van-back-top />
             </div>
-            <van-back-top></van-back-top>
+            <van-empty v-else image="search" description="暂无数据" />
         </div>
     </div>
 </template>
@@ -93,51 +80,7 @@ const notices = ref([
 <style scoped lang="less">
 .view {
     .view-container {
-
-        .notice-list {
-            margin: 0 15px;
-
-            .notice-item {
-                margin: 8px auto;
-
-                .notice-datetime {
-                    margin: 8px auto;
-                    text-align: center;
-                }
-                .notice-card {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: flex-start;
-                    border-radius: var(--border-radius);
-                    padding: 24px 18px;
-                    background-color: #fff;
-                    box-shadow: var(--box-shadow-light);
-
-                    .notice-icon {
-                        opacity: .8;
-                        margin-right: 18px;
-                    }
-                    .notice-content {
-                        .notice-title {
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            justify-content: flex-start;
-                            margin-bottom: 8px;
-
-                            .state {
-                                margin-right: 8px;
-                            }
-                        }
-                        .notice-describe {
-                            color: #888;
-                            font-size: .8rem;
-                        }
-                    }
-                }
-            }
-        }
+        padding: 15px;
     }
 }
 </style>

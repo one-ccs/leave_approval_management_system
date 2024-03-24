@@ -9,9 +9,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     BackNavBar: typeof import('./src/components/BackNavBar.vue')['default']
     LeaveCard: typeof import('./src/components/LeaveCard.vue')['default']
+    NoticeCard: typeof import('./src/components/NoticeCard.vue')['default']
     RightSlideRouterView: typeof import('./src/components/RightSlideRouterView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SignInCard: typeof import('./src/components/SignInCard.vue')['default']
     Tabbar: typeof import('./src/components/Tabbar.vue')['default']
     TimeRangeQuery: typeof import('./src/components/TimeRangeQuery.vue')['default']
     UserCard: typeof import('./src/components/UserCard.vue')['default']
@@ -46,6 +48,7 @@ declare module 'vue' {
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
     VanTabs: typeof import('vant/es')['Tabs']
     VanTag: typeof import('vant/es')['Tag']
+    VanTextEllipsis: typeof import('vant/es')['TextEllipsis']
     VanTimePicker: typeof import('vant/es')['TimePicker']
     VanUploader: typeof import('vant/es')['Uploader']
   }
