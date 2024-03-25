@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from .app import UPLOAD_FOLDER
-from .app import ALLOWED_IMAGE_EXTENSIONS
-
 from .app import app
 from .plugins import db
 from .plugins import login_manager
