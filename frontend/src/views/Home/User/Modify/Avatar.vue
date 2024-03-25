@@ -6,9 +6,11 @@ import { apiUploadAvatar, apiUserPost } from '@/utils/api';
 import type { ResponseData, User } from '@/utils/interface';
 import encryptMD5 from '@/utils/encryptMD5';
 import { useRoute } from 'vue-router';
+import useUserStore from '@/stores/user';
 
 
 const route = useRoute();
+const userStore = useUserStore();
 const form = reactive({
     annex: <UploaderFileListItem[]>[],
 });
@@ -40,7 +42,14 @@ const pictureOversize = (file: any) => {
 const onSubmit = () => {
     if (!avatarUrl) return showFailToast('提交失败\n没有获取到头像链接');
 
-    apiUserPost({ id: Number(route.query.id) || null, avatar: avatarUrl } as User);
+    apiUserPost({
+        id: Number(route.query.id) || null,
+        avatar: avatarUrl
+    } as User, (data: ResponseData) => {
+        userStore.userInfo.avatar = avatarUrl;
+        userStore.save();
+        showSuccessToast(data.message);
+    });
 };
 </script>
 

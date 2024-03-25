@@ -60,7 +60,7 @@ const buttons = [
     <div class="client-wrapper">
         <right-slide-router-view />
         <div class="user-card">
-            <avatar :src="userStore.userInfo.avatar" size="72"></avatar>
+            <avatar :key="userStore.userInfo.avatar" :src="userStore.userInfo.avatar" size="72"></avatar>
             <van-space class="info" direction="vertical" :size="5">
                 <div class="name">{{ userStore.userInfo.name }}</div>
                 <div class="role">{{ userStore.roleZh }}</div>

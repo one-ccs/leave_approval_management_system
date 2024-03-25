@@ -104,7 +104,7 @@ onMounted(() => {
         <div class="view-container">
             <div class="info-wrapper">
                 <div class="header">
-                    <avatar :src="userStore.userInfo.avatar" size="50"></avatar>
+                    <avatar :key="userStore.userInfo.avatar" :src="userStore.userInfo.avatar" size="50"></avatar>
                     <div class="title">{{ userStore.userInfo.name }}的请假申请</div>
                     <van-tag
                         class="tag"
