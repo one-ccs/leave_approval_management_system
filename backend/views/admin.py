@@ -1,26 +1,68 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request
-from flask_login import login_required, current_user
+from flask_login import login_required
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import admin_blue
 from ..models import User, Admin
-from ..utils import Result, RequestUtils
+from ..utils import Result, RequestUtils, ObjectUtils
 
 
 @admin_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
 @login_required
 def root():
+    # 查询
     if request.method == 'GET':
-        pass
+        id = RequestUtils.quick_data(request, ('id', int))
+        if not id:
+            return Result.failure('管理员 id 不能为空')
+        result = Admin.query.filter(Admin.id == id).first()
+
+        return Result.success('查询成功', result)
+    # 添加
     if request.method == 'PUT':
-        pass
+        request_data = RequestUtils.quick_data(request)
+        if not request_data.get('name'):
+            return Result.failure('管理员姓名不能为空')
+        user = User().withDict(**request_data)
+        db.session.add(user)
+        if not user.id:
+            return Result.failure('添加失败')
+        student = Admin().withDict(
+            **request_data,
+            user_id=user.id,
+        )
+        # 添加并提交事务 失败自动回滚
+        db.session.add(student)
+        db.session.commit()
+        if student.id:
+            return Result.success('添加成功')
+        return Result.failure('添加失败')
+    # 修改
     if request.method == 'POST':
-        pass
+        request_data = RequestUtils.quick_data(request)
+        if not request_data.get('id'):
+            return Result.failure('管理员 id 不能为空')
+        result = Admin.query.filter(
+            Admin.id == request_data.get('id')
+        ).update(ObjectUtils.vars(request_data, ['id', 'user_id']))
+        db.session.commit()
+        if result > 0:
+            return Result.success('修改成功')
+        return Result.failure('修改失败')
+    # 删除
     if request.method == 'DELETE':
-        pass
-    return Result.failure()
+        user_id = RequestUtils.quick_data(request, ('userId', int))
+        if not user_id:
+            return Result.failure('管理员 user_id 不能为空')
+        result = Admin.query.filter(Admin.user_id == user_id).delete()
+        result = User.query.filter(User.id == user_id).delete()
+        db.session.commit()
+        if result > 0:
+            return Result.success('删除成功')
+        return Result.failure('删除失败')
+
 
 @admin_blue.route('/pageQuery', methods=['GET'])
 @login_required

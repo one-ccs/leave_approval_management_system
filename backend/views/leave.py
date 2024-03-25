@@ -95,9 +95,11 @@ def leave():
     # 修改
     if request.method == 'POST':
         request_data = RequestUtils.quick_data(request)
+        if not request_data.get('id'):
+            return Result.failure('请假条 id 不能为空')
         result = Leave.query.filter(
             Leave.id == request_data.get('id')
-        ).update(ObjectUtils.vars(request_data, ['id']))
+        ).update(ObjectUtils.vars(request_data, ['id', 'user_id']))
         db.session.commit()
         if result > 0:
             return Result.success('修改成功')
