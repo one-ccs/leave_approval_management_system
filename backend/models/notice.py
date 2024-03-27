@@ -10,6 +10,7 @@ class Notice(db.Model):
     user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='发布者用户 id')
     title      = db.Column(db.String(30), comment='标题')
     content    = db.Column(db.String(255), comment='内容')
+    status     = db.Column(db.SmallInteger, default=1, comment='状态（0 不显示、1 显示）')
     release_datetime = db.Column(db.DateTime, default=DateTimeUtils.now, comment='发布时间')
 
     def __repr__(self):

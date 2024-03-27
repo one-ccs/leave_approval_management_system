@@ -1,4 +1,4 @@
-function localLoad(key: string, def=null): any {
+export function localLoad(key: string, def: any = null) {
     let data = localStorage.getItem(key);
 
     if(!data) return def;
@@ -10,17 +10,17 @@ function localLoad(key: string, def=null): any {
     }
     return data;
 }
-function localSave(key: string, value: any) {
+export function localSave(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value));
 }
-function localRemove(key: string) {
+export function localRemove(key: string) {
     localStorage.removeItem(key);
 }
-function localClear() {
+export function localClear() {
     localStorage.clear();
 }
 
-function sessionLoad(key: string, def=null): any {
+export function sessionLoad(key: string, def: any = null) {
     let data = sessionStorage.getItem(key);
 
     if(!data) return def;
@@ -32,23 +32,12 @@ function sessionLoad(key: string, def=null): any {
     }
     return data;
 }
-function sessionSave(key: string, value: any) {
+export function sessionSave(key: string, value: any) {
     sessionStorage.setItem(key, JSON.stringify(value));
 }
-function sessionRemove(key: string) {
+export function sessionRemove(key: string) {
     sessionStorage.removeItem(key);
 }
-function sessionClear() {
+export function sessionClear() {
     sessionStorage.clear();
-}
-
-export {
-    localLoad,
-    localSave,
-    localRemove,
-    localClear,
-    sessionLoad,
-    sessionSave,
-    sessionRemove,
-    sessionClear,
 }

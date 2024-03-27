@@ -50,7 +50,7 @@ service.interceptors.response.use(
     }
 );
 
-interface RequestConfig {
+export interface RequestConfig {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
     params?: any;
     data?: any;
