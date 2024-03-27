@@ -1,13 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from .app import app
+
+app.url_map.strict_slashes = False
+
+from .config import FlaskConfig
+from .config import FlaskSQLAlchemyConfig
+from .config import FlasggerConfig
+
+app.config.from_object(FlaskConfig)
+app.config.from_object(FlaskSQLAlchemyConfig)
+app.config.from_object(FlasggerConfig)
+
 from .plugins import db
 from .plugins import login_manager
 from .plugins import migrate
+from .plugins import flasgger
 
 db.init_app(app)
 login_manager.init_app(app)
 migrate.init_app(app, db)
+flasgger.init_app(app)
 
 from .views import errorhandler_blue
 from .views import user_blue

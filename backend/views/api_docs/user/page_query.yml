@@ -1,0 +1,28 @@
+获取用户列表
+用户列表接口
+---
+parameters:
+  - name: pageIndex
+    in: path
+    type: integer
+    default: 1
+  - name: pageSize
+    in: path
+    type: integer
+    default: 10
+  - name: query
+    in: path
+    type: string
+definitions:
+  Palette:
+    type: object
+    properties:
+      palette_name:
+        type: array
+  Color:
+    type: string
+responses:
+  200:
+    description: 颜色列表（可被调色板过滤）
+    examples:
+      rgb: ['red', 'green', 'blue']

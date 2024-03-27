@@ -5,6 +5,7 @@ from flask import request
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
+from flasgger import swag_from
 from ..plugins import db, login_manager
 from ..views import user_blue
 from ..models import ERole, User, Admin, Teacher, Student
@@ -37,6 +38,7 @@ def load_user(user_id):
 
 @user_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
 @login_required
+@swag_from('./api_docs/user/root.yml')
 def root():
     if request.method == 'GET':
         id = RequestUtils.quick_data(request, ('id', int))
@@ -69,6 +71,7 @@ def root():
 
 @user_blue.route('/pageQuery', methods=['GET'])
 @login_required
+@swag_from('./api_docs/user/page_query.yml')
 def page_query():
     """分页查询"""
     page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(

@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request, url_for, redirect
-from .config import FlaskConfig, FlaskSQLAlchemyConfig, AppConfig
+from .config import AppConfig
 from .utils import Result, _Flask
 
 
 app = _Flask(__name__)
-
-app.url_map.strict_slashes = False
-app.config.from_object(FlaskConfig)
-app.config.from_object(FlaskSQLAlchemyConfig)
 
 
 @app.after_request
