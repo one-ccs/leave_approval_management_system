@@ -43,8 +43,9 @@ const onSubmit = (value: any) => {
                 fit="cover"
                 position="center"
                 src="static/img/img01.jpg"
+                title="logo 图片"
             ></van-image>
-            <van-image src="static/img/logo.png" class="logo"></van-image>
+            <van-image src="static/img/logo.png" class="logo" title="logo 图片"></van-image>
         </div>
         <van-form @submit="onSubmit">
             <van-cell-group class="translucent">
@@ -52,6 +53,7 @@ const onSubmit = (value: any) => {
                     v-model="formData.username"
                     name="username"
                     placeholder="请填写用户名"
+                    autocomplete="off"
                     left-icon="friends"
                     size="large"
                     clearable
@@ -63,6 +65,7 @@ const onSubmit = (value: any) => {
                     v-model="formData.password"
                     name="password"
                     placeholder="请填写密码"
+                    autocomplete="off"
                     type="password"
                     left-icon="lock"
                     size="large"

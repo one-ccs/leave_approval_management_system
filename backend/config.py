@@ -19,12 +19,20 @@ class FlaskConfig(object):
     # 禁止 js 读取 Cookie
     SESSION_COOKIE_HTTPONLY = True
     # Cookie 有效期 24h
-    PERMANENT_SESSION_LIFETIME = timedelta(seconds=3600 * 24)
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=24)
     # 最大请求体大小 100mb
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
     # 从最近某个日期开始 必须设置 samesite='None' 和 secure=True 浏览器才会跨域发送 cookie
     SESSION_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SECURE = True
+
+
+class FlaskLoginConfig(object):
+    REMEMBER_COOKIE_NAME = 'remember_token'
+    REMEMBER_COOKIE_SECURE = True
+    REMEMBER_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_SAMESITE = 'None'
+    REMEMBER_COOKIE_DURATION = timedelta(days=7)
 
 
 class FlaskSQLAlchemyConfig(object):

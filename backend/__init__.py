@@ -5,10 +5,12 @@ from .app import app
 app.url_map.strict_slashes = False
 
 from .config import FlaskConfig
+from .config import FlaskLoginConfig
 from .config import FlaskSQLAlchemyConfig
 from .config import FlasggerConfig
 
 app.config.from_object(FlaskConfig)
+app.config.from_object(FlaskLoginConfig)
 app.config.from_object(FlaskSQLAlchemyConfig)
 app.config.from_object(FlasggerConfig)
 

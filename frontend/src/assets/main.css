@@ -94,6 +94,7 @@
 .link-button {
     color: var(--text-color);
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
     text-decoration: none;
 }
