@@ -9,56 +9,105 @@
   <body>
     <div id="app">
         <style>
-            body, #splash {
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
                 margin: 0;
-                padding: 0;
+                font-weight: normal;
+            }
+
+            html, body {
+                width: 100vw;
+                height: 100vh;
+            }
+
+            #app {
                 width: 100%;
                 height: 100%;
-                background-color: rgb(42, 44, 55);
+                background-color: #181818;
             }
-            .loader {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 64px;
-                height: 64px;
-                box-sizing: border-box;
-                border: 3px solid #74b1be;
-                animation: animate 2s linear infinite;
+            
+            .pyramid-loader {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              display: block;
+              transform-style: preserve-3d;
+              transform: rotateX(-20deg);
             }
-            .loader::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: #74b1be;
-                animation: animateBg 2s linear infinite;
+
+            .wrapper {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              transform-style: preserve-3d;
+              animation: spin 4s linear infinite;
             }
-            .text {
-                position: absolute;
-                top: 50%;
-                left: calc(50% + 5px);
-                color: #74b1be;
-                transform: translate(-50%, 64px);
+
+            @keyframes spin {
+              100% {
+                transform: rotateY(360deg);
+              }
             }
-            @keyframes animate {
-                0% {transform: translate(-50%, -50%) rotate(0deg);}
-                25% {transform: translate(-50%, -50%) rotate(180deg);}
-                50% {transform: translate(-50%, -50%) rotate(180deg);}
-                75% {transform: translate(-50%, -50%) rotate(360deg);}
-                100% {transform: translate(-50%, -50%) rotate(360deg);}
+
+            .pyramid-loader .wrapper .side {
+              width: 70px;
+              height: 70px;
+            /* you can choose any gradient or color you want */
+              /* background: radial-gradient( #2F2585 10%, #F028FD 70%, #2BDEAC 120%); */
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+              transform-origin: center top;
+              clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             }
-            @keyframes animateBg {
-                0% {height: 0;}
-                25% {height: 0;}
-                50% {height: 100%;}
-                75% {height: 100%;}
-                100% {height: 0;}
+
+            .pyramid-loader .wrapper .side1 {
+              transform: rotateZ(-30deg) rotateY(90deg);
+              background: conic-gradient( #2BDEAC, #F028FD, #D8CCE6, #2F2585);
+            }
+
+            .pyramid-loader .wrapper .side2 {
+              transform: rotateZ(30deg) rotateY(90deg);
+              background: conic-gradient( #2F2585, #D8CCE6, #F028FD, #2BDEAC);
+            }
+
+            .pyramid-loader .wrapper .side3 {
+              transform: rotateX(30deg);
+              background: conic-gradient( #2F2585, #D8CCE6, #F028FD, #2BDEAC);
+            }
+
+            .pyramid-loader .wrapper .side4 {
+              transform: rotateX(-30deg);
+              background: conic-gradient( #2BDEAC, #F028FD, #D8CCE6, #2F2585);
+            }
+
+            .pyramid-loader .wrapper .shadow {
+              width: 60px;
+              height: 60px;
+              background: #8B5AD5;
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+              transform: rotateX(90deg) translateZ(-40px);
+              filter: blur(12px);
             }
         </style>
-        <div id="splash">
-            <div class="loader"></div>
-            <div class="text">页面加载中……</div>
+        <div class="pyramid-loader">
+          <div class="wrapper">
+            <span class="side side1"></span>
+            <span class="side side2"></span>
+            <span class="side side3"></span>
+            <span class="side side4"></span>
+            <span class="shadow"></span>
+          </div>  
         </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

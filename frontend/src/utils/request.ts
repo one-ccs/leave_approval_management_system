@@ -45,7 +45,7 @@ service.interceptors.response.use(
         return response;
     },
     (error: AxiosError) => {
-        showFailToast('发生了一些错误，请联系管理员。')
+        showFailToast('网络连接错误\n请联系管理员');
         return Promise.reject(error);
     }
 );
@@ -69,7 +69,7 @@ export interface RequestConfig {
  * @param config 配置 (默认 "GET" "FORM")
  */
 async function request(url: string, config?: RequestConfig) {
-    let {
+    const {
         method = 'GET',
         params = {},
         data = {},

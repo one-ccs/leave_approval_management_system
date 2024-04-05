@@ -13,7 +13,7 @@ from ..utils import Result, RequestUtils, ObjectUtils
 
 
 # 会话保护模式 [None|'basic'|'strong']
-login_manager.session_protection = "strong"
+login_manager.session_protection = 'strong'
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -108,10 +108,11 @@ def login():
             return Result.success('不存在该用户', False)
     # 用户登录
     if request.method == 'POST':
-        username, password = RequestUtils.quick_data(
+        username, password, remember = RequestUtils.quick_data(
             request,
             'username',
             'password',
+            ('remember', bool),
         )
         if not username or not password:
             return Result.failure('请输入账号和密码')
@@ -133,7 +134,7 @@ def login():
             else:
                 return Result.failure('登录失败\n角色数据异常\n请联系管理员')
             # 登录用户
-            if login_user(user):
+            if login_user(user, remember):
                 return Result.success('登录成功', { **user.vars(), **any_user.vars()})
     return Result.method_not_allowed()
 

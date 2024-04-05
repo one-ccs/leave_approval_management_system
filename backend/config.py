@@ -22,6 +22,9 @@ class FlaskConfig(object):
     PERMANENT_SESSION_LIFETIME = timedelta(seconds=3600 * 24)
     # 最大请求体大小 100mb
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024
+    # 从最近某个日期开始 必须设置 samesite='None' 和 secure=True 浏览器才会跨域发送 cookie
+    SESSION_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True
 
 
 class FlaskSQLAlchemyConfig(object):
