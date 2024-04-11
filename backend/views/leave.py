@@ -4,9 +4,10 @@ from flask import request
 from flask_jwt_extended import jwt_required, current_user
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
+
 from ..plugins import db
 from ..views import leave_blue
-from ..models import ERole, ELeaveState, Teacher, Student, Leave
+from ..models import ERole, ELeaveState, User, Teacher, Student, Leave
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
@@ -45,7 +46,12 @@ def leave():
         result = Leave.query.join(
             Student,
             Leave.user_id == Student.user_id
+        ).join(
+            User,
+            Leave.user_id == User.id
         ).add_columns(
+            User.avatar,
+            Student.name,
             Student.grade,
             Student.major,
             Student._class,
@@ -53,9 +59,11 @@ def leave():
 
         return Result.success('查询成功', {
             **result[0].vars(),
-            'grade': result[1],
-            'major': result[2],
-            '_class': result[3],
+            'avatar': result[1],
+            'name': result[2],
+            'grade': result[3],
+            'major': result[4],
+            '_class': result[5],
         })
     # 添加
     if request.method == 'PUT':

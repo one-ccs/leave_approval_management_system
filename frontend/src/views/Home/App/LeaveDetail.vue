@@ -16,6 +16,8 @@ const route = useRoute();
 const userStore = useUserStore();
 
 interface LeaveExtra extends Leave {
+    avatar: string;
+    name: string;
     grade: string;
     major: string;
     _class: string;
@@ -104,8 +106,8 @@ onMounted(() => {
         <div class="view-container">
             <div class="info-wrapper">
                 <div class="header">
-                    <avatar :key="userStore.userInfo.avatar" :src="userStore.userInfo.avatar" size="50"></avatar>
-                    <div class="title">{{ userStore.userInfo.name }}的请假申请</div>
+                    <avatar :key="leaveDetail?.avatar" :src="leaveDetail?.avatar" size="50"></avatar>
+                    <div class="title">{{ leaveDetail?.name }}的请假申请</div>
                     <van-tag
                         class="tag"
                         plain
