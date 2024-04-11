@@ -95,7 +95,7 @@ class RequestUtils(object):
             data.update(json_data)
         # 直接返回
         if not keys or not data:
-            return data if len(data.items()) else None
+            return data if len(data.items()) else [None for _ in keys]
         # 解析为元组
         values = []
         for key in keys:

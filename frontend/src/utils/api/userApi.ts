@@ -3,7 +3,10 @@ import { defaultSuccessCallback, defaultFailureCallback } from '.';
 import type { ResponseData, User, LoginUser, TimeRangePageQuery } from '../interface';
 import request from '../request';
 import encryptMD5 from '../encryptMD5';
+import useUserStore from '@/stores/user';
 
+
+const { accessToken } = useUserStore().data;
 
 /**
  * 获取用户信息
@@ -17,6 +20,7 @@ export function apiUserGet(id: number, successCallback: Function = defaultSucces
         params: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -35,6 +39,7 @@ export function apiUserPut(user: User, successCallback: Function = defaultSucces
         data: {
             ...user,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -53,6 +58,7 @@ export function apiUserPost(user: User, successCallback: Function = defaultSucce
         data: {
             ...user,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -71,6 +77,7 @@ export function apiUserDelete(id: number, successCallback: Function = defaultSuc
         data: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -88,6 +95,7 @@ export function apiUserPageQuery(query: TimeRangePageQuery, successCallback: Fun
         data: {
             ...query,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -134,6 +142,7 @@ export function apiLogin(user: LoginUser, successCallback: Function = defaultSuc
 export function apiLogout(successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/user/logout', {
         method: 'POST',
+        token: accessToken,
         successCallback,
         failureCallback,
     });

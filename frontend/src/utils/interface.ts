@@ -104,6 +104,8 @@ export interface UnionUser extends User, Admin, Teacher, Student {
     admissionDate: string;
     school: string;
     expires: number | null;
+    accessToken: string;
+    refreshToken: string;
 };
 
 /* --------- vo --------- */

@@ -6,7 +6,7 @@
             "script": "dev",
             "path": "frontend",
             "problemMatcher": [],
-            "label": "npm: dev - frontend",
+            "label": "启动前端",
             "detail": "vite"
         },
         {
@@ -29,9 +29,9 @@
         },
         {
             "type": "shell",
-            "command": "launch.py",
+            "command": "python launch.py",
             "problemMatcher": [],
-            "label": "flask: launch.py",
+            "label": "启动后端",
             "detail": "run flask app"
         },
     ]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request
-from flask_login import login_required
+from flask_jwt_extended import jwt_required
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import student_blue
@@ -10,7 +10,7 @@ from ..utils import Result, RequestUtils, ObjectUtils
 
 
 @student_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
-@login_required
+@jwt_required()
 def root():
     # 查询
     if request.method == 'GET':
@@ -64,7 +64,7 @@ def root():
         return Result.failure('删除失败')
 
 @student_blue.route('/pageQuery', methods=['GET'])
-@login_required
+@jwt_required()
 def page_query():
     """分页查询"""
     page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request
-from flask_login import current_user, login_required
+from flask_jwt_extended import jwt_required, current_user
 from sqlalchemy import or_
 from sqlalchemy.orm import load_only
 from ..plugins import db
@@ -12,10 +12,9 @@ from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 # 所有请求都需要登录 且为指定角色
 @leave_blue.before_request
-@login_required
+@jwt_required()
 def authentication():
-    # 预检请求 OPTIONS current_user 为 AnonymousUserMixin
-    if current_user.is_anonymous and request.method == 'OPTIONS':
+    if request.method == 'OPTIONS':
         return
     # 实际请求
     role = current_user.role

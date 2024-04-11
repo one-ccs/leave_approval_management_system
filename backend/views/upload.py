@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request
-from flask_login import login_required
+from flask_jwt_extended import jwt_required
 from werkzeug.utils import secure_filename
 from os import path
 from ..config import AppConfig
@@ -10,7 +10,7 @@ from ..utils import Result, RequestUtils
 
 
 @upload_blue.route('/avatar', methods=['POST'])
-@login_required
+@jwt_required()
 def upload():
     file, filename = RequestUtils.quick_data(request, 'file', 'filename')
 

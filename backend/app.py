@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request, url_for, redirect
-from .config import AppConfig
-from .utils import Result, _Flask
+from .config import MAIN_KEY
+from .utils import _Flask, Result, RequestUtils
 
 
 app = _Flask(__name__)
@@ -10,17 +10,10 @@ app = _Flask(__name__)
 
 @app.after_request
 def cors(response):
-    # 前端设置 XMLHttpRequest.withCredentials = true
-    # 后端设置 request.headers['Access-Control-Allow-Credentials'] = 'true'
-    # 设置允许携带 cookie, 否则登录后 flask.session 无法无法设置 cookie,
-    # 且服务器的 Access-Control-Allow-Origin 不能设置为 '*', 需要设置白名单进行过滤
-    response.headers['Access-Control-Allow-Origin'] = ''
-    # 获取 'Origin' 时应使用 get 方法并设置默认值，避免出现 KeyError: 'HTTP_ORIGIN' 错误
-    if request.headers.get('Origin', '') in AppConfig.ORIGIN_WHITE:
-        response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with, content-type'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    """放行不在白名单的域"""
+    origin, origin_token = RequestUtils.quick_data(request, 'origin', 'originToken')
+    if origin and origin_token == MAIN_KEY:
+        response.headers['Access-Control-Allow-Origin'] = origin
 
     return response
 

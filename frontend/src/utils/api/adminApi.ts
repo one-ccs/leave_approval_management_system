@@ -1,6 +1,10 @@
 import { defaultFailureCallback, defaultSuccessCallback } from ".";
 import type { Admin, TimeRangePageQuery } from "../interface";
 import request from "../request";
+import useUserStore from '@/stores/user';
+
+
+const { accessToken } = useUserStore().data;
 
 
 export function apiAdminGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
@@ -9,6 +13,7 @@ export function apiAdminGet(id: number, successCallback: Function = defaultSucce
         params: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -20,6 +25,7 @@ export function apiAdminPut(admin: Admin, successCallback: Function = defaultSuc
         data: {
             ...admin,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -31,6 +37,7 @@ export function apiAdminPost(admin: Admin, successCallback: Function = defaultSu
         data: {
             ...admin,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -42,6 +49,7 @@ export function apiAdminDelete(id: number, successCallback: Function = defaultSu
         data: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -52,6 +60,7 @@ export function apiAdminPageQuery(query: TimeRangePageQuery, successCallback: Fu
         params: {
             ...query,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });

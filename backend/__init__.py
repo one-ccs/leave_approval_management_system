@@ -5,22 +5,26 @@ from .app import app
 app.url_map.strict_slashes = False
 
 from .config import FlaskConfig
-from .config import FlaskLoginConfig
+from .config import FlaskCorsConfig
+from .config import FlaskJWTExtendedConfig
 from .config import FlaskSQLAlchemyConfig
 from .config import FlasggerConfig
 
 app.config.from_object(FlaskConfig)
-app.config.from_object(FlaskLoginConfig)
+app.config.from_object(FlaskCorsConfig)
+app.config.from_object(FlaskJWTExtendedConfig)
 app.config.from_object(FlaskSQLAlchemyConfig)
 app.config.from_object(FlasggerConfig)
 
 from .plugins import db
-from .plugins import login_manager
+from .plugins import cors
+from .plugins import jwt
 from .plugins import migrate
 from .plugins import flasgger
 
 db.init_app(app)
-login_manager.init_app(app)
+cors.init_app(app)
+jwt.init_app(app)
 migrate.init_app(app, db)
 flasgger.init_app(app)
 

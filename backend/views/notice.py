@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request
-from flask_login import login_required, current_user
+from flask_jwt_extended import jwt_required, current_user
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import notice_blue
@@ -10,7 +10,7 @@ from ..utils import Result, RequestUtils
 
 
 @notice_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
-@login_required
+@jwt_required()
 def root():
     if request.method == 'GET':
         pass
@@ -23,7 +23,7 @@ def root():
     return Result.failure()
 
 @notice_blue.route('/pageQuery', methods=['GET'])
-@login_required
+@jwt_required()
 def page_query():
     """分页查询"""
     page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(

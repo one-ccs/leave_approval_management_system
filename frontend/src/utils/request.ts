@@ -10,11 +10,6 @@ const userStore = useUserStore(pinia);
 const service: AxiosInstance = axios.create({
     baseURL: 'http://127.0.0.1:5001',
     timeout: 5000,
-    // withCredentials: true
-    // 设置允许携带 cookie, 否则登录后 flask.session 无法无法设置 cookie,
-    // 且服务器的 Access-Control-Allow-Origin 不能设置为 '*', 需要设置白名单进行过滤
-    // 且需要设置 Access-Control-Allow-Credentials: 'true'
-    withCredentials: true,
     // 小于 500 的状态码不抛出错误
     validateStatus: status => (status < 500),
 });

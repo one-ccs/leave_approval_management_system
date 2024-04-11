@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 from ..plugins import db
 from ..utils import DateTimeUtils, ObjectUtils
 
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     id              = db.Column(db.Integer, primary_key=True, comment='用户 id')
     username        = db.Column(db.String(32), index=True, unique=True, nullable=False, comment='用户名')
     password_hash   = db.Column(db.String(255), nullable=False, comment='密码')

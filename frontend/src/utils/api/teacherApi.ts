@@ -1,6 +1,10 @@
 import { defaultFailureCallback, defaultSuccessCallback } from ".";
 import type { Teacher, TimeRangePageQuery } from "../interface";
 import request from "../request";
+import useUserStore from '@/stores/user';
+
+
+const { accessToken } = useUserStore().data;
 
 
 export function apiTeacherGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
@@ -9,6 +13,7 @@ export function apiTeacherGet(id: number, successCallback: Function = defaultSuc
         params: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -20,6 +25,7 @@ export function apiTeacherPut(teacher: Teacher, successCallback: Function = defa
         data: {
             ...teacher,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -31,6 +37,7 @@ export function apiTeacherPost(teacher: Teacher, successCallback: Function = def
         data: {
             ...teacher,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -42,6 +49,7 @@ export function apiTeacherDelete(id: number, successCallback: Function = default
         data: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -52,6 +60,7 @@ export function apiTeacherPageQuery(query: TimeRangePageQuery, successCallback: 
         params: {
             ...query,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });

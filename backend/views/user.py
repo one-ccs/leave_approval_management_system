@@ -2,42 +2,32 @@
 # -*- coding: utf-8 -*-
 from typing import Union
 from flask import request
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, current_user
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from flasgger import swag_from
-from ..plugins import db, login_manager
+from ..plugins import db, jwt
 from ..views import user_blue
 from ..models import ERole, User, Admin, Teacher, Student
 from ..utils import Result, RequestUtils, ObjectUtils
 
 
-# 会话保护模式 [None|'basic'|'strong']
-login_manager.session_protection = 'strong'
+@jwt.user_identity_loader
+def user_identity_lookup(user: User):
+    return user
 
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    """ 未登录或无权访问时将自动调用该函数, 默认返回 401 错误 """
-    return Result.unauthorized()
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_header, jwt_data):
+    identity = jwt_data['sub']
+    return User(identity['id'])
 
-@login_manager.needs_refresh_handler
-def needs_refresh_handler():
-    """ 处理 "非新鲜的" 刷新, 调用 login_manager.confirm_login 函数
-        可以重新标记会话为 "新鲜"
-    """
-    print('need_refresh_handler')
-    pass
-
-@login_manager.user_loader
-def load_user(user_id):
-    """ 登录时自动调用该函数, 该函数是必须设置的, 期待返回一个继承自
-        flask_login.UserMixin 的类, 主要是该类默认提供了 get_id 方法,
-        用于在登录成功后获取用户 id
-    """
-    return User(user_id)
+@jwt.user_lookup_error_loader
+def user_lookup_error_callback():
+    return {'123'}
 
 @user_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
-@login_required
+@jwt_required()
 @swag_from('./api_docs/user/root.yml')
 def root():
     if request.method == 'GET':
@@ -70,7 +60,7 @@ def root():
     return Result.failure()
 
 @user_blue.route('/pageQuery', methods=['GET'])
-@login_required
+@jwt_required()
 @swag_from('./api_docs/user/page_query.yml')
 def page_query():
     """分页查询"""
@@ -134,9 +124,23 @@ def login():
             else:
                 return Result.failure('登录失败\n角色数据异常\n请联系管理员')
             # 登录用户
-            if login_user(user, remember):
-                return Result.success('登录成功', { **user.vars(), **any_user.vars()})
+            access_token = create_access_token(identity=user)
+            refresh_token = create_refresh_token(identity=user)
+            return Result.success('登录成功', {
+                **user.vars(),
+                **any_user.vars(),
+                'accessToken': access_token,
+                'refreshToken': refresh_token,
+            })
     return Result.method_not_allowed()
+
+@user_blue.route('refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    """ 使用刷新 token 获取新的访问 token """
+    current_user = get_jwt_identity()
+    access_token = create_access_token(identity=current_user)
+    return Result.success(access_token)
 
 @user_blue.route('/register', methods=['POST'])
 def register():
@@ -158,11 +162,11 @@ def register():
     return Result.method_not_allowed()
 
 @user_blue.route('/logout', methods=['POST'])
-@login_required
+@jwt_required()
 def logout():
     """ 登出视图 """
     if request.method == 'POST':
-        if logout_user():
+        if 1:
             return Result.success('登出成功')
         return Result.failure('登出失败')
     return Result.method_not_allowed()

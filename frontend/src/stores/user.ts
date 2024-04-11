@@ -14,18 +14,18 @@ const useUserStore = defineStore('user', {
     state: () => ({
         isInit: false,
         isLogin: false,
-        _persistence: <UnionUser>{
+        data: <UnionUser>{
             name: '小哆啦',
             role: 0,
             expires: null,
         },
-        _keyName: 'userStore',
+        keyName: 'userStore',
     }),
     getters: {
-        role: (state: any): number => state._persistence.role,
-        roleZh: (state: any):string => i18n(state._persistence.role, 'role.zh'),
-        roleEn: (state: any): string => i18n(state._persistence.role, 'role.en'),
-        userInfo: (state: any): UnionUser => state._persistence,
+        role: (state: any): number => state.data.role,
+        roleZh: (state: any):string => i18n(state.data.role, 'role.zh'),
+        roleEn: (state: any): string => i18n(state.data.role, 'role.en'),
+        userInfo: (state: any): UnionUser => state.data,
     },
     actions: {
         init() {
@@ -36,28 +36,28 @@ const useUserStore = defineStore('user', {
             return this;
         },
         load() {
-            const persistence = localLoad(this._keyName);
+            const persistence = localLoad(this.keyName);
             if (persistence) {
                 this.setUser(persistence);
             }
             return this;
         },
         save() {
-            localSave(this._keyName, this._persistence);
+            localSave(this.keyName, this.data);
             return this;
         },
         clear() {
-            localRemove(this._keyName);
+            localRemove(this.keyName);
             this.isLogin = false;
             return this;
         },
         setUser(user: UnionUser) {
             // 设置用户信息
             const { avatar, name, username, role, gender, _class, grade, admissionDate, createDatetime, major } = user;
-            this._persistence = {
+            this.data = {
                 ...user,
-                role: role >= 0 ? role : this._persistence.role,
-                name: name || username || this._persistence.name,
+                role: role >= 0 ? role : this.data.role,
+                name: name || username || this.data.name,
                 gender: gender || '保密',
                 _class: _class ? _class.length > 2 ? _class : `${grade}${major}${_class}班` : '',
                 admissionDate: admissionDate || createDatetime || '',
@@ -71,8 +71,8 @@ const useUserStore = defineStore('user', {
             return this;
         },
         isExpired() {
-            if (!this._persistence.expires) return true;
-            return this._persistence.expires <= new Date().getTime();
+            if (!this.data.expires) return true;
+            return this.data.expires <= new Date().getTime();
         },
     }
 });

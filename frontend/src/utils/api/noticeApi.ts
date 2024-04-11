@@ -1,6 +1,10 @@
 import { defaultFailureCallback, defaultSuccessCallback } from ".";
 import type { Notice, TimeRangePageQuery } from "../interface";
 import request from "../request";
+import useUserStore from '@/stores/user';
+
+
+const { accessToken } = useUserStore().data;
 
 
 export function apiNoticeGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
@@ -9,6 +13,7 @@ export function apiNoticeGet(id: number, successCallback: Function = defaultSucc
         params: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -20,6 +25,7 @@ export function apiNoticePut(notice: Notice, successCallback: Function = default
         data: {
             ...notice,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -31,6 +37,7 @@ export function apiNoticePost(notice: Notice, successCallback: Function = defaul
         data: {
             ...notice,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -42,6 +49,7 @@ export function apiNoticeDelete(id: number, successCallback: Function = defaultS
         data: {
             id,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
@@ -52,6 +60,7 @@ export function apiNoticePageQuery(query: TimeRangePageQuery, successCallback: F
         params: {
             ...query,
         },
+        token: accessToken,
         successCallback,
         failureCallback,
     });
