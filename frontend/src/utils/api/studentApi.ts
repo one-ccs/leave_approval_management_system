@@ -4,7 +4,7 @@ import request from "../request";
 import useUserStore from '@/stores/user';
 
 
-const { accessToken } = useUserStore().data;
+const userStore = useUserStore();
 
 
 export function apiStudentGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
@@ -13,7 +13,7 @@ export function apiStudentGet(id: number, successCallback: Function = defaultSuc
         params: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -25,7 +25,7 @@ export function apiStudentPut(student: Student, successCallback: Function = defa
         data: {
             ...student,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -37,7 +37,7 @@ export function apiStudentPost(student: Student, successCallback: Function = def
         data: {
             ...student,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -49,7 +49,7 @@ export function apiStudentDelete(id: number, successCallback: Function = default
         data: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -60,7 +60,7 @@ export function apiStudentPageQuery(query: TimeRangePageQuery, successCallback: 
         params: {
             ...query,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

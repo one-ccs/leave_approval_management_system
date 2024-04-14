@@ -23,15 +23,24 @@ class FlaskCorsConfig(object):
     CORS_ORIGINS = ['http://127.0.0.1:5177', 'http://localhost:5177']
     CORS_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     CORS_ALLOW_HEADERS = ['Authorization', 'Content-Type']
+    CORS_EXPOSE_HEADERS = []
     CORS_SUPPORTS_CREDENTIALS = False
 
 
 class FlaskJWTExtendedConfig(object):
+    JWT_HEADER_NAME = 'Authorization'
+    JWT_HEADER_TYPE = 'Bearer'
     JWT_SECRET_KEY = MAIN_KEY
     # 访问 token 过期时间
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
     # 刷新 token 过期时间
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
+
+
+class RedisConfig(object):
+    HOST = '127.0.0.1'
+    PORT = 6379
+    DB = 0
 
 
 class FlaskSQLAlchemyConfig(object):

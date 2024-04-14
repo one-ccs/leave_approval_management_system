@@ -10,6 +10,8 @@ from operator import getitem
 
 class DateTimeUtils(object):
 
+    timedelta = timedelta
+
     @staticmethod
     def now() -> datetime:
         """返回 datetime 格式的当前时间"""

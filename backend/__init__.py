@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from .app import app
 
+__all__ = ['app']
+
 app.url_map.strict_slashes = False
 
 from .config import FlaskConfig

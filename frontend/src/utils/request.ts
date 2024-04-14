@@ -2,6 +2,8 @@ import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type In
 import { showFailToast } from 'vant';
 import useUserStore from '@/stores/user';
 import pinia from '@/stores/pinia';
+import { apiRefreshToken } from './api';
+import type { ResponseData } from './interface';
 
 
 const userStore = useUserStore(pinia);
@@ -27,15 +29,22 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
     (response: AxiosResponse) => {
-        // 未登录，或登录已过期
+        // 未登录
         if (response.data.code === 401) {
-            showFailToast('未登录\n即将跳转登录页...');
+            showFailToast(`${response.data.message}\n即将跳转登录页...`);
             userStore.clear();
             setTimeout(() => {
                 // 使用 location.href 跳转 而不是 router 防止某些情况下页面不改变的 bug
                 location.href = '/login';
             }, 800);
             return response;
+        }
+        // 登录已过期
+        if (response.data.code === 401.8) {
+            // 刷新令牌
+            apiRefreshToken((data: ResponseData) => {
+                userStore.data.accessToken = data.data;
+            });
         }
         return response;
     },

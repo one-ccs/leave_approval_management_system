@@ -4,7 +4,7 @@ import request from "../request";
 import useUserStore from '@/stores/user';
 
 
-const { accessToken } = useUserStore().data;
+const userStore = useUserStore();
 
 
 export function apiAdminGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
@@ -13,7 +13,7 @@ export function apiAdminGet(id: number, successCallback: Function = defaultSucce
         params: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -25,7 +25,7 @@ export function apiAdminPut(admin: Admin, successCallback: Function = defaultSuc
         data: {
             ...admin,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -37,7 +37,7 @@ export function apiAdminPost(admin: Admin, successCallback: Function = defaultSu
         data: {
             ...admin,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -49,7 +49,7 @@ export function apiAdminDelete(id: number, successCallback: Function = defaultSu
         data: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -60,7 +60,7 @@ export function apiAdminPageQuery(query: TimeRangePageQuery, successCallback: Fu
         params: {
             ...query,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

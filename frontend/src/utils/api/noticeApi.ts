@@ -4,7 +4,7 @@ import request from "../request";
 import useUserStore from '@/stores/user';
 
 
-const { accessToken } = useUserStore().data;
+const userStore = useUserStore();
 
 
 export function apiNoticeGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
@@ -13,7 +13,7 @@ export function apiNoticeGet(id: number, successCallback: Function = defaultSucc
         params: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -25,7 +25,7 @@ export function apiNoticePut(notice: Notice, successCallback: Function = default
         data: {
             ...notice,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -37,7 +37,7 @@ export function apiNoticePost(notice: Notice, successCallback: Function = defaul
         data: {
             ...notice,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -49,7 +49,7 @@ export function apiNoticeDelete(id: number, successCallback: Function = defaultS
         data: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -60,7 +60,7 @@ export function apiNoticePageQuery(query: TimeRangePageQuery, successCallback: F
         params: {
             ...query,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

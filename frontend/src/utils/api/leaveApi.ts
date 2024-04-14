@@ -4,7 +4,7 @@ import request from '../request';
 import useUserStore from '@/stores/user';
 
 
-const { accessToken } = useUserStore().data;
+const userStore = useUserStore();
 
 /**
  * 获取请假条详情
@@ -18,7 +18,7 @@ export function apiLeaveGet(id: number, successCallback: Function = defaultSucce
         params: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -37,7 +37,7 @@ export function apiLeavePut(leave: Leave, successCallback: Function = defaultSuc
             ...leave,
         },
         method: 'PUT',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -56,7 +56,7 @@ export function apiLeavePost(leave: Leave, successCallback: Function = defaultSu
             ...leave,
         },
         method: 'POST',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -75,7 +75,7 @@ export function apiLeaveDelete(id: number, successCallback: Function = defaultSu
             id,
         },
         method: 'DELETE',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -94,7 +94,7 @@ export function apiLeavePageBrief(query: LeavePageQuery, successCallback: Functi
             ...query,
             category: query.category === -1 ? undefined : query.category,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -113,7 +113,7 @@ export function apiLeaveCancel(id: number, successCallback: Function = defaultSu
             id,
         },
         method: 'POST',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -135,7 +135,7 @@ export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude
         },
         method: 'POST',
         contentType: 'JSON',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -154,7 +154,7 @@ export function apiLeaveAgreeLeave(id: number, successCallback: Function = defau
             id,
         },
         method: 'POST',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -173,7 +173,7 @@ export function apiLeaveReject(id: number, successCallback: Function = defaultSu
             id,
         },
         method: 'POST',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -192,7 +192,7 @@ export function apiLeaveAgreeRevoke(id: number, successCallback: Function = defa
             id,
         },
         method: 'POST',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

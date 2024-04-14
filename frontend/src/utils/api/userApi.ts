@@ -6,7 +6,7 @@ import encryptMD5 from '../encryptMD5';
 import useUserStore from '@/stores/user';
 
 
-const { accessToken } = useUserStore().data;
+const userStore = useUserStore();
 
 /**
  * 获取用户信息
@@ -20,7 +20,7 @@ export function apiUserGet(id: number, successCallback: Function = defaultSucces
         params: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -39,7 +39,7 @@ export function apiUserPut(user: User, successCallback: Function = defaultSucces
         data: {
             ...user,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -58,7 +58,7 @@ export function apiUserPost(user: User, successCallback: Function = defaultSucce
         data: {
             ...user,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -77,7 +77,7 @@ export function apiUserDelete(id: number, successCallback: Function = defaultSuc
         data: {
             id,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -95,7 +95,7 @@ export function apiUserPageQuery(query: TimeRangePageQuery, successCallback: Fun
         data: {
             ...query,
         },
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -133,6 +133,14 @@ export function apiLogin(user: LoginUser, successCallback: Function = defaultSuc
     });
 }
 
+export function apiRefreshToken(successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
+    return request('/api/user/refreshToken', {
+        method: 'POST',
+        successCallback,
+        failureCallback,
+    });
+}
+
 /**
  * 登出
  * @param successCallback 成功回调函数
@@ -142,7 +150,7 @@ export function apiLogin(user: LoginUser, successCallback: Function = defaultSuc
 export function apiLogout(successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
     return request('/api/user/logout', {
         method: 'POST',
-        token: accessToken,
+        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
