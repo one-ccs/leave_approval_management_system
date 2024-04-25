@@ -34,5 +34,19 @@
             "label": "启动后端",
             "detail": "run flask app"
         },
+        {
+            "type": "shell",
+            "command": "cd frontend && npm i",
+            "problemMatcher": [],
+            "label": "安装前端依赖",
+            "detail": "npm i"
+        },
+        {
+            "type": "shell",
+            "command": "cd backend && pip install -r requirements.txt",
+            "problemMatcher": [],
+            "label": "安装后端依赖",
+            "detail": "pip install -r requirements.txt"
+        },
     ]
 }
