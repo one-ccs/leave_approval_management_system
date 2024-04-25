@@ -130,6 +130,15 @@ export function apiLogin(user: LoginUser, successCallback?: Function, failureCal
     });
 }
 
+export function apiRefreshToken(successCallback?: Function, failureCallback?: Function) {
+    return api({
+        url: '/api/user/refreshToken',
+        method: 'POST',
+        successCallback,
+        failureCallback,
+    });
+}
+
 /**
  * 登出
  * @param successCallback 成功回调函数

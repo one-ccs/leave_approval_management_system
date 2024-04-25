@@ -1,9 +1,11 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import { showFailToast } from 'vant';
-import HomeView from '@/views/Home.vue';
+import pinia from '@/stores/pinia';
 import usePermissStore from '@/stores/permiss';
 import useUserStore from '@/stores/user';
+import HomeView from '@/views/Home.vue';
 
+const permissStore = usePermissStore(pinia);
+const userStore = useUserStore(pinia);
 
 const routes: RouteRecordRaw[] = [
     {
@@ -481,8 +483,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | 请假视频管理系统`;
-    const permissStore = usePermissStore();
-    const userStore = useUserStore();
 
     if (!userStore.isLogin && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
