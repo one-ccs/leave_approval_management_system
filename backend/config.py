@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from datetime import timedelta
+from .utils import PathUtils
 
 
 MAIN_KEY = 'f0d8f7aa144828d60106968a6067ea19dbfa0d2d2e067eda19dbfa0d2d2e235d37e5198842dca67e13a'
@@ -9,7 +10,7 @@ DB_PASS = 'LmzwTvA1p5Bds3DODi$b2bfe2b68ef2esdf9b86dd354e00d3c3c7f533ce18fe8a6f33
 
 class AppConfig(object):
     # Upload
-    UPLOAD_FOLDER = './upload'
+    UPLOAD_FOLDER = PathUtils.abspath('./upload')
     ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png', 'webp', 'gif'])
 
 

@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from re import compile
 from functools import reduce
 from operator import getitem
+from os import path
+from werkzeug.utils import secure_filename
 
 
 class DateTimeUtils(object):
@@ -205,3 +207,30 @@ class StringUtils(object):
             return '__' + ''.join(v.title() if i > 0 else v for i, v in enumerate(components[1:]))
         components = snake_str.split('_')
         return components[0] + ''.join(v.title() for v in components[1:])
+
+
+class PathUtils(object):
+
+    @staticmethod
+    def abspath(_path: str = '') -> str:
+        """ 反击路径的绝对路径 """
+        return path.abspath(_path)
+
+    @staticmethod
+    def is_exists_file(_path: str) -> bool:
+        """ 判断文件是否存在 """
+        return path.exists(_path) and path.isfile(_path)
+
+    @staticmethod
+    def is_exists_dir(_path: str) -> bool:
+        """ 判断路径是否是个存在 """
+        return path.exists(_path) and path.isdir(_path)
+
+    @staticmethod
+    def splitext(_path):
+        return path.splitext(_path)
+
+    @staticmethod
+    def secure_filename(filename: str) -> str:
+        """ 返回安全的文件路径 """
+        return secure_filename(filename)
