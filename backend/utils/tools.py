@@ -211,6 +211,8 @@ class StringUtils(object):
 
 class PathUtils(object):
 
+    path = path
+
     @staticmethod
     def abspath(_path: str = '') -> str:
         """ 反击路径的绝对路径 """
@@ -225,10 +227,6 @@ class PathUtils(object):
     def is_exists_dir(_path: str) -> bool:
         """ 判断路径是否是个存在 """
         return path.exists(_path) and path.isdir(_path)
-
-    @staticmethod
-    def splitext(_path):
-        return path.splitext(_path)
 
     @staticmethod
     def secure_filename(filename: str) -> str:

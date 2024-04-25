@@ -16,7 +16,12 @@ def resource(file_path):
     directory = f'{AppConfig.UPLOAD_FOLDER}/{file_path}'
     mimetype, encoding = guess_type(directory)
 
-    return send_from_directory(directory, '', as_attachment=False, mimetype=mimetype)
+    return send_from_directory(
+        PathUtils.path.dirname(directory),
+        PathUtils.path.basename(directory),
+        as_attachment=False,
+        mimetype=mimetype,
+    )
 
 @file_blue.route('/upload/avatar', methods=['POST'])
 @jwt_required()
@@ -28,7 +33,7 @@ def upload():
     if not filename:
         return Result.failure('文件名参数为空')
 
-    suffix = PathUtils.splitext(file.filename)[1][1:]
+    suffix = PathUtils.path.splitext(file.filename)[1][1:]
     if suffix not in AppConfig.ALLOWED_IMAGE_EXTENSIONS:
         return Result.failure('不支持的文件格式')
 
