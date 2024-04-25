@@ -7,3 +7,4 @@ upload
 *.vsdx
 *.doc*
 test.py
+components.d.ts
