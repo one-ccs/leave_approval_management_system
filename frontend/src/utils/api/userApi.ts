@@ -1,12 +1,8 @@
 import { closeToast, showLoadingToast } from 'vant';
-import { defaultSuccessCallback, defaultFailureCallback } from '.';
+import { api } from '.';
 import type { ResponseData, User, LoginUser, TimeRangePageQuery } from '../interface';
-import request from '../request';
 import encryptMD5 from '../encryptMD5';
-import useUserStore from '@/stores/user';
 
-
-const userStore = useUserStore();
 
 /**
  * 获取用户信息
@@ -15,12 +11,12 @@ const userStore = useUserStore();
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiUserGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user', {
+export function apiUserGet(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/user',
         params: {
             id,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -33,13 +29,13 @@ export function apiUserGet(id: number, successCallback: Function = defaultSucces
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiUserPut(user: User, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user', {
+export function apiUserPut(user: User, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/user',
         method: 'PUT',
         data: {
             ...user,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -52,13 +48,13 @@ export function apiUserPut(user: User, successCallback: Function = defaultSucces
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiUserPost(user: User, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user', {
+export function apiUserPost(user: User, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/user',
         method: 'POST',
         data: {
             ...user,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -71,13 +67,13 @@ export function apiUserPost(user: User, successCallback: Function = defaultSucce
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiUserDelete(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user', {
+export function apiUserDelete(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/user',
         method: 'PUT',
         data: {
             id,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -90,12 +86,12 @@ export function apiUserDelete(id: number, successCallback: Function = defaultSuc
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiUserPageQuery(query: TimeRangePageQuery, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user', {
+export function apiUserPageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/user',
         data: {
             ...query,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -110,12 +106,13 @@ export function apiUserPageQuery(query: TimeRangePageQuery, successCallback: Fun
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLogin(user: LoginUser, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
+export function apiLogin(user: LoginUser, successCallback?: Function, failureCallback?: Function) {
     showLoadingToast({
         message: '登录中...',
         forbidClick: true,
     });
-    return request('/api/user/login', {
+    return api({
+		url: '/api/user/login',
         method: 'POST',
         data: {
             username: user.username,
@@ -129,15 +126,7 @@ export function apiLogin(user: LoginUser, successCallback: Function = defaultSuc
         failureCallback: (data: ResponseData) => {
             closeToast();
             failureCallback && failureCallback(data);
-        }
-    });
-}
-
-export function apiRefreshToken(successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user/refreshToken', {
-        method: 'POST',
-        successCallback,
-        failureCallback,
+        },
     });
 }
 
@@ -147,10 +136,10 @@ export function apiRefreshToken(successCallback: Function = defaultSuccessCallba
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLogout(successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/user/logout', {
+export function apiLogout(successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/user/logout',
         method: 'POST',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

@@ -1,10 +1,6 @@
-import { defaultSuccessCallback, defaultFailureCallback } from '.';
+import { api } from '.';
 import type { Leave, LeavePageQuery } from '../interface';
-import request from '../request';
-import useUserStore from '@/stores/user';
 
-
-const userStore = useUserStore();
 
 /**
  * 获取请假条详情
@@ -13,12 +9,12 @@ const userStore = useUserStore();
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveGet(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave', {
+export function apiLeaveGet(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave',
         params: {
             id,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -31,13 +27,13 @@ export function apiLeaveGet(id: number, successCallback: Function = defaultSucce
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeavePut(leave: Leave, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave', {
+export function apiLeavePut(leave: Leave, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave',
         data: {
             ...leave,
         },
         method: 'PUT',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -50,13 +46,13 @@ export function apiLeavePut(leave: Leave, successCallback: Function = defaultSuc
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeavePost(leave: Leave, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave', {
+export function apiLeavePost(leave: Leave, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave',
         data: {
             ...leave,
         },
         method: 'POST',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -69,13 +65,13 @@ export function apiLeavePost(leave: Leave, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveDelete(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave', {
+export function apiLeaveDelete(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave',
         data: {
             id,
         },
         method: 'DELETE',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -88,13 +84,13 @@ export function apiLeaveDelete(id: number, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeavePageBrief(query: LeavePageQuery, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave/pageBrief', {
+export function apiLeavePageBrief(query: LeavePageQuery, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave/pageBrief',
         params: {
             ...query,
             category: query.category === -1 ? undefined : query.category,
         },
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -107,13 +103,13 @@ export function apiLeavePageBrief(query: LeavePageQuery, successCallback: Functi
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveCancel(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave/cancel', {
+export function apiLeaveCancel(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave/cancel',
         data: {
             id,
         },
         method: 'POST',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -127,15 +123,15 @@ export function apiLeaveCancel(id: number, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude: number }, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave/revoke', {
+export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude: number }, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave/revoke',
         data: {
             id,
             coords,
         },
         method: 'POST',
         contentType: 'JSON',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -148,13 +144,13 @@ export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveAgreeLeave(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave/agreeLeave', {
+export function apiLeaveAgreeLeave(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave/agreeLeave',
         data: {
             id,
         },
         method: 'POST',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -167,13 +163,13 @@ export function apiLeaveAgreeLeave(id: number, successCallback: Function = defau
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveReject(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave/reject', {
+export function apiLeaveReject(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave/reject',
         data: {
             id,
         },
         method: 'POST',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });
@@ -186,13 +182,13 @@ export function apiLeaveReject(id: number, successCallback: Function = defaultSu
  * @param failureCallback 失败回调函数
  * @returns Promise
  */
-export function apiLeaveAgreeRevoke(id: number, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/leave/agreeRevoke', {
+export function apiLeaveAgreeRevoke(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/leave/agreeRevoke',
         data: {
             id,
         },
         method: 'POST',
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

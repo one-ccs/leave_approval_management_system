@@ -1,25 +1,23 @@
+import { showFailToast } from "vant";
 import { defineStore } from "pinia";
-import type { UnionUser } from "@/utils/interface";
+import type { ResponseData, UnionUser } from "@/utils/interface";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 import i18n from "@/utils/i18n";
 import pinia from "./pinia";
 import usePermissStore from "./permiss";
-import useGlobalStore from "./global";
 
 
 const permissStore = usePermissStore(pinia);
-const globalStore = useGlobalStore(pinia);
 
 const useUserStore = defineStore('user', {
     state: () => ({
         isInit: false,
-        isLogin: false,
+        keyName: 'userStore',
         data: <UnionUser>{
             name: '小哆啦',
             role: 0,
-            expires: null,
         },
-        keyName: 'userStore',
+        isLogin: false,
     }),
     getters: {
         role: (state: any): number => state.data.role,
@@ -47,13 +45,13 @@ const useUserStore = defineStore('user', {
             return this;
         },
         clear() {
+            this.$reset();
             localRemove(this.keyName);
-            this.isLogin = false;
             return this;
         },
         setUser(user: UnionUser) {
             // 设置用户信息
-            const { avatar, name, username, role, gender, _class, grade, admissionDate, createDatetime, major } = user;
+            const { name, username, role, gender, _class, grade, admissionDate, createDatetime, major } = user;
             this.data = {
                 ...user,
                 role: role >= 0 ? role : this.data.role,
@@ -61,7 +59,6 @@ const useUserStore = defineStore('user', {
                 gender: gender || '保密',
                 _class: _class ? _class.length > 2 ? _class : `${grade}${major}${_class}班` : '',
                 admissionDate: admissionDate || createDatetime || '',
-                expires: ((new Date()).getTime() + 1000 * 3600 * 24),
             };
 
             // 修改登录状态
@@ -69,10 +66,6 @@ const useUserStore = defineStore('user', {
             // 设置用户权限
             permissStore.setRole(i18n(role, 'role.en'));
             return this;
-        },
-        isExpired() {
-            if (!this.data.expires) return true;
-            return this.data.expires <= new Date().getTime();
         },
     }
 });

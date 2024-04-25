@@ -1,16 +1,11 @@
-import { defaultFailureCallback, defaultSuccessCallback } from ".";
-import request from "../request";
-import useUserStore from '@/stores/user';
+import { api } from '.';
 
 
-const userStore = useUserStore();
-
-
-export function apiUploadAvatar(data: { file: File, filename: string }, successCallback: Function = defaultSuccessCallback, failureCallback: Function = defaultFailureCallback) {
-    return request('/api/upload/avatar', {
+export function apiUploadAvatar(data: { file: File, filename: string }, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/upload/avatar',
         method: 'POST',
         data,
-        token: userStore.data.accessToken,
         successCallback,
         failureCallback,
     });

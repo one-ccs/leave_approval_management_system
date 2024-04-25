@@ -42,10 +42,9 @@ def expired_token_loader(jwt_header, jwt_payload: dict):
     return Result.failure(f'{ttype} 令牌已过期', None, 401.8)
 
 @jwt.invalid_token_loader
-def invalid_token_loader(jwt_header, jwt_payload: dict):
+def invalid_token_loader(reason: str):
     """ 令牌无效时的响应 """
-    ttype = jwt_payload['type']
-    return Result.unauthorized(f'无效的 {ttype} 令牌')
+    return Result.unauthorized(f'无效的令牌\n({reason})')
 
 @jwt.needs_fresh_token_loader
 def needs_fresh_token_loader(jwt_header, jwt_payload: dict):

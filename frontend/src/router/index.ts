@@ -487,11 +487,6 @@ router.beforeEach((to, from, next) => {
     if (!userStore.isLogin && !['login', 'forgot'].includes(to.name as string)) {
         // 未登录返回登录页
         next('/login');
-    } else if (userStore.isLogin && userStore.isExpired()) {
-        // 登录已过期
-        userStore.clear();
-        showFailToast("登录已过期\n请重新登录");
-        next('/login');
     } else if (userStore.isLogin && to.name === 'login') {
         // 已登录禁止进入登录页
         next(from);

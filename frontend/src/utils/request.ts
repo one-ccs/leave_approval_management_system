@@ -1,13 +1,10 @@
 import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { showFailToast } from 'vant';
-import useUserStore from '@/stores/user';
 import pinia from '@/stores/pinia';
-import { apiRefreshToken } from './api';
-import type { ResponseData } from './interface';
+import useUserStore from '@/stores/user';
 
 
 const userStore = useUserStore(pinia);
-
 
 const service: AxiosInstance = axios.create({
     baseURL: 'http://127.0.0.1:5001',
@@ -19,6 +16,10 @@ const service: AxiosInstance = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+        // 设置 token
+        config.headers.Authorization = `Bearer ${userStore.data.accessToken}`;
+        if (config.url === '/api/user/refreshToken')
+            config.headers.Authorization = `Bearer ${userStore.data.refreshToken}`;
         return config;
     },
     (error: AxiosError) => {
@@ -28,24 +29,7 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-    (response: AxiosResponse) => {
-        // 未登录
-        if (response.data.code === 401) {
-            showFailToast(`${response.data.message}\n即将跳转登录页...`);
-            userStore.clear();
-            setTimeout(() => {
-                // 使用 location.href 跳转 而不是 router 防止某些情况下页面不改变的 bug
-                location.href = '/login';
-            }, 800);
-            return response;
-        }
-        // 登录已过期
-        if (response.data.code === 401.8) {
-            // 刷新令牌
-            apiRefreshToken((data: ResponseData) => {
-                userStore.data.accessToken = data.data;
-            });
-        }
+    async (response: AxiosResponse) => {
         return response;
     },
     (error: AxiosError) => {
@@ -55,6 +39,7 @@ service.interceptors.response.use(
 );
 
 export interface RequestConfig {
+    url: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
     params?: any;
     data?: any;
@@ -72,8 +57,9 @@ export interface RequestConfig {
  * @param url 请求链接
  * @param config 配置 (默认 "GET" "FORM")
  */
-async function request(url: string, config?: RequestConfig) {
+async function request(config: RequestConfig) {
     const {
+        url,
         method = 'GET',
         params = {},
         data = {},

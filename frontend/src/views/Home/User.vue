@@ -6,6 +6,7 @@ import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import Avatar from '@/components/Avatar.vue';
+import type { ResponseData } from '@/utils/interface';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
@@ -15,9 +16,11 @@ const checkUpdate =() => {
     showSuccessToast("最新版本");
 };
 const logout = () => {
-    apiLogout();
-    userStore.clear();
-    router.replace({ name: 'login'});
+    apiLogout((data: ResponseData) => {
+        userStore.clear();
+        router.replace({ name: 'login'});
+        showSuccessToast(data.message);
+    });
 };
 
 const iconPrefix= 'fa';
