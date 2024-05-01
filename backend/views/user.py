@@ -72,6 +72,7 @@ def unauthorized_loader(reason: str):
 @jwt_required()
 @swag_from('./api_docs/user/root.yml')
 def root():
+    # 查询
     if request.method == 'GET':
         id = RequestUtils.quick_data(request, ('id', int))
         user = User(id)
@@ -86,8 +87,10 @@ def root():
         else:
             return Result.failure('未知角色')
         return Result.success('查询成功', { **user.vars(), **any_user.vars()})
+    # 添加
     if request.method == 'PUT':
         pass
+    # 修改
     if request.method == 'POST':
         request_data = RequestUtils.quick_data(request)
         result = User.query.filter(
@@ -97,6 +100,7 @@ def root():
         if result > 0:
             return Result.success('修改成功')
         return Result.failure('修改失败')
+    # 删除
     if request.method == 'DELETE':
         pass
     return Result.failure()

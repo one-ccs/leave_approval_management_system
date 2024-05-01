@@ -352,7 +352,7 @@ const routes: RouteRecordRaw[] = [
                                 path: 'permission',
                                 name: 'adminPermission',
                                 meta: {
-                                    title: '权限管理',
+                                    title: '角色管理',
                                     permiss: 12,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Permission.vue'),

@@ -28,6 +28,7 @@ const revokeFlag = ref(false);
 const rejectFlag = ref(false);
 const agreeFlag = ref(false);
 
+// 撤销申请按钮点击事件
 const onCancelClick = () => {
     showConfirmDialog({
         title: '提示',
@@ -40,6 +41,7 @@ const onCancelClick = () => {
         });
     }).catch(() => {});
 };
+// 申请销假按钮点击事件
 const onRevokeClick = () => {
     showConfirmDialog({
         title: '提示',
@@ -57,6 +59,7 @@ const onRevokeClick = () => {
         });
     }).catch(() => {});
 };
+// 驳回申请按钮点击事件
 const onRejectClick = () => {
     showConfirmDialog({
         title: '提示',
@@ -69,6 +72,7 @@ const onRejectClick = () => {
         });
     }).catch(() => {});
 };
+// 同意申请按钮点击事件
 const onAgreeClick = () => {
     const stateZh = leaveDetail.value?.state === ELeaveState.PENDING ? '请假' : '销假';
     showConfirmDialog({

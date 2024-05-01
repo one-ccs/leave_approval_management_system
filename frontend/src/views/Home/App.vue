@@ -84,7 +84,7 @@ const apps = [
     },
     {
         icon: 'cluster-o',
-        text: '权限管理',
+        text: '角色管理',
         route: '/app/admin/permission',
         badge: '',
         permiss: 12,
