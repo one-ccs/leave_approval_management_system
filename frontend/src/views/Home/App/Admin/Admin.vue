@@ -44,6 +44,7 @@ onMounted(() => {
             <time-range-query
                 class="time-range-query"
                 v-model="query"
+                placeholder="请输入要查询的用户名、姓名"
                 @search="onSearch()"
             />
             <div v-if="userList.length" class="container">

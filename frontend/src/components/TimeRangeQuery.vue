@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import type { TimeRangePageQuery } from '@/utils/interface';
 
+
+interface Props {
+    placeholder: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+    placeholder: '请输入要查询的信息',
+});
+
+
 const model = defineModel({
     type: Object as () => TimeRangePageQuery,
     required: true,
@@ -15,7 +25,7 @@ const emit = defineEmits<{
         <van-cell-group>
             <van-field
                 v-model="model.query"
-                placeholder="请输入要查询的学号、姓名等..."
+                :placeholder="props.placeholder"
                 autocomplete="off"
                 @keypress.enter="$emit('search', model.query)"
             >
