@@ -51,7 +51,7 @@
     --box-shadow-light-2: 0 2px 5px 0 #3333;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 560px) {
     :root {
         --client-width: 560px;
     }
