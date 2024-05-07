@@ -31,3 +31,13 @@ class ELeaveCategory():
     PUBLIC = 2
     # 出校申请
     LEAVE_SCHOOL = 3
+
+class ENoticeType():
+    # 系统通知
+    SYSTEM = 0
+    # 学校通知
+    SCHOOL = 1
+    # 学院通知
+    COLLEGE = 2
+    # 辅导员通知
+    TEACHER = 3

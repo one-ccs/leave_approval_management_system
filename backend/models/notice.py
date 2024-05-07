@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from .enum import ENoticeType
 from ..plugins import db
 from ..utils import ObjectUtils, DateTimeUtils
 
@@ -11,6 +12,7 @@ class Notice(db.Model):
     title      = db.Column(db.String(30), comment='标题')
     content    = db.Column(db.String(255), comment='内容')
     status     = db.Column(db.SmallInteger, default=1, comment='状态（0 不显示、1 显示）')
+    _type      = db.Column(db.SmallInteger, default=ENoticeType.TEACHER, comment='通知类别（0 系统、1 学校、2 学院、3 辅导员）')
     release_datetime = db.Column(db.DateTime, default=DateTimeUtils.now, comment='发布时间')
 
     def __repr__(self):
