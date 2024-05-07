@@ -108,6 +108,7 @@ export enum ENoticeType {
 export interface UnionUser extends User, Admin, Teacher, Student {
     name: string;
     teacherName: string;
+    teacherUserId: number;
     admissionDate: string;
     school: string;
     accessToken: string;

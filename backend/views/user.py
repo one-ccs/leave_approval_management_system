@@ -161,22 +161,28 @@ def login():
                 return Result.failure('登录失败\n密码错误')
             # 获取详细信息
             any_user: Union[Admin, Teacher, Student] = None
+            teacher: Teacher = None
             if user.role == ERole.ADMIN:
                 any_user = Admin.query.filter_by(user_id=user.id).first()
             elif user.role == ERole.TEACHER:
                 any_user = Teacher.query.filter_by(user_id=user.id).first()
             elif user.role == ERole.STUDENT:
                 any_user = Student.query.filter_by(user_id=user.id).first()
+                teacher = Teacher.query.filter_by(id=any_user.teacher_id).first()
             else:
                 return Result.failure('登录失败\n角色数据异常\n请联系管理员')
+
             # 登录用户 (设置 15 分钟内为新鲜)
             access_token = create_access_token(identity=user, fresh=DateTimeUtils.timedelta(minutes=15))
             refresh_token = create_refresh_token(identity=user)
+
             # 持久化记录用户登录状态
             redis.set(user.id, 1)
+
             return Result.success('登录成功', {
                 **user.vars(),
                 **any_user.vars(),
+                'teacherUserId': teacher and teacher.user_id,
                 'accessToken': access_token,
                 'refreshToken': refresh_token,
             })
@@ -210,6 +216,7 @@ def register():
 @jwt_required(verify_type=False)
 def logout():
     """ 登出视图 """
+    # 将对应用户 id 拉黑
     redis.set(current_user.id, 0)
 
     return Result.success('登出成功')

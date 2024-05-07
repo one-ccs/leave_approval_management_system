@@ -133,7 +133,7 @@ def page_query():
         query_wrapper = query_wrapper.filter(or_(start_datetime >= Notice.release_datetime))
     if end_datetime:
         query_wrapper = query_wrapper.filter(or_(end_datetime <= Notice.release_datetime))
-    if user_id != None:
+    if user_id != None and _type == ENoticeType.TEACHER:
         query_wrapper = query_wrapper.filter(Notice.user_id == user_id)
 
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)

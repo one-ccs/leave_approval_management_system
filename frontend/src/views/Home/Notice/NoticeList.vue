@@ -2,21 +2,31 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { showSuccessToast, showFailToast } from 'vant';
-import { ENoticeType, type ResponseData, type TimeRangePageQuery } from '@/utils/interface';
+import { ENoticeType, ERole, type ResponseData, type TimeRangePageQuery } from '@/utils/interface';
 import { apiNoticePageQuery } from '@/utils/api/noticeApi';
 import useGlobalStore from '@/stores/global';
+import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import NoticeCard from '@/components/NoticeCard.vue';
 
 const route = useRoute();
 const globalStore = useGlobalStore();
-const query = reactive<TimeRangePageQuery & { _type?: number }>({
+const userStore = useUserStore();
+const query = reactive<TimeRangePageQuery & {
+    _type?: number;
+    userId?: number;
+}>({
     pageIndex: 1,
     pageSize: 10,
     query: '',
     startDatetime: '',
     endDatetime: '',
+    userId: userStore.userInfo.role === ERole.student ?
+        userStore.userInfo.teacherUserId :
+        userStore.userInfo.role === ERole.teacher ?
+            userStore.userInfo.userId :
+            undefined,
 });
 const loading = ref(false);
 const finished = ref(false);
