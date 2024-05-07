@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { showSuccessToast } from 'vant';
-import type { NoticeExtra, ResponseData } from '@/utils/interface';
+import { ERole, type NoticeExtra, type ResponseData } from '@/utils/interface';
 import { apiNoticeDelete, apiNoticeDetail } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
 import BackNavBar from '@/components/BackNavBar.vue';
@@ -13,7 +13,13 @@ const globalStore = useGlobalStore();
 const noticeId = Number(route.query.id);
 const noticeDetail = ref<NoticeExtra>();
 
-const onReadClick = () => {};
+const onReadClick = () => {
+    showSuccessToast('已标记为已读');
+    noticeDetail.value!.state = 1;
+    globalStore.noticeList.forEach(notice => {
+        if (notice.id === noticeDetail.value?.id) notice.state = 1;
+    });
+};
 const onDeleteClick = () => {
     apiNoticeDelete(noticeId, (data: ResponseData) => {
         showSuccessToast(data.message);
@@ -36,7 +42,7 @@ onMounted(() => {
             <div class="head">
                 <div class="title">{{ noticeDetail?.title }}</div>
                 <div class="info">
-                    <span class="name">{{ noticeDetail?.name }} (学校老师)</span>
+                    <span class="name">{{ noticeDetail?.name }} ({{ noticeDetail?.role === ERole.admin ? '管理员' : '学校老师' }})</span>
                     <span class="release-datetime">{{ noticeDetail?.releaseDatetime }}</span>
                 </div>
             </div>
@@ -54,7 +60,6 @@ onMounted(() => {
                 >已读</van-button>
                 <van-button
                     v-if="$route.path.split('/')[1] === 'app'"
-                    v-permiss="0x200"
                     class="button delete"
                     type="danger"
                     round

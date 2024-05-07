@@ -383,6 +383,24 @@ const routes: RouteRecordRaw[] = [
                                     permiss: 13,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Notice.vue'),
+                                children: [
+                                    {
+                                        path: 'add',
+                                        name: 'adminNoticeAdd',
+                                        meta: {
+                                            title: '发布通知',
+                                        },
+                                        component: () => import('@/views/Home/App/AddNotice.vue'),
+                                    },
+                                    {
+                                        path: 'detail',
+                                        name: 'adminNoticeDetail',
+                                        meta: {
+                                            title: '通知详情',
+                                        },
+                                        component: () => import('@/views/Home/App/NoticeDetail.vue'),
+                                    },
+                                ],
                             },
                             {
                                 path: 'lost',

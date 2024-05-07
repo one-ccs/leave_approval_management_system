@@ -68,6 +68,7 @@ export interface Notice {
     userId: number;
     title: string;
     content: string;
+    _type: ENoticeType;
     releaseDatetime: string;
 };
 
@@ -117,6 +118,7 @@ export interface UnionUser extends User, Admin, Teacher, Student {
 
 export interface NoticeExtra extends Notice {
     username: string;
+    role: ERole;
     name: string;
     state: number;
 };
