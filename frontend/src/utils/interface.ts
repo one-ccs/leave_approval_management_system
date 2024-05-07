@@ -96,6 +96,13 @@ export enum ELeaveCategory {
     LEAVE_SCHOOL, /* 出校申请 */
 };
 
+export enum ENoticeType {
+    SYSTEM,       /* 系统 */
+    SCHOOL,       /* 学校 */
+    COLLEGE,      /* 学院 */
+    TEACHER,      /* 辅导员 */
+};
+
 /* --------- dto --------- */
 
 export interface UnionUser extends User, Admin, Teacher, Student {

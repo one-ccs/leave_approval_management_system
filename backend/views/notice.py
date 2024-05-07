@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, current_user
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import notice_blue
-from ..models import User, Teacher, Notice
+from ..models import User, Teacher, Notice, ENoticeType
 from ..utils import Result, RequestUtils
 
 
@@ -90,39 +90,65 @@ def detail():
 @jwt_required()
 def page_query():
     """分页查询"""
-    page_index, page_size, query, start_datetime, end_datetime = RequestUtils.quick_data(
+    page_index, page_size, query, start_datetime, end_datetime, _type, user_id = RequestUtils.quick_data(
         request,
         ('pageIndex', int, 1),
         ('pageSize', int, 10),
         'query',
         'startDatetime',
         'endDatetime',
+        ('_type', int, ENoticeType.TEACHER),
+        ('userId', int),
     )
-    query_wrapper = Notice.query.join(
-        User,
-        Notice.user_id == User.id
-    ).add_columns(
-        User.username,
-    )
+
+    # 系统通知不用查询 username
+    query_wrapper = None
+    if _type == ENoticeType.SYSTEM:
+        query_wrapper = Notice.query.filter(
+            Notice._type == _type,
+        )
+    else:
+        query_wrapper = Notice.query.join(
+            User,
+            Notice.user_id == User.id
+        ).add_columns(
+            User.username,
+        ).filter(
+            Notice._type == _type,
+        )
     # 查询条件
     if query:
-        query_wrapper = query_wrapper.filter(or_(
-            User.username.contains(query),
-            Notice.title.contains(query),
-            Notice.content.contains(query),
-        ))
+        if _type == ENoticeType.SYSTEM:
+            query_wrapper = query_wrapper.filter(or_(
+                Notice.title.contains(query),
+                Notice.content.contains(query),
+            ))
+        else:
+            query_wrapper = query_wrapper.filter(or_(
+                User.username.contains(query),
+                Notice.title.contains(query),
+                Notice.content.contains(query),
+            ))
     if start_datetime:
         query_wrapper = query_wrapper.filter(or_(start_datetime >= Notice.release_datetime))
     if end_datetime:
         query_wrapper = query_wrapper.filter(or_(end_datetime <= Notice.release_datetime))
+    if user_id != None:
+        query_wrapper = query_wrapper.filter(Notice.user_id == user_id)
 
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
+
+    _list = None
+    if _type == ENoticeType.SYSTEM:
+        _list = [item.vars() for item in result.items ]
+    else:
+        _list = [{
+            **item[0].vars(),
+            'username': item[1],
+        } for item in result.items ]
 
     return Result.success('查询成功', {
         'total': result.total,
         'finished': not result.has_next,
-        'list': [{
-            **item[0].vars(),
-            'username': item[1],
-        } for item in result.items ],
+        'list': _list,
     })

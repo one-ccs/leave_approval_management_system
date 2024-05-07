@@ -53,6 +53,7 @@ onMounted(() => {
                     @click="onReadClick()"
                 >已读</van-button>
                 <van-button
+                    v-if="$route.path.split('/')[1] === 'app'"
                     v-permiss="0x200"
                     class="button delete"
                     type="danger"

@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     title: '通知详情',
                                 },
-                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                                component: () => import('@/views/Home/App/NoticeDetail.vue'),
                             },
                         ],
                     },
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     title: '通知详情',
                                 },
-                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                                component: () => import('@/views/Home/App/NoticeDetail.vue'),
                             },
                         ],
                     },
@@ -75,7 +75,7 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     title: '通知详情',
                                 },
-                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                                component: () => import('@/views/Home/App/NoticeDetail.vue'),
                             },
                         ],
                     },
@@ -93,7 +93,7 @@ const routes: RouteRecordRaw[] = [
                                 meta: {
                                     title: '通知详情',
                                 },
-                                component: () => import('@/views/Home/Notice/NoticeDetail.vue'),
+                                component: () => import('@/views/Home/App/NoticeDetail.vue'),
                             },
                         ],
                     },

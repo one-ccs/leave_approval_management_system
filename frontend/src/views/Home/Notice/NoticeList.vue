@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { showSuccessToast, showFailToast } from 'vant';
-import type { ResponseData, TimeRangePageQuery } from '@/utils/interface';
+import { ENoticeType, type ResponseData, type TimeRangePageQuery } from '@/utils/interface';
 import { apiNoticePageQuery } from '@/utils/api/noticeApi';
 import useGlobalStore from '@/stores/global';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
@@ -11,7 +11,7 @@ import NoticeCard from '@/components/NoticeCard.vue';
 
 const route = useRoute();
 const globalStore = useGlobalStore();
-const query = reactive<TimeRangePageQuery>({
+const query = reactive<TimeRangePageQuery & { _type?: number }>({
     pageIndex: 1,
     pageSize: 10,
     query: '',
@@ -49,10 +49,23 @@ const onRefresh = () => {
     globalStore.noticeList.length = 0;
     getPageNotice();
 };
-const noticeType = route.path.split('/').pop();
+const noticeType = <'system' | 'school' | 'college' | 'teacher'>route.path.split('/').pop();
 
 onMounted(() => {
-
+    switch(noticeType) {
+        case 'system':
+            query._type = ENoticeType.SYSTEM;
+            break;
+        case 'school':
+            query._type = ENoticeType.SCHOOL;
+            break;
+        case 'college':
+            query._type = ENoticeType.COLLEGE;
+            break;
+        case 'teacher':
+            query._type = ENoticeType.TEACHER;
+            break;
+    }
 });
 </script>
 
@@ -75,10 +88,10 @@ onMounted(() => {
                         v-for="notice in globalStore.noticeList"
                         :key="notice.id"
                         :datetime="notice.releaseDatetime"
-                        :state="notice.state"
+                        :state="noticeType != 'system' ? notice.state : -1"
                         :title="notice.title"
                         :content="notice.content"
-                        :to="`${route.path}/detail?id=${notice.id}`"
+                        :to="noticeType != 'system' ? `${route.path}/detail?id=${notice.id}` : ''"
                     />
                     <van-back-top v-if="globalStore.noticeList.length" offset="120" bottom="56" teleport=".view-container" z-index="1"></van-back-top>
                     <template #finished>

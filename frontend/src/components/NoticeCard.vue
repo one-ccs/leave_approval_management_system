@@ -30,9 +30,14 @@ const router = useRouter();
 <template>
     <div class="notice-card">
         <div class="datetime">{{ datetime }}</div>
-        <div class="card-container van-haptics-feedback" @click="router.push(to)">
+        <div
+            class="card-container"
+            :class="{ 'van-haptics-feedback': to }"
+            @click="router.push(to)"
+        >
             <div class="title-wrapper">
                 <van-tag
+                    v-if="state !== -1"
                     class="state"
                     plain
                     round
@@ -41,7 +46,11 @@ const router = useRouter();
                     {{ state ? '已读' : '未读' }}
                 </van-tag>
                 <span class="title">{{ title }}</span>
-                <van-icon class="icon" name="link-o"></van-icon>
+                <van-icon
+                    v-if="to"
+                    class="icon"
+                    name="link-o"
+                />
             </div>
             <van-text-ellipsis rows="3" :content="content || '无'"/>
         </div>
@@ -71,11 +80,11 @@ const router = useRouter();
 
             .state {
                 flex: 0 0 auto;
+                margin-right: 18px;
                 transform: scale(1.1);
             }
             .title {
                 flex: 1 0 0;
-                margin-left: 18px;
                 height: var(--van-tag-line-height);
                 overflow: hidden;
                 white-space: nowrap;
