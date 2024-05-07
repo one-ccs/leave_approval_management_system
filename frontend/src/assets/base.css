@@ -42,6 +42,9 @@ input:-webkit-autofill {
 .round {
     border-radius: 8px !important;
 }
+.transparent {
+    background-color: transparent !important;
+}
 
 /* bootstrap */
 .circle {

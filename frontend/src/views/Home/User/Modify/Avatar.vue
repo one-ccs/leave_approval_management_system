@@ -89,7 +89,7 @@ const onSubmit = () => {
                     </van-field>
                 </van-cell-group>
 
-                <van-cell-group inset>
+                <van-cell-group inset class="transparent">
                     <van-button round block type="primary" native-type="submit">提交</van-button>
                 </van-cell-group>
             </van-form>
@@ -105,16 +105,17 @@ const onSubmit = () => {
         margin-bottom: 15px;
         border-radius: var(--border-radius);
         overflow: hidden;
-    }
-    .preview-cover {
-        position: absolute;
-        bottom: 0;
-        padding: 0 5px;
-        width: 100%;
-        color: #fff;
-        font-size: .8rem;
-        text-align: center;
-        background: #0005;
+
+        .preview-cover {
+            position: absolute;
+            bottom: 0;
+            padding: 0 5px;
+            width: 100%;
+            color: #fff;
+            font-size: .8rem;
+            text-align: center;
+            background: #0005;
+        }
     }
 }
 </style>

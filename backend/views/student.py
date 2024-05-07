@@ -36,9 +36,9 @@ def root():
         # 添加并提交事务 失败自动回滚
         db.session.add(student)
         db.session.commit()
-        if student.id:
-            return Result.success('添加成功')
-        return Result.failure('添加失败')
+        if not student.id:
+            return Result.failure('添加失败')
+        return Result.success('添加成功')
     # 修改
     if request.method == 'POST':
         request_data = RequestUtils.quick_data(request)
@@ -81,22 +81,28 @@ def page_query():
     ).join(
         Teacher,
         Teacher.id == Student.teacher_id,
-    ).filter(
-        or_(
-            or_(
-                User.username.contains(query),
-                Teacher.name.contains(query),
-                Student.name.contains(query),
-            ),
-            query == None, query == '',
-        ),
-        or_(start_datetime >= User.create_datetime, start_datetime == None, start_datetime == ''),
-        or_(end_datetime <= User.create_datetime, end_datetime == None, end_datetime == ''),
+    ).add_columns(
+        User.username,
+        User.avatar,
+        User.role,
+        Teacher.name,
     ).order_by(
         Student.grade.asc(),
         Student.major.asc(),
         Student._class.asc(),
-    ).add_columns(User.username, User.avatar, User.role, Teacher.name)
+    )
+    # 查询条件
+    if query:
+        query_wrapper = query_wrapper.filter(or_(
+            User.username.contains(query),
+            Teacher.name.contains(query),
+            Student.name.contains(query),
+        ))
+    if start_datetime:
+        query_wrapper = query_wrapper.filter(or_(start_datetime >= User.create_datetime))
+    if end_datetime:
+        query_wrapper = query_wrapper.filter(or_(end_datetime <= User.create_datetime))
+
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {

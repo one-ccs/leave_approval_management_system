@@ -7,13 +7,11 @@ import { apiLeaveAgreeLeave, apiLeaveAgreeRevoke, apiLeaveCancel, apiLeaveGet, a
 import { useStateColor } from '@/utils/use';
 import { getCurrentPosition } from '@/utils/advanced';
 import i18n from '@/utils/i18n';
-import useUserStore from '@/stores/user';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import Avatar from '@/components/Avatar.vue';
 
 const route = useRoute();
-const userStore = useUserStore();
 
 interface LeaveExtra extends Leave {
     avatar: string;
@@ -106,7 +104,7 @@ onMounted(() => {
 <template>
     <div class="view">
         <right-slide-router-view />
-        <back-nav-bar class="view-header"></back-nav-bar>
+        <back-nav-bar class="view-header" />
         <div class="view-container">
             <div class="info-wrapper">
                 <div class="header">

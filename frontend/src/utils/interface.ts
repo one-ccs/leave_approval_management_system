@@ -107,6 +107,11 @@ export interface UnionUser extends User, Admin, Teacher, Student {
     refreshToken: string;
 };
 
+export interface NoticeExtra extends Notice {
+    username: string;
+    state: number;
+};
+
 /* --------- vo --------- */
 
 export interface ResponseData {

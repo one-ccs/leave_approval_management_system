@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Union
+from typing import TypeVar, Union
 from flask import Request
 from datetime import datetime, timedelta
 from re import compile
@@ -8,6 +8,9 @@ from functools import reduce
 from operator import getitem
 from os import path
 from werkzeug.utils import secure_filename
+
+
+T = TypeVar('T')
 
 
 class DateTimeUtils(object):
@@ -88,18 +91,18 @@ class RequestUtils(object):
         :return -> (tuple | dict | any) 返回元组或字典, 当结果列表长度为 1 时直接返回
         """
         # 获取请求数据
-        json_data = request.get_json(force=True, silent=True)
         data = {
             **request.args.to_dict(),
             **request.values.to_dict(),
             **request.form.to_dict(),
             **request.files.to_dict(),
         }
+        json_data = request.get_json(force=True, silent=True)
         if json_data:
             data.update(json_data)
-        # 直接返回
-        if not keys or not data:
-            return data if len(data.items()) else [None for _ in keys]
+
+        if not keys:
+            return data
         # 解析为元组
         values = []
         for key in keys:
@@ -111,14 +114,14 @@ class RequestUtils(object):
                     values.append(key[1](value) if value else None)
                 elif len(key) == 3:
                     value = ObjectUtils.get_value_from_dict(data, key[0], key[2])
-                    values.append(key[1](value) if value else None)
-        return values[0] if len(values) == 1 else tuple(values)
+                    values.append((key[1](value) if value != None else None))
+        return values[0] if len(values) == 1 else tuple(values) if values else None
 
 
 class ObjectUtils(object):
 
     @staticmethod
-    def json_str(obj: object, ignore=[]):
+    def json_str(obj: object, ignore=[]) -> str:
         """将对象转为 JSON 字符串"""
         pass
 
@@ -155,7 +158,7 @@ class ObjectUtils(object):
         return { k: v for k, v in dict_items if k not in ignore }
 
     @staticmethod
-    def update_with_dict(obj:object, **kw) -> object:
+    def update_with_dict(obj: T, **kw) -> T:
         """用关键字参数将对象赋值, 并忽略对象上不存在的属性
         :param obj 对象
         :param **kw 关键字参数

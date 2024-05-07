@@ -81,7 +81,7 @@ const onSubmit = (value: any) => {
                 </van-field>
                 <router-link to="/forgot" class="link-button">忘记密码</router-link>
             </van-cell-group>
-            <van-cell-group inset class="mt-4">
+            <van-cell-group inset class="transparent mt-4">
                 <van-button round block type="primary" native-type="submit">登录</van-button>
             </van-cell-group>
         </van-form>

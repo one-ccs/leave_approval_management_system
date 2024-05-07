@@ -130,12 +130,10 @@ export function apiLogin(user: LoginUser, successCallback?: Function, failureCal
     });
 }
 
-export function apiRefreshToken(successCallback?: Function, failureCallback?: Function) {
+export function apiRefreshToken() {
     return api({
         url: '/api/user/refreshToken',
         method: 'POST',
-        successCallback,
-        failureCallback,
     });
 }
 

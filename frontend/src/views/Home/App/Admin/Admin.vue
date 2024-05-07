@@ -42,7 +42,6 @@ onMounted(() => {
         <back-nav-bar class="view-header" />
         <div class="view-container">
             <time-range-query
-                class="time-range-query"
                 v-model="query"
                 placeholder="请输入要查询的用户名、姓名"
                 @search="onSearch()"

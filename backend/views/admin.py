@@ -79,17 +79,23 @@ def page_query():
     query_wrapper = Admin.query.join(
         User,
         User.id == Admin.user_id,
-    ).filter(
-        or_(
+    ).add_columns(
+        User.username,
+        User.avatar,
+        User.role,
+    )
+    # 查询条件
+    if query:
+        query_wrapper = query_wrapper.filter(
             or_(
                 User.username.contains(query),
                 Admin.name.contains(query),
-            ),
-            query == None, query == '',
-        ),
-        or_(start_datetime >= User.create_datetime, start_datetime == None, start_datetime == ''),
-        or_(end_datetime <= User.create_datetime, end_datetime == None, end_datetime == ''),
-    ).add_columns(User.username, User.avatar, User.role)
+            ))
+    if start_datetime:
+        query_wrapper = query_wrapper.filter(or_(start_datetime >= User.create_datetime))
+    if end_datetime:
+        query_wrapper = query_wrapper.filter(or_(end_datetime <= User.create_datetime))
+
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {

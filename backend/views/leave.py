@@ -37,7 +37,7 @@ def authentication():
         return Result.forbidden()
 
 @leave_blue.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
-def leave():
+def root():
     # 查询
     if request.method == 'GET':
         id = RequestUtils.quick_data(request, ('id', int))
@@ -167,7 +167,10 @@ def page_brief():
     return Result.success('查询成功', {
         'total': result.total,
         'finished': not result.has_next,
-        'list': [ { **item[0].vars(), 'name': item[1] } for item in result.items ],
+        'list': [{
+            **item[0].vars(),
+            'name': item[1],
+        } for item in result.items ],
     })
 
 @leave_blue.route('/cancel', methods=['POST'])

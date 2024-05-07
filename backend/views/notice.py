@@ -13,9 +13,35 @@ from ..utils import Result, RequestUtils
 @jwt_required()
 def root():
     if request.method == 'GET':
-        pass
+        id = RequestUtils.quick_data(request, ('id', int))
+        if not id:
+            return Result.failure('通知 id 不能为空')
+        result = Notice.query.join(
+            User,
+            Notice.user_id == User.id
+        ).add_columns(
+            User.username,
+        ).filter(Notice.id == id).first()
+
+        return Result.success('查询成功', {
+            **result[0].vars(),
+            'username': result[1],
+        })
     if request.method == 'PUT':
-        pass
+        request_data = RequestUtils.quick_data(request)
+
+        if not request_data.get('title'):
+            return Result.failure('title 不能为空')
+        if not request_data.get('content'):
+            return Result.failure('content 不能为空')
+
+        notice = Notice().withDict(**request_data)
+        notice.user_id = current_user.id
+        db.session.add(notice)
+        db.session.commit()
+        if not notice.id:
+            return Result.failure('添加失败')
+        return Result.success('添加成功')
     if request.method == 'POST':
         pass
     if request.method == 'DELETE':
@@ -36,22 +62,29 @@ def page_query():
     )
     query_wrapper = Notice.query.join(
         User,
-        User.id == Notice.user_id,
-    ).filter(
-        or_(
-            or_(
-                User.username.contains(query),
-                Notice.title.contains(query),
-                Notice.content.contains(query),
-            ),
-            query == None, query == '',
-        ),
-        or_(start_datetime >= User.create_datetime, start_datetime == None, start_datetime == ''),
-        or_(end_datetime <= User.create_datetime, end_datetime == None, end_datetime == ''),
+        Notice.user_id == User.id
+    ).add_columns(
+        User.username,
     )
+    # 查询条件
+    if query:
+        query_wrapper = query_wrapper.filter(or_(
+            User.username.contains(query),
+            Notice.title.contains(query),
+            Notice.content.contains(query),
+        ))
+    if start_datetime:
+        query_wrapper = query_wrapper.filter(or_(start_datetime >= Notice.release_datetime))
+    if end_datetime:
+        query_wrapper = query_wrapper.filter(or_(end_datetime <= Notice.release_datetime))
+
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
         'total': result.total,
-        'list': result.items,
+        'finished': not result.has_next,
+        'list': [{
+            **item[0].vars(),
+            'username': item[1],
+        } for item in result.items ],
     })

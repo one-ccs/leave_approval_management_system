@@ -150,7 +150,7 @@ const pictureAfterRead = (file: any) => {
     }, 1000);
 };
 const pictureOversize = (file: any) => {
-    showFailToast('文件大小不能超过 1024 KB')
+    showFailToast('文件大小不能超过 1024 KB');
 };
 const onSubmit = () => {
     apiLeavePut(leaveForm as unknown as Leave, (data: ResponseData) => {
@@ -325,7 +325,7 @@ const onSubmit = () => {
                     ></van-cell>
                 </van-cell-group>
 
-                <van-cell-group inset>
+                <van-cell-group inset class="transparent">
                     <van-button round block type="primary" native-type="submit">提交</van-button>
                 </van-cell-group>
             </van-form>
@@ -337,16 +337,17 @@ const onSubmit = () => {
 .view-container {
     .van-cell-group {
         margin-top: 15px;
-    }
-    .preview-cover {
-        position: absolute;
-        bottom: 0;
-        padding: 0 5px;
-        width: 100%;
-        color: #fff;
-        font-size: .8rem;
-        text-align: center;
-        background: #0005;
+
+        .preview-cover {
+            position: absolute;
+            bottom: 0;
+            padding: 0 5px;
+            width: 100%;
+            color: #fff;
+            font-size: .8rem;
+            text-align: center;
+            background: #0005;
+        }
     }
 }
 </style>

@@ -70,12 +70,12 @@ const getLeave = () => {
     loading.value = true;
 
     apiLeavePageBrief(query, (data: ResponseData) => {
-        finished.value = data.data.finished;
         leaveList.push(...data.data.list);
+        finished.value = data.data.finished;
         loading.value = false;
         refreshing.value = false;
         query.pageIndex += 1;
-        showSuccessToast(data.message);
+        query.pageIndex === 2 && showSuccessToast(data.message);
     }, (data: ResponseData) => {
         refreshing.value = false;
         error.value = true;
@@ -83,13 +83,13 @@ const getLeave = () => {
         showFailToast(data.message);
     });
 };
-// 刷新操作
+// 下拉刷新事件
 const onRefresh = () => {
     query.pageIndex = 1;
     leaveList.length = 0;
     getLeave();
 };
-// tab 改变操作
+// tab 改变事件
 const onChange = () => {
     query.pageIndex = 1;
     leaveList.length = 0;
@@ -131,7 +131,7 @@ const onChange = () => {
                                 :end-datetime="item.endDatetime"
                                 :to="toDetail(item.id)"
                             />
-                            <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs"></van-back-top>
+                            <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs" />
                             <template #finished>
                                 <span v-if="leaveList.length">没有更多了</span>
                                 <van-empty v-else image="search" description="暂无数据" />

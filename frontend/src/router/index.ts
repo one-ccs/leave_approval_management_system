@@ -241,10 +241,28 @@ const routes: RouteRecordRaw[] = [
                                 path: 'notice',
                                 name: 'teacherNotice',
                                 meta: {
-                                    title: '发布通知',
+                                    title: '通知管理',
                                     permiss: 7,
                                 },
                                 component: () => import('@/views/Home/App/Teacher/Notice.vue'),
+                                children: [
+                                    {
+                                        path: 'add',
+                                        name: 'teacherNoticeAdd',
+                                        meta: {
+                                            title: '发布通知',
+                                        },
+                                        component: () => import('@/views/Home/App/AddNotice.vue'),
+                                    },
+                                    {
+                                        path: 'detail',
+                                        name: 'teacherNoticeDetail',
+                                        meta: {
+                                            title: '通知详情',
+                                        },
+                                        component: () => import('@/views/Home/App/NoticeDetail.vue'),
+                                    },
+                                ],
                             },
                             {
                                 path: 'teacher',

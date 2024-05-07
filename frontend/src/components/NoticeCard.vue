@@ -80,6 +80,8 @@ const router = useRouter();
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+                font-size: 1.1rem;
+                font-weight: bold;
             }
             .icon {
                 flex: 0 0 auto;

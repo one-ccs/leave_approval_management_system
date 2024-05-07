@@ -49,7 +49,7 @@ const apps = [
     },
     {
         icon: 'chat-o',
-        text: '发布通知',
+        text: '通知管理',
         route: '/app/teacher/notice',
         badge: '',
         permiss: 7,

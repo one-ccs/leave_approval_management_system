@@ -5,7 +5,7 @@ from ..utils import ObjectUtils, DateTimeUtils
 
 
 class Notice(db.Model):
-    """公告表"""
+    """通知表"""
     id         = db.Column(db.Integer, primary_key=True, comment='请假条 id')
     user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='发布者用户 id')
     title      = db.Column(db.String(30), comment='标题')

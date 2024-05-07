@@ -78,18 +78,21 @@ def page_query():
     query_wrapper = Teacher.query.join(
         User,
         User.id == Teacher.user_id,
-    ).filter(
-        or_(
-            or_(
-                User.username.contains(query),
-                Teacher.name.contains(query),
-                Teacher.telephone.contains(query),
-            ),
-            query == None, query == '',
-        ),
-        or_(start_datetime >= User.create_datetime, start_datetime == None, start_datetime == ''),
-        or_(end_datetime <= User.create_datetime, end_datetime == None, end_datetime == ''),
-    ).add_columns(User.username, User.avatar, User.role)
+    ).add_columns(
+        User.username,
+        User.avatar,
+        User.role,
+    )
+    if query:
+        query_wrapper = query_wrapper.filter(or_(
+            User.username.contains(query),
+            Teacher.name.contains(query),
+            Teacher.telephone.contains(query),
+        ))
+    if start_datetime:
+        query_wrapper = query_wrapper.filter(or_(start_datetime >= User.create_datetime))
+    if end_datetime:
+        query_wrapper = query_wrapper.filter(or_(end_datetime <= User.create_datetime))
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
