@@ -1,3 +1,4 @@
+import type { NoticeExtra } from "@/utils/interface";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 import { defineStore } from "pinia";
 
@@ -22,6 +23,7 @@ const useGlobalStore = defineStore('global', {
             '/static/img/bg/stacked-waves-haikei.svg',
             '/static/img/bg/wave-haikei.svg',
         ],
+        noticeList: <NoticeExtra[]>[],
     }),
     getters: {
         version: (state: any) => state.data.version,

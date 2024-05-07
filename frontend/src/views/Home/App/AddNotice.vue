@@ -4,8 +4,10 @@ import { showSuccessToast } from 'vant';
 import { useRouter } from 'vue-router';
 import type { Notice, ResponseData } from '@/utils/interface';
 import { apiNoticePut } from '@/utils/api';
+import useGlobalStore from '@/stores/global';
 
 const router = useRouter();
+const globalStore = useGlobalStore();
 const noticeForm = reactive({} as Notice);
 
 const noticeFormRules = {
@@ -20,6 +22,7 @@ const noticeFormRules = {
 const onSubmit = () => {
     apiNoticePut(noticeForm, (data: ResponseData) => {
         showSuccessToast(data.message);
+        globalStore.noticeList.push(data.data);
         router.back();
     });
 };

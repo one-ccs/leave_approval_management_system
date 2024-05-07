@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, current_user
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import notice_blue
-from ..models import User, Notice
+from ..models import User, Teacher, Notice
 from ..utils import Result, RequestUtils
 
 
@@ -16,6 +16,7 @@ def root():
         id = RequestUtils.quick_data(request, ('id', int))
         if not id:
             return Result.failure('通知 id 不能为空')
+
         result = Notice.query.join(
             User,
             Notice.user_id == User.id
@@ -39,14 +40,51 @@ def root():
         notice.user_id = current_user.id
         db.session.add(notice)
         db.session.commit()
+
         if not notice.id:
             return Result.failure('添加失败')
-        return Result.success('添加成功')
+        return Result.success('添加成功', notice.vars())
     if request.method == 'POST':
         pass
     if request.method == 'DELETE':
-        pass
+        id = RequestUtils.quick_data(request, ('id', int))
+
+        if not id:
+            return Result.failure('通知 id 不能为空')
+
+        result = Notice.query.filter(Notice.id == id).delete()
+        db.session.commit()
+
+        if result > 0:
+            return Result.success('删除成功')
+        return Result.failure('删除失败')
     return Result.failure()
+
+@notice_blue.route('/detail', methods=['GET'])
+@jwt_required()
+def detail():
+    """获取通知详情"""
+    id = RequestUtils.quick_data(request, ('id', int))
+
+    if not id:
+        return Result.failure('通知 id 不能为空')
+
+    result = Notice.query.join(
+        User,
+        Notice.user_id == User.id
+    ).join(
+        Teacher,
+        Notice.user_id == Teacher.user_id
+    ).add_columns(
+        User.username,
+        Teacher.name,
+    ).filter(Notice.id == id).first()
+
+    return Result.success('查询成功', {
+        **result[0].vars(),
+        'username': result[1],
+        'name': result[2],
+    })
 
 @notice_blue.route('/pageQuery', methods=['GET'])
 @jwt_required()

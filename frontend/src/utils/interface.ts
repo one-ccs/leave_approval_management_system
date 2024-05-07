@@ -109,6 +109,7 @@ export interface UnionUser extends User, Admin, Teacher, Student {
 
 export interface NoticeExtra extends Notice {
     username: string;
+    name: string;
     state: number;
 };
 

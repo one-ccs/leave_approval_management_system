@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { NoticeExtra, ResponseData, TimeRangePageQuery } from '@/utils/interface';
+import { showFailToast, showSuccessToast } from 'vant';
+import type { ResponseData, TimeRangePageQuery } from '@/utils/interface';
 import { apiNoticePageQuery } from '@/utils/api';
+import useGlobalStore from '@/stores/global';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import TimeRangeQuery from '@/components/TimeRangeQuery.vue';
 import NoticeCard from '@/components/NoticeCard.vue';
-import { showFailToast, showSuccessToast } from 'vant';
 
 const route = useRoute();
 const router = useRouter();
-const noticeList = reactive<NoticeExtra[]>([]);
+const globalStore = useGlobalStore();
 const query = reactive<TimeRangePageQuery>({
     pageIndex: 1,
     pageSize: 10,
@@ -24,11 +25,13 @@ const finished = ref(false);
 const error = ref(false);
 const refreshing = ref(false);
 
+globalStore.noticeList.length = 0;
+
 const getPageNotice = () => {
     loading.value = true;
 
     apiNoticePageQuery(query, (data: ResponseData) => {
-        noticeList.push(...data.data.list);
+        globalStore.noticeList.push(...data.data.list);
         finished.value = data.data.finished;
         loading.value = false;
         refreshing.value = false;
@@ -50,7 +53,7 @@ const onSearch = () => {
 // 下拉刷新事件
 const onRefresh = () => {
     query.pageIndex = 1;
-    noticeList.length = 0;
+    globalStore.noticeList.length = 0;
     getPageNotice();
 };
 </script>
@@ -75,7 +78,7 @@ const onRefresh = () => {
                     @load="getPageNotice()"
                 >
                     <notice-card
-                        v-for="notice in noticeList"
+                        v-for="notice in globalStore.noticeList"
                         :key="notice.id"
                         :datetime="notice.releaseDatetime"
                         :state="notice.state"
@@ -83,9 +86,9 @@ const onRefresh = () => {
                         :content="notice.content"
                         :to="`${route.path}/detail?id=${notice.id}`"
                     />
-                    <van-back-top v-if="noticeList.length" offset="120" bottom="56" teleport=".view-container" z-index="1"></van-back-top>
+                    <van-back-top v-if="globalStore.noticeList.length" offset="120" bottom="56" teleport=".view-container" z-index="1"></van-back-top>
                     <template #finished>
-                        <span v-if="noticeList.length">没有更多了</span>
+                        <span v-if="globalStore.noticeList.length">没有更多了</span>
                         <van-empty v-else image="search" description="暂无数据" />
                     </template>
                 </van-list>

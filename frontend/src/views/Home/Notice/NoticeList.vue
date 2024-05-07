@@ -1,28 +1,59 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { showSuccessToast, showFailToast } from 'vant';
+import type { ResponseData, TimeRangePageQuery } from '@/utils/interface';
+import { apiNoticePageQuery } from '@/utils/api/noticeApi';
+import useGlobalStore from '@/stores/global';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import NoticeCard from '@/components/NoticeCard.vue';
 
-const notices = reactive([
-    {
-        id: 1,
-        datetime: '2024-3-5 21:53:41',
-        state: 0,
-        title: '通知',
-        content: '那一天我二十一岁，在我一生的黄金时代。我有好多奢望。我想爱，想吃，还想在一瞬间变成天上半明半暗的云。后来我才知道，生活就是个缓慢受锤的过程，人一天天老下去，奢望也一天天消失，最后变得像挨了锤的牛一样。可是我过二十一岁生日时没有预见到这一点。我觉得自己会永远生猛下去，什么也锤不了我。',
-    },
-    {
-        id: 2,
-        datetime: '2024-3-5 22:11:52',
-        state: 1,
-        title: '通知',
-        content: '',
-    },
-]);
-
 const route = useRoute();
+const globalStore = useGlobalStore();
+const query = reactive<TimeRangePageQuery>({
+    pageIndex: 1,
+    pageSize: 10,
+    query: '',
+    startDatetime: '',
+    endDatetime: '',
+});
+const loading = ref(false);
+const finished = ref(false);
+const error = ref(false);
+const refreshing = ref(false);
+
+globalStore.noticeList.length = 0;
+
+const getPageNotice = () => {
+    loading.value = true;
+
+    apiNoticePageQuery(query, (data: ResponseData) => {
+        globalStore.noticeList.push(...data.data.list);
+        finished.value = data.data.finished;
+        loading.value = false;
+        refreshing.value = false;
+        query.pageIndex += 1;
+        query.pageIndex === 2 && showSuccessToast(data.message);
+    }, (data: ResponseData) => {
+        refreshing.value = false;
+        error.value = true;
+        loading.value = false;
+        showFailToast(data.message);
+    });
+};
+
+// 下拉刷新事件
+const onRefresh = () => {
+    query.pageIndex = 1;
+    globalStore.noticeList.length = 0;
+    getPageNotice();
+};
+const noticeType = route.path.split('/').pop();
+
+onMounted(() => {
+
+});
 </script>
 
 <template>
@@ -30,17 +61,32 @@ const route = useRoute();
         <right-slide-router-view />
         <back-nav-bar class="view-header" />
         <div class="view-container">
-            <div v-if="notices.length" class="notice-list">
-                <notice-card v-for="notice in notices"
-                    :datetime="notice.datetime"
-                    :state="notice.state"
-                    :title="notice.title"
-                    :content="notice.content"
-                    :to="`${route.path}/detail?id=${notice.id}`"
-                />
-                <van-back-top />
-            </div>
-            <van-empty v-else image="search" description="暂无数据" />
+
+            <van-pull-refresh v-model="refreshing" @refresh="onRefresh()">
+                <van-list
+                    class="notice-list"
+                    v-model:loading="loading"
+                    v-model:error="error"
+                    error-text="请求失败，点击重新加载"
+                    :finished="finished"
+                    @load="getPageNotice()"
+                >
+                    <notice-card
+                        v-for="notice in globalStore.noticeList"
+                        :key="notice.id"
+                        :datetime="notice.releaseDatetime"
+                        :state="notice.state"
+                        :title="notice.title"
+                        :content="notice.content"
+                        :to="`${route.path}/detail?id=${notice.id}`"
+                    />
+                    <van-back-top v-if="globalStore.noticeList.length" offset="120" bottom="56" teleport=".view-container" z-index="1"></van-back-top>
+                    <template #finished>
+                        <span v-if="globalStore.noticeList.length">没有更多了</span>
+                        <van-empty v-else image="search" description="暂无数据" />
+                    </template>
+                </van-list>
+            </van-pull-refresh>
         </div>
     </div>
 </template>

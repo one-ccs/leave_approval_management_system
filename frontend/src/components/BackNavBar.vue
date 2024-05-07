@@ -22,6 +22,7 @@ const back = () => {
 
 <template>
     <van-nav-bar
+        class="back-nav-bar"
         left-arrow
         @click-left="back()"
         :right-text="rightText"
@@ -36,7 +37,10 @@ const back = () => {
 </template>
 
 <style scoped lang="less">
-.title {
-    font-size: 1rem ;
+.back-nav-bar {
+    box-shadow: var(--box-shadow-light);
+    .title {
+        font-size: 1rem ;
+    }
 }
 </style>

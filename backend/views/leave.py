@@ -70,10 +70,12 @@ def root():
         request_data = RequestUtils.quick_data(request)
         start_datetime = request_data.get('startDatetime')
         end_datetime = request_data.get('endDatetime')
+
         if not start_datetime:
             return Result.failure('缺少开始时间')
         if not end_datetime:
             return Result.failure('缺少结束时间')
+
         duration = -1
         try:
             duration = DateTimeUtils.diff(
@@ -84,8 +86,10 @@ def root():
             duration = DateTimeUtils.diff(
                 end_datetime, start_datetime,
             ).total_seconds()
+
         if duration < 0:
             return Result.failure('错误， 请假时长为负')
+
         # 请假天数
         duration = int(0.5 + duration / 3600 / 24)
         leave = Leave().withDict(
@@ -96,28 +100,35 @@ def root():
         # 添加并提交事务 失败自动回滚
         db.session.add(leave)
         db.session.commit()
+
         if leave.id:
             return Result.success('添加成功')
         return Result.failure('添加失败')
     # 修改
     if request.method == 'POST':
         request_data = RequestUtils.quick_data(request)
+
         if not request_data.get('id'):
             return Result.failure('请假条 id 不能为空')
+
         result = Leave.query.filter(
             Leave.id == request_data.get('id')
         ).update(ObjectUtils.vars(request_data, ['id', 'user_id']))
         db.session.commit()
+
         if result > 0:
             return Result.success('修改成功')
         return Result.failure('修改失败')
     # 删除
     if request.method == 'DELETE':
         id = RequestUtils.quick_data(request, ('id', int))
+
         if not id:
             return Result.failure('请假条 id 不能为空')
+
         result = Leave.query.filter(Leave.id == id).delete()
         db.session.commit()
+
         if result > 0:
             return Result.success('删除成功')
         return Result.failure('删除失败')

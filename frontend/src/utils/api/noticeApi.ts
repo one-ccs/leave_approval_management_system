@@ -49,6 +49,16 @@ export function apiNoticeDelete(id: number, successCallback?: Function, failureC
         failureCallback,
     });
 }
+export function apiNoticeDetail(id: number, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/api/notice/detail',
+        params: {
+            id,
+        },
+        successCallback,
+        failureCallback,
+    });
+}
 
 export function apiNoticePageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({

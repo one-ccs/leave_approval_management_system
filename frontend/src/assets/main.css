@@ -42,6 +42,7 @@
 /* 自定义样式 */
 :root {
     --border-radius: var(--van-radius-lg);
+    --padding: 15px;
     --client-width: 100%;
     --text-color: #333;
     --background-color: #F2F5FC;
