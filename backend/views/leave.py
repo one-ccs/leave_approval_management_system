@@ -173,6 +173,12 @@ def page_brief():
             or_(Leave.state == state, state == None),
             or_(Leave.category == category, category == None),
         )
+    if state:
+        if state in [ELeaveState.PENDING, ELeaveState.APPROVING, ELeaveState.CANCEL, ELeaveState.CANCELING]:
+            query_wrapper = query_wrapper.order_by(Leave.id.asc())
+        if state in [ELeaveState.WITHDRAWN, ELeaveState.REJECTED, ELeaveState.DONE]:
+            query_wrapper = query_wrapper.order_by(Leave.id.desc())
+
     result = query_wrapper.paginate(page=page_index, per_page=page_size, error_out=False)
 
     return Result.success('查询成功', {
