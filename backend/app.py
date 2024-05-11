@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import request, url_for, redirect
+from flask import request, redirect
 from .config import MAIN_KEY
 from .utils import _Flask, Result
 
@@ -14,21 +14,21 @@ def cors(response):
     """允许所有域访问，并在检测到不在白名单的域访问时，返回不允许的提示"""
     origin = request.headers.get('Origin', None)
 
-    # 忽略 options 请求 及 /api 请求
-    if request.method == 'OPTIONS' or request.path == '/api':
+    # 忽略 options、/api、/api/file/* 请求
+    if request.method == 'OPTIONS' or request.path == '/api' or '/api/file/' in request.path:
         return response
 
     # 在白名单
     if origin in allow_origin_list:
         return response
 
-    response.set_data(Result.with_json(Result.failure('不允许的跨域请求')))
+    response.set_data(Result.with_json(Result.failure('不允许的跨域请求', None, 401.9)))
 
     return response
 
 @app.route('/favicon.ico')
 def favicon():
-    return redirect(url_for('static', filename='favicon.ico'))
+    return redirect('/api/file/favicon.ico')
 
 @app.route('/api')
 def api():

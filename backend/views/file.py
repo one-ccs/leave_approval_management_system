@@ -50,4 +50,9 @@ def download(file_path):
     directory = f'{AppConfig.UPLOAD_FOLDER}/{file_path}'
     mimetype, encoding = guess_type(directory)
 
-    return send_from_directory(directory, '', as_attachment=True, mimetype=mimetype)
+    return send_from_directory(
+        PathUtils.path.dirname(directory),
+        PathUtils.path.basename(directory),
+        as_attachment=False,
+        mimetype=mimetype,
+    )

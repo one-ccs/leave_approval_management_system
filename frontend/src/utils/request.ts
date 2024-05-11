@@ -95,6 +95,14 @@ service.interceptors.response.use(
             response.config.headers.Authorization = `Bearer ${userStore.data.accessToken}`;
             return await axios(response.config);
         }
+        // 不允许的跨域请求（服务器重启后丢失 allow_origin_list 数据）
+        if (response.data.code === 401.9) {
+            response.data.message = '请重新登录';
+            userStore.clear();
+            setTimeout(() => {
+                location.href = '/login';
+            }, 800);
+        }
         return response;
     },
     (error: AxiosError) => {
