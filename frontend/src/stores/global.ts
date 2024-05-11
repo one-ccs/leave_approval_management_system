@@ -1,6 +1,15 @@
+import { defineStore } from "pinia";
+import axios from "axios";
 import type { NoticeExtra } from "@/utils/interface";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
-import { defineStore } from "pinia";
+
+
+// 测试 api 服务器是否连通
+const testApi = (apiHost: string, xOriginToken: string) => axios.get(apiHost, {
+    headers: {
+        'X-Origin-Token': xOriginToken,
+    },
+});
 
 const useGlobalStore = defineStore('global', {
     state: () => ({
@@ -11,7 +20,13 @@ const useGlobalStore = defineStore('global', {
             backgroundImageIndex: 6,
         },
         isUpdate: false,
-        apiHost: 'http://127.0.0.1:5001/api',
+        _apiHostList: [
+            'http://127.0.0.1:5001/api',
+            'http://192.168.137.1:5001/api'
+        ],
+        apiHost: 'https://www.one-ccs.com:5001/api',
+        xOriginToken: 'f0d8f7aa144828d60106968a6067ea19dbfa0d2d2e067eda19dbfa0d2d2e235d37e5198842dca67e13a',
+        timeout: 5000,
         defaultAvatarUrl: '/static/img/avatar.jpg',
         backgroundImages: [
             '/static/img/bg/blob-scene-haikei.svg',
@@ -36,6 +51,8 @@ const useGlobalStore = defineStore('global', {
             this.isInit = true;
 
             this.load();
+            this.connectApiServer();
+
             return this;
         },
         load() {
@@ -53,6 +70,19 @@ const useGlobalStore = defineStore('global', {
         clear() {
             localRemove(this.keyName);
             return this;
+        },
+        async connectApiServer() {
+            for (let apiHost of this._apiHostList) {
+                try {
+                    const data = await testApi(apiHost, this.xOriginToken);
+
+                    if (data.data) {
+                        this.apiHost = apiHost;
+                        break;
+                    }
+                }
+                catch(e) {}
+            }
         },
         setBackgroundImageIndex(index: number) {
             this.data.backgroundImageIndex = index;

@@ -13,7 +13,7 @@ import encryptMD5 from '../encryptMD5';
  */
 export function apiUserGet(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/user',
+		url: '/user',
         params: {
             id,
         },
@@ -31,7 +31,7 @@ export function apiUserGet(id: number, successCallback?: Function, failureCallba
  */
 export function apiUserPut(user: User, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/user',
+		url: '/user',
         method: 'PUT',
         data: {
             ...user,
@@ -50,7 +50,7 @@ export function apiUserPut(user: User, successCallback?: Function, failureCallba
  */
 export function apiUserPost(user: User, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/user',
+		url: '/user',
         method: 'POST',
         data: {
             ...user,
@@ -69,7 +69,7 @@ export function apiUserPost(user: User, successCallback?: Function, failureCallb
  */
 export function apiUserDelete(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/user',
+		url: '/user',
         method: 'PUT',
         data: {
             id,
@@ -88,7 +88,7 @@ export function apiUserDelete(id: number, successCallback?: Function, failureCal
  */
 export function apiUserPageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/user',
+		url: '/user',
         data: {
             ...query,
         },
@@ -112,7 +112,7 @@ export function apiLogin(user: LoginUser, successCallback?: Function, failureCal
         forbidClick: true,
     });
     return api({
-		url: '/api/user/login',
+		url: '/user/login',
         method: 'POST',
         data: {
             username: user.username,
@@ -132,7 +132,7 @@ export function apiLogin(user: LoginUser, successCallback?: Function, failureCal
 
 export function apiRefreshToken() {
     return api({
-        url: '/api/user/refreshToken',
+        url: '/user/refreshToken',
         method: 'POST',
     });
 }
@@ -145,7 +145,7 @@ export function apiRefreshToken() {
  */
 export function apiLogout(successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/user/logout',
+		url: '/user/logout',
         method: 'POST',
         successCallback,
         failureCallback,

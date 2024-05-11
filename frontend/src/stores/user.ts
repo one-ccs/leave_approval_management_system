@@ -1,6 +1,5 @@
-import { showFailToast } from "vant";
 import { defineStore } from "pinia";
-import type { ResponseData, UnionUser } from "@/utils/interface";
+import type { UnionUser } from "@/utils/interface";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 import i18n from "@/utils/i18n";
 import pinia from "./pinia";

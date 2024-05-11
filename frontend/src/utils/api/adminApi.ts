@@ -4,7 +4,7 @@ import type { Admin, TimeRangePageQuery } from "../interface";
 
 export function apiAdminGet(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-        url: '/api/admin',
+        url: '/admin',
         method: 'GET',
         params: {
             id,
@@ -16,7 +16,7 @@ export function apiAdminGet(id: number, successCallback?: Function, failureCallb
 
 export function apiAdminPut(admin: Admin, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/admin',
+		url: '/admin',
         method: 'PUT',
         data: {
             ...admin,
@@ -28,7 +28,7 @@ export function apiAdminPut(admin: Admin, successCallback?: Function, failureCal
 
 export function apiAdminPost(admin: Admin, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/admin',
+		url: '/admin',
         method: 'POST',
         data: {
             ...admin,
@@ -40,7 +40,7 @@ export function apiAdminPost(admin: Admin, successCallback?: Function, failureCa
 
 export function apiAdminDelete(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/admin',
+		url: '/admin',
         method: 'DELETE',
         data: {
             id,
@@ -52,7 +52,7 @@ export function apiAdminDelete(id: number, successCallback?: Function, failureCa
 
 export function apiAdminPageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/admin/pageQuery',
+		url: '/admin/pageQuery',
         params: {
             ...query,
         },

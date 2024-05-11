@@ -9,7 +9,7 @@ DB_PASS = 'LmzwTvA1p5Bds3DODi$b2bfe2b68ef2esdf9b86dd354e00d3c3c7f533ce18fe8a6f33
 
 
 class AppConfig(object):
-    # Upload
+    # Upload 文件夹
     UPLOAD_FOLDER = PathUtils.abspath('./upload')
     ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png', 'webp', 'gif'])
 
@@ -21,9 +21,9 @@ class FlaskConfig(object):
 
 
 class FlaskCorsConfig(object):
-    CORS_ORIGINS = ['http://127.0.0.1:5177', 'http://localhost:5177']
+    CORS_ORIGINS = '*'
     CORS_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    CORS_ALLOW_HEADERS = ['Authorization', 'Content-Type']
+    CORS_ALLOW_HEADERS = ['Authorization', 'X-Origin-Token']
     CORS_EXPOSE_HEADERS = []
     CORS_SUPPORTS_CREDENTIALS = False
 

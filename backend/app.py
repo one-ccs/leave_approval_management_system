@@ -2,18 +2,27 @@
 # -*- coding: utf-8 -*-
 from flask import request, url_for, redirect
 from .config import MAIN_KEY
-from .utils import _Flask, Result, RequestUtils
+from .utils import _Flask, Result
 
 
 app = _Flask(__name__)
+allow_origin_list = set([])
 
 
 @app.after_request
 def cors(response):
-    """放行不在白名单的域"""
-    origin, origin_token = RequestUtils.quick_data(request, 'origin', 'originToken')
-    if origin and origin_token == MAIN_KEY:
-        response.headers['Access-Control-Allow-Origin'] = origin
+    """允许所有域访问，并在检测到不在白名单的域访问时，返回不允许的提示"""
+    origin = request.headers.get('Origin', None)
+
+    # 忽略 options 请求 及 /api 请求
+    if request.method == 'OPTIONS' or request.path == '/api':
+        return response
+
+    # 在白名单
+    if origin in allow_origin_list:
+        return response
+
+    response.set_data(Result.with_json(Result.failure('不允许的跨域请求')))
 
     return response
 
@@ -23,7 +32,15 @@ def favicon():
 
 @app.route('/api')
 def api():
-    return Result.success('ok', True)
+    """注册 Origin 域"""
+    origin = request.headers.get('Origin', None)
+    origin_token = request.headers.get('X-Origin-Token', None)
+
+    if origin and origin_token == MAIN_KEY:
+        allow_origin_list.add(origin)
+
+        return Result.success('ok', True)
+    return Result.failure('ok', False)
 
 
 if __name__ == "__main__":

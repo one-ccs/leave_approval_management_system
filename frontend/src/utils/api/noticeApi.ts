@@ -4,7 +4,7 @@ import type { Notice, TimeRangePageQuery } from "../interface";
 
 export function apiNoticeGet(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/notice',
+		url: '/notice',
         method: 'GET',
         params: {
             id,
@@ -16,7 +16,7 @@ export function apiNoticeGet(id: number, successCallback?: Function, failureCall
 
 export function apiNoticePut(notice: Notice, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/notice',
+		url: '/notice',
         method: 'PUT',
         data: {
             ...notice,
@@ -28,7 +28,7 @@ export function apiNoticePut(notice: Notice, successCallback?: Function, failure
 
 export function apiNoticePost(notice: Notice, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/notice',
+		url: '/notice',
         method: 'POST',
         data: {
             ...notice,
@@ -40,7 +40,7 @@ export function apiNoticePost(notice: Notice, successCallback?: Function, failur
 
 export function apiNoticeDelete(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/notice',
+		url: '/notice',
         method: 'DELETE',
         data: {
             id,
@@ -51,7 +51,7 @@ export function apiNoticeDelete(id: number, successCallback?: Function, failureC
 }
 export function apiNoticeDetail(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/notice/detail',
+		url: '/notice/detail',
         params: {
             id,
         },
@@ -62,7 +62,7 @@ export function apiNoticeDetail(id: number, successCallback?: Function, failureC
 
 export function apiNoticePageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/notice/pageQuery',
+		url: '/notice/pageQuery',
         params: {
             ...query,
         },

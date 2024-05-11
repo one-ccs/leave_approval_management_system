@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from json import dumps
+
 
 class Result(object):
+
+    @staticmethod
+    def with_json(result: tuple):
+        return dumps(result[0])
 
     @staticmethod
     def success(message='请求成功', data=None, code=200):

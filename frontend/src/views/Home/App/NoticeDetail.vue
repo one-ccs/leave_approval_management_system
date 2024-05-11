@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { showSuccessToast } from 'vant';
+import { showConfirmDialog, showSuccessToast } from 'vant';
 import { ERole, type NoticeExtra, type ResponseData } from '@/utils/interface';
 import { apiNoticeDelete, apiNoticeDetail } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
@@ -13,6 +13,7 @@ const globalStore = useGlobalStore();
 const noticeId = Number(route.query.id);
 const noticeDetail = ref<NoticeExtra>();
 
+// 已读按钮点击事件
 const onReadClick = () => {
     showSuccessToast('已标记为已读');
     noticeDetail.value!.state = 1;
@@ -20,12 +21,18 @@ const onReadClick = () => {
         if (notice.id === noticeDetail.value?.id) notice.state = 1;
     });
 };
+// 删除按钮点击事件
 const onDeleteClick = () => {
-    apiNoticeDelete(noticeId, (data: ResponseData) => {
-        showSuccessToast(data.message);
-        globalStore.noticeList = globalStore.noticeList.filter(notice => notice.id !== noticeId);
-        router.back();
-    });
+    showConfirmDialog({
+        title: '提示',
+        message: `确定要删除通知 "${noticeDetail.value?.title}" 吗？`,
+    }).then(() => {
+        apiNoticeDelete(noticeId, (data: ResponseData) => {
+            showSuccessToast(data.message);
+            globalStore.noticeList = globalStore.noticeList.filter(notice => notice.id !== noticeId);
+            router.back();
+        });
+    }).catch(() => {});
 };
 
 onMounted(() => {

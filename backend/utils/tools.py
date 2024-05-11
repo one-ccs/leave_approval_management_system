@@ -121,11 +121,6 @@ class RequestUtils(object):
 class ObjectUtils(object):
 
     @staticmethod
-    def json_str(obj: object, ignore=[]) -> str:
-        """将对象转为 JSON 字符串"""
-        pass
-
-    @staticmethod
     def repr(obj: object, ignore=[]) -> str:
         """将对象转为描述属性的字符串
         :param obj 对象

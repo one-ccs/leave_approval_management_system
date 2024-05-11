@@ -4,7 +4,7 @@ import type { Student, TimeRangePageQuery } from "../interface";
 
 export function apiStudentGet(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/student',
+		url: '/student',
         method: 'GET',
         params: {
             id,
@@ -16,7 +16,7 @@ export function apiStudentGet(id: number, successCallback?: Function, failureCal
 
 export function apiStudentPut(student: Student, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/student',
+		url: '/student',
         method: 'PUT',
         data: {
             ...student,
@@ -28,7 +28,7 @@ export function apiStudentPut(student: Student, successCallback?: Function, fail
 
 export function apiStudentPost(student: Student, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/student',
+		url: '/student',
         method: 'POST',
         data: {
             ...student,
@@ -40,7 +40,7 @@ export function apiStudentPost(student: Student, successCallback?: Function, fai
 
 export function apiStudentDelete(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/student',
+		url: '/student',
         method: 'DELETE',
         data: {
             id,
@@ -52,7 +52,7 @@ export function apiStudentDelete(id: number, successCallback?: Function, failure
 
 export function apiStudentPageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/student/pageQuery',
+		url: '/student/pageQuery',
         params: {
             ...query,
         },

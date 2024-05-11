@@ -4,7 +4,7 @@ import type { Teacher, TimeRangePageQuery } from "../interface";
 
 export function apiTeacherGet(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/teacher',
+		url: '/teacher',
         method: 'GET',
         params: {
             id,
@@ -16,7 +16,7 @@ export function apiTeacherGet(id: number, successCallback?: Function, failureCal
 
 export function apiTeacherPut(teacher: Teacher, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/teacher',
+		url: '/teacher',
         method: 'PUT',
         data: {
             ...teacher,
@@ -28,7 +28,7 @@ export function apiTeacherPut(teacher: Teacher, successCallback?: Function, fail
 
 export function apiTeacherPost(teacher: Teacher, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/teacher',
+		url: '/teacher',
         method: 'POST',
         data: {
             ...teacher,
@@ -40,7 +40,7 @@ export function apiTeacherPost(teacher: Teacher, successCallback?: Function, fai
 
 export function apiTeacherDelete(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/teacher',
+		url: '/teacher',
         method: 'DELETE',
         data: {
             id,
@@ -52,7 +52,7 @@ export function apiTeacherDelete(id: number, successCallback?: Function, failure
 
 export function apiTeacherPageQuery(query: TimeRangePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/teacher/pageQuery',
+		url: '/teacher/pageQuery',
         params: {
             ...query,
         },

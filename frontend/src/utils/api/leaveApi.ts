@@ -11,7 +11,7 @@ import type { Leave, LeavePageQuery } from '../interface';
  */
 export function apiLeaveGet(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave',
+		url: '/leave',
         params: {
             id,
         },
@@ -29,7 +29,7 @@ export function apiLeaveGet(id: number, successCallback?: Function, failureCallb
  */
 export function apiLeavePut(leave: Leave, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave',
+		url: '/leave',
         data: {
             ...leave,
         },
@@ -48,7 +48,7 @@ export function apiLeavePut(leave: Leave, successCallback?: Function, failureCal
  */
 export function apiLeavePost(leave: Leave, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave',
+		url: '/leave',
         data: {
             ...leave,
         },
@@ -67,7 +67,7 @@ export function apiLeavePost(leave: Leave, successCallback?: Function, failureCa
  */
 export function apiLeaveDelete(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave',
+		url: '/leave',
         data: {
             id,
         },
@@ -86,7 +86,7 @@ export function apiLeaveDelete(id: number, successCallback?: Function, failureCa
  */
 export function apiLeavePageBrief(query: LeavePageQuery, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave/pageBrief',
+		url: '/leave/pageBrief',
         params: {
             ...query,
             category: query.category === -1 ? undefined : query.category,
@@ -105,7 +105,7 @@ export function apiLeavePageBrief(query: LeavePageQuery, successCallback?: Funct
  */
 export function apiLeaveCancel(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave/cancel',
+		url: '/leave/cancel',
         data: {
             id,
         },
@@ -125,7 +125,7 @@ export function apiLeaveCancel(id: number, successCallback?: Function, failureCa
  */
 export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude: number }, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave/revoke',
+		url: '/leave/revoke',
         data: {
             id,
             coords,
@@ -146,7 +146,7 @@ export function apiLeaveRevoke(id: number, coords: { longitude: number, latitude
  */
 export function apiLeaveAgreeLeave(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave/agreeLeave',
+		url: '/leave/agreeLeave',
         data: {
             id,
         },
@@ -165,7 +165,7 @@ export function apiLeaveAgreeLeave(id: number, successCallback?: Function, failu
  */
 export function apiLeaveReject(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave/reject',
+		url: '/leave/reject',
         data: {
             id,
         },
@@ -184,7 +184,7 @@ export function apiLeaveReject(id: number, successCallback?: Function, failureCa
  */
 export function apiLeaveAgreeRevoke(id: number, successCallback?: Function, failureCallback?: Function) {
     return api({
-		url: '/api/leave/agreeRevoke',
+		url: '/leave/agreeRevoke',
         data: {
             id,
         },

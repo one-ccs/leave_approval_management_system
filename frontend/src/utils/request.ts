@@ -1,15 +1,19 @@
+
 import axios, { type AxiosInstance, type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { showFailToast } from 'vant';
 import { apiRefreshToken } from './api/userApi';
 import pinia from '@/stores/pinia';
+import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
 
 
+const globalStore = useGlobalStore(pinia);
 const userStore = useUserStore(pinia);
 
+
 const service: AxiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:5001',
-    timeout: 5000,
+    baseURL: globalStore.apiHost,
+    timeout: globalStore.timeout,
     // 小于 500 的状态码不抛出错误
     validateStatus: status => (status < 500),
 });
@@ -26,7 +30,7 @@ function onRefreshedToken(token: string) {
 service.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // 放行 刷新令牌 api
-        if (config.url === '/api/user/refreshToken') {
+        if (config.url === '/user/refreshToken') {
             config.headers.Authorization = `Bearer ${userStore.data.refreshToken}`;
             return config;
         }
