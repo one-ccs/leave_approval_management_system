@@ -23,7 +23,7 @@ class FlaskConfig(object):
 class FlaskCorsConfig(object):
     CORS_ORIGINS = '*'
     CORS_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    CORS_ALLOW_HEADERS = ['Authorization', 'X-Origin-Token']
+    CORS_ALLOW_HEADERS = ['Authorization', 'Content-Type', 'X-Origin-Token']
     CORS_EXPOSE_HEADERS = []
     CORS_SUPPORTS_CREDENTIALS = False
 

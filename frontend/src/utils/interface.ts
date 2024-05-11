@@ -116,6 +116,14 @@ export interface UnionUser extends User, Admin, Teacher, Student {
     refreshToken: string;
 };
 
+export interface LeaveExtra extends Leave {
+    avatar: string;
+    name: string;
+    grade: string;
+    major: string;
+    _class: string;
+}
+
 export interface NoticeExtra extends Notice {
     username: string;
     role: ERole;

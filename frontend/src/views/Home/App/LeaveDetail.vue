@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { showConfirmDialog, showSuccessToast } from 'vant';
-import { ELeaveState, type Leave, type ResponseData } from '@/utils/interface';
+import { ELeaveState, type LeaveExtra, type ResponseData } from '@/utils/interface';
 import { apiLeaveAgreeLeave, apiLeaveAgreeRevoke, apiLeaveCancel, apiLeaveGet, apiLeaveReject, apiLeaveRevoke } from '@/utils/api';
 import { useStateColor } from '@/utils/use';
 import { getCurrentPosition } from '@/utils/advanced';
@@ -10,16 +10,12 @@ import i18n from '@/utils/i18n';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import Avatar from '@/components/Avatar.vue';
+import useGlobalStore from '@/stores/global';
 
 const route = useRoute();
+const router = useRouter();
+const globalStore = useGlobalStore();
 
-interface LeaveExtra extends Leave {
-    avatar: string;
-    name: string;
-    grade: string;
-    major: string;
-    _class: string;
-}
 const leaveDetail = ref<LeaveExtra>();
 const cancelFlag = ref(false);
 const revokeFlag = ref(false);
@@ -33,9 +29,11 @@ const onCancelClick = () => {
         message: '确定要撤销申请吗？',
     }).then(() => {
         apiLeaveCancel(leaveDetail.value?.id!, (data: ResponseData) => {
+            showSuccessToast(data.message);
             cancelFlag.value = true;
             leaveDetail.value!.state = ELeaveState.WITHDRAWN;
-            showSuccessToast(data.message);
+            globalStore.leaveList = globalStore.leaveList.filter(leave => leave.id !== leaveDetail.value?.id);
+            router.back();
         });
     }).catch(() => {});
 };
@@ -50,9 +48,11 @@ const onRevokeClick = () => {
                 longitude: pos.coords.longitude,
                 latitude: pos.coords.latitude,
             }, (data: ResponseData) => {
+                showSuccessToast(data.message);
                 revokeFlag.value = true;
                 leaveDetail.value!.state = ELeaveState.CANCELING;
-                showSuccessToast(data.message);
+                globalStore.leaveList = globalStore.leaveList.filter(leave => leave.id !== leaveDetail.value?.id);
+                router.back();
             });
         });
     }).catch(() => {});
@@ -64,9 +64,11 @@ const onRejectClick = () => {
         message: '确定要驳回申请吗？',
     }).then(() => {
         apiLeaveReject(leaveDetail.value?.id!, (data: ResponseData) => {
+            showSuccessToast(data.message);
             rejectFlag.value = true;
             leaveDetail.value!.state = ELeaveState.REJECTED;
-            showSuccessToast(data.message);
+            globalStore.leaveList = globalStore.leaveList.filter(leave => leave.id !== leaveDetail.value?.id);
+            router.back();
         });
     }).catch(() => {});
 };
@@ -83,13 +85,21 @@ const onAgreeClick = () => {
             leaveDetail.value.duration < 3 ?
                 leaveDetail.value.state = ELeaveState.CANCEL :
                 leaveDetail.value.state = ELeaveState.APPROVING;
-            apiLeaveAgreeLeave(leaveDetail.value.id);
+            apiLeaveAgreeLeave(leaveDetail.value.id, (data: ResponseData) => {
+                showSuccessToast(data.message);
+                globalStore.leaveList = globalStore.leaveList.filter(leave => leave.id !== leaveDetail.value?.id);
+                router.back();
+            });
         }
         // 同意销假申请
         if (leaveDetail.value?.state === ELeaveState.CANCELING) {
             agreeFlag.value = true;
             leaveDetail.value.state = ELeaveState.DONE;
-            apiLeaveAgreeRevoke(leaveDetail.value.id);
+            apiLeaveAgreeRevoke(leaveDetail.value.id, (data: ResponseData) => {
+                showSuccessToast(data.message);
+                globalStore.leaveList = globalStore.leaveList.filter(leave => leave.id !== leaveDetail.value?.id);
+                router.back();
+            });
         }
     }).catch(() => {});
 };

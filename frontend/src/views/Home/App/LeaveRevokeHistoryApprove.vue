@@ -2,15 +2,19 @@
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { showFailToast, showSuccessToast } from 'vant';
-import type { Leave, LeavePageQuery, ResponseData } from '@/utils/interface';
+import type { LeavePageQuery, ResponseData } from '@/utils/interface';
 import { apiLeavePageBrief } from '@/utils/api';
 import i18n from '@/utils/i18n';
+import useGlobalStore from '@/stores/global';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import LeaveCard from '@/components/LeaveCard.vue';
 
 const route = useRoute();
 const router = useRouter();
+const globalStore = useGlobalStore();
+
+globalStore.leaveList.length = 0;
 
 // 标签栏列表
 const stateAllTabs = (() => {
@@ -56,10 +60,6 @@ const query = reactive<LeavePageQuery>({
     state: 0,
     category: -1,
 });
-interface LeaveExtra extends Leave {
-    name: string;
-}
-const leaveList = reactive<LeaveExtra[]>([]);
 const loading = ref(false);
 const finished = ref(false);
 const error = ref(false);
@@ -70,7 +70,7 @@ const getLeave = () => {
     loading.value = true;
 
     apiLeavePageBrief(query, (data: ResponseData) => {
-        leaveList.push(...data.data.list);
+        globalStore.leaveList.push(...data.data.list);
         finished.value = data.data.finished;
         loading.value = false;
         refreshing.value = false;
@@ -86,13 +86,13 @@ const getLeave = () => {
 // 下拉刷新事件
 const onRefresh = () => {
     query.pageIndex = 1;
-    leaveList.length = 0;
+    globalStore.leaveList.length = 0;
     getLeave();
 };
 // tab 改变事件
 const onChange = () => {
     query.pageIndex = 1;
-    leaveList.length = 0;
+    globalStore.leaveList.length = 0;
     getLeave();
 };
 </script>
@@ -123,7 +123,7 @@ const onChange = () => {
                             :finished="finished"
                             @load="getLeave()"
                         >
-                            <leave-card v-for="item in leaveList" :key="item.id"
+                            <leave-card v-for="item in globalStore.leaveList" :key="item.id"
                                 :id="item.id"
                                 :name="item.name"
                                 :state="item.state"
@@ -133,7 +133,7 @@ const onChange = () => {
                             />
                             <van-back-top v-if="tab.value === query.state" offset="120" teleport=".state-tabs" />
                             <template #finished>
-                                <span v-if="leaveList.length">没有更多了</span>
+                                <span v-if="globalStore.leaveList.length">没有更多了</span>
                                 <van-empty v-else image="search" description="暂无数据" />
                             </template>
                         </van-list>

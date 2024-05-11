@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { showFailToast, showSuccessToast, type UploaderFileListItem } from 'vant';
 import type { Leave, ResponseData, LeaveAddForm } from '@/utils/interface';
 import { apiLeavePut } from '@/utils/api';
 import { useLeaveDuration } from '@/utils/use';
+import useGlobalStore from '@/stores/global';
 import BackNavBar from '@/components/BackNavBar.vue';
-import { reactive } from 'vue';
+import useUserStore from '@/stores/user';
 
 const router = useRouter();
+const globalStore = useGlobalStore();
+const userStore = useUserStore();
 const categoryPickerShown = ref(false);
 const startDatetimePickerShown = ref(false);
 const endDatetimePickerShown = ref(false);
@@ -155,6 +158,7 @@ const pictureOversize = (file: any) => {
 const onSubmit = () => {
     apiLeavePut(leaveForm as unknown as Leave, (data: ResponseData) => {
         showSuccessToast(data.message);
+        globalStore.leaveList.push({ ...data.data, name: userStore.userInfo.name });
         router.back();
     });
 };

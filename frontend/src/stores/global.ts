@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import type { NoticeExtra } from "@/utils/interface";
+import type { LeaveExtra, NoticeExtra } from "@/utils/interface";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 
 
@@ -38,6 +38,7 @@ const useGlobalStore = defineStore('global', {
             '/static/img/bg/stacked-waves-haikei.svg',
             '/static/img/bg/wave-haikei.svg',
         ],
+        leaveList: <LeaveExtra[]>[],
         noticeList: <NoticeExtra[]>[],
     }),
     getters: {

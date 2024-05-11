@@ -102,7 +102,7 @@ def root():
         db.session.commit()
 
         if leave.id:
-            return Result.success('添加成功')
+            return Result.success('添加成功', leave.vars())
         return Result.failure('添加失败')
     # 修改
     if request.method == 'POST':
@@ -198,7 +198,7 @@ def cancel():
     })
     db.session.commit()
     if result > 0:
-        return Result.success('撤销申请成功')
+        return Result.success('撤销申请成功', ELeaveState.WITHDRAWN)
     return Result.failure('撤销申请失败')
 
 @leave_blue.route('/revoke', methods=['POST'])
@@ -224,15 +224,17 @@ def revoke():
     })
     db.session.commit()
     if result > 0:
-        return Result.success('申请销假成功')
+        return Result.success('申请销假成功', ELeaveState.CANCELING)
     return Result.failure('申请销假失败')
 
 @leave_blue.route('/agreeLeave', methods=['POST'])
 def agree_leave():
     """同意请假申请"""
     id = RequestUtils.quick_data(request, ('id', int))
+
     if not id:
         return Result.failure('请假条 id 不能为空')
+
     # 请假时长 < 3 天, 待销假
     result = Leave.query.filter(
         Leave.id == id,
@@ -241,6 +243,8 @@ def agree_leave():
     ).update({
         'state': ELeaveState.CANCEL,
     })
+    state = ELeaveState.CANCEL
+
     # 请假时长 >= 3 天, 审批中
     if not result:
         result = Leave.query.filter(
@@ -249,9 +253,10 @@ def agree_leave():
         ).update({
             'state': ELeaveState.APPROVING,
         })
+        state = ELeaveState.APPROVING
     db.session.commit()
     if result > 0:
-        return Result.success('同意申请成功')
+        return Result.success('同意申请成功', state)
     return Result.failure('同意申请失败')
 
 @leave_blue.route('/reject', methods=['POST'])
@@ -271,7 +276,7 @@ def reject():
     })
     db.session.commit()
     if result > 0:
-        return Result.success('驳回申请成功')
+        return Result.success('驳回申请成功', ELeaveState.REJECTED)
     return Result.failure('驳回申请失败')
 
 @leave_blue.route('/agreeRevoke', methods=['POST'])
@@ -288,5 +293,5 @@ def agree_revoke():
     })
     db.session.commit()
     if result > 0:
-        return Result.success('同意销假申请成功')
+        return Result.success('同意销假申请成功', ELeaveState.DONE)
     return Result.failure('同意销假申请失败')
