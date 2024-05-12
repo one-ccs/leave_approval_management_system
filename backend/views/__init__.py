@@ -9,6 +9,7 @@ teacher_blue = Blueprint('teacher', __name__, url_prefix='/api/teacher')
 student_blue = Blueprint('student', __name__, url_prefix='/api/student')
 leave_blue = Blueprint('leave', __name__, url_prefix='/api/leave')
 notice_blue = Blueprint('notice', __name__, url_prefix='/api/notice')
+chart_blue = Blueprint('chart', __name__, url_prefix='/api/chart')
 file_blue = Blueprint('file', __name__, url_prefix='/api/file')
 
 from . import errorhandler
@@ -18,4 +19,5 @@ from . import teacher
 from . import student
 from . import leave
 from . import notice
+from . import chart
 from . import file

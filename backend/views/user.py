@@ -9,20 +9,20 @@ from sqlalchemy.exc import IntegrityError
 from flasgger import swag_from
 from ..plugins import db, redis, jwt
 from ..views import user_blue
-from ..models import ERole, User, Admin, Teacher, Student
+from ..models import ERole, MixUser, User, Admin, Teacher, Student
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
 @jwt.user_identity_loader
-def user_identity_loader(user: User):
+def user_identity_loader(mix_user: MixUser):
     """ 创建 JWT 时，设置 identity 的回调函数 """
-    return user
+    return mix_user
 
 @jwt.user_lookup_loader
 def user_lookup_loader(jwt_header, jwt_data):
     """ 通过 JWT 加载用户对象，可通过 current_user 或 get_current_user() 获取 """
     identity = jwt_data['sub']
-    return User(identity['id'])
+    return MixUser(User().withDict(**identity), identity['anyUser'])
 
 @jwt.user_lookup_error_loader
 def user_lookup_error_loader(jwt_header, jwt_payload: dict):
@@ -173,8 +173,8 @@ def login():
                 return Result.failure('登录失败\n角色数据异常\n请联系管理员')
 
             # 登录用户 (设置 15 分钟内为新鲜)
-            access_token = create_access_token(identity=user, fresh=DateTimeUtils.timedelta(minutes=15))
-            refresh_token = create_refresh_token(identity=user)
+            access_token = create_access_token(identity=MixUser(user, any_user.vars()), fresh=DateTimeUtils.timedelta(minutes=15))
+            refresh_token = create_refresh_token(identity=MixUser(user, any_user.vars()))
 
             # 持久化记录用户登录状态
             redis.set(user.id, 1)

@@ -115,8 +115,13 @@ const onRefresh = () => {
             top: 0;
             z-index: 1;
         }
-        .notice-list {
-            padding: 8px 15px;
+        .van-pull-refresh {
+            min-height: 100%;
+
+            .notice-list {
+                padding: 8px 15px;
+                height: 100%;
+            }
         }
     }
 }

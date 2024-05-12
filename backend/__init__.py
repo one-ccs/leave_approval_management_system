@@ -37,6 +37,7 @@ from .views import teacher_blue
 from .views import student_blue
 from .views import leave_blue
 from .views import notice_blue
+from .views import chart_blue
 from .views import file_blue
 
 app.register_blueprint(errorhandler_blue)
@@ -46,4 +47,5 @@ app.register_blueprint(teacher_blue)
 app.register_blueprint(student_blue)
 app.register_blueprint(leave_blue)
 app.register_blueprint(notice_blue)
+app.register_blueprint(chart_blue)
 app.register_blueprint(file_blue)

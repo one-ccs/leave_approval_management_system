@@ -2,12 +2,14 @@
 import { reactive, ref } from 'vue';
 import { showSuccessToast } from 'vant';
 import { useRouter } from 'vue-router';
-import { ENoticeType, type Notice, type ResponseData } from '@/utils/interface';
+import { ENoticeType, ERole, type Notice, type ResponseData } from '@/utils/interface';
 import { apiNoticePut } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
+import useUserStore from '@/stores/user';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
+const userStore = useUserStore();
 const noticeForm = reactive({} as Notice);
 const noticeFormShadow = ref({
     _type: '',
@@ -86,7 +88,7 @@ const onSubmit = () => {
                     />
                 </van-cell-group>
 
-                <van-cell-group inset>
+                <van-cell-group v-if="userStore.userInfo.role === ERole.admin" inset>
                     <van-field
                         v-model="noticeFormShadow._type"
                         name="_type"
