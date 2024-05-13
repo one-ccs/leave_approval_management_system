@@ -8,11 +8,11 @@ import VChart from 'vue-echarts';
 import { ELeaveState, type ResponseData } from '@/utils/interface';
 import { apiChartLeaveState } from '@/utils/api';
 import i18n from '@/utils/i18n';
+import DurationRadio from '@/components/DurationRadio.vue';
 
 
 use([ CanvasRenderer, PieChart, TitleComponent, TooltipComponent, ]);
 
-const chartRef = ref();
 const option = reactive({
     title: {
         text: '请假状态统计',
@@ -24,10 +24,11 @@ const option = reactive({
         {
             name: '请假状态',
             type: 'pie',
-            radius: [20, 60],
-            center: ['50%', '60%'],
+            radius: [20, 50],
+            minShowLabelAngle: 9,
             data: [
                 { value: 0, name: '待审批' },
+                { value: 0, name: '已撤回' },
                 { value: 0, name: '二审中' },
                 { value: 0, name: '已驳回' },
                 { value: 0, name: '待销假' },
@@ -40,6 +41,11 @@ const option = reactive({
                     shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 0, 0, 0.5)'
                 },
+            },
+            itemStyle: {
+                borderRadius: 8,
+                borderColor: '#fff',
+                borderWidth: 1,
             },
             label: {
                 alignTo: 'labelLine',
@@ -73,8 +79,24 @@ const option = reactive({
         },
     ],
 });
+const chartRef = ref();
+const duration = ref(90);
+
+const onDurationChange = () => {
+    getData();
+};
+
+const getData = () => {
+    apiChartLeaveState(duration.value, (data: ResponseData) => {
+        data.data.forEach((item: { state: number, count: number }) => {
+            option.series[0].data[item.state].value = item.count;
+        });
+    });
+};
 
 onMounted(() => {
+    getData();
+
     // 轮流高亮扇形
     let currentIndex = -1;
     let hover = false;
@@ -112,24 +134,12 @@ onMounted(() => {
             dataIndex: currentIndex,
         });
     }, 1000);
-
-    apiChartLeaveState((data: ResponseData) => {
-        option.series[0].data.length = 0;
-
-        data.data.forEach((item: { state: number, count: number }) => {
-            if (item.state === ELeaveState.WITHDRAWN) return;
-
-            option.series[0].data.push({
-                value: item.count,
-                name: i18n(item.state, 'field.leave.state'),
-            });
-        });
-    });
 });
 </script>
 
 <template>
     <div class="chart leave-state-chart">
+        <duration-radio v-model="duration" @change="onDurationChange()" direction="horizontal" />
         <v-chart
             class="chart"
             ref="chartRef"

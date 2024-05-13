@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { use } from 'echarts/core';
 import { BarChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, LegendComponent, GridComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
-import type { ResponseData } from '@/utils/interface';
+import { type ResponseData } from '@/utils/interface';
 import { apiChartLeaveRank } from '@/utils/api';
+import DurationRadio from '@/components/DurationRadio.vue';
 
 
 use([ TitleComponent, TooltipComponent, LegendComponent, GridComponent, BarChart, CanvasRenderer, ]);
@@ -28,8 +29,8 @@ const option = reactive({
     },
     grid: {
         left: '3%',
-        right: '4%',
-        bottom: '3%',
+        right: '3%',
+        bottom: '12%',
         containLabel: true,
     },
     xAxis: {
@@ -46,62 +47,81 @@ const option = reactive({
             type: 'bar',
             stack: 'total',
             label: {
-                show: true
+                show: true,
             },
             emphasis: {
-                focus: 'series'
+                focus: 'series',
             },
-            data: [3, 2, 0, 1]
+            data: [3, 1, 0, 1]
         },
         {
             name: '病假',
             type: 'bar',
             stack: 'total',
             label: {
-                show: true
+                show: true,
             },
             emphasis: {
-                focus: 'series'
+                focus: 'series',
             },
-            data: [0, 1, 2, 1]
+            data: [0, 1, 2, 0]
         },
         {
             name: '公假',
             type: 'bar',
             stack: 'total',
             label: {
-                show: true
+                show: true,
             },
             emphasis: {
-                focus: 'series'
+                focus: 'series',
             },
-            data: [1, 1, 3, 2]
+            data: [1, 1, 0, 1]
         },
         {
             name: '出校申请',
             type: 'bar',
             stack: 'total',
             label: {
-                show: true
+                show: true,
             },
             emphasis: {
-                focus: 'series'
+                focus: 'series',
             },
-            data: [3, 2, 2, 0]
+            data: [3, 2, 1, 0]
         },
     ],
 });
+const duration = ref(90);
+
+const onDurationChange = () => {
+    getData();
+};
+
+const getData = () => {
+    apiChartLeaveRank(duration.value, (data: ResponseData) => {
+        option.yAxis.data.length = 0;
+        option.series.forEach(item => item.data.length = 0);
+
+        data.data.forEach((item: { userId: number, name: string, total: number, categoryCount: number[] }) => {
+            option.yAxis.data.push(item.name);
+
+            option.series[0].data.push(item.categoryCount[0]);
+            option.series[1].data.push(item.categoryCount[1]);
+            option.series[2].data.push(item.categoryCount[2]);
+            option.series[3].data.push(item.categoryCount[3]);
+        });
+    });
+};
 
 onMounted(() => {
-    apiChartLeaveRank((data: ResponseData) => {
-
-        console.log(data);
-    });
+    getData();
 });
 </script>
 
 <template>
     <div class="chart leave-rank-chart">
+        <duration-radio v-model="duration" @change="onDurationChange()" direction="horizontal" />
         <v-chart class="chart" :option="option" autoresize />
     </div>
 </template>

@@ -22,14 +22,23 @@ import LeaveRankChart from '@/components/chart/LeaveRankChart.vue';
 
     .chart {
         box-sizing: border-box;
-        margin-bottom: 15px;
+        margin-bottom: 15PX;
         border-radius: var(--border-radius);
         padding: var(--padding);
-        height: 100%;
         background-color: #fff;
+        box-shadow: var(--box-shadow-light);
 
         &:last-child {
             margin-bottom: 0;
+        }
+        &:nth-child(1) {
+            height: 100%;
+        }
+        &:nth-child(2) {
+            height: 100%;
+        }
+        &:nth-child(3) {
+            height: 150%;
         }
     }
 }

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { use } from 'echarts/core';
 import { BarChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
 
-import { ELeaveState, type ResponseData } from '@/utils/interface';
+import { type ResponseData } from '@/utils/interface';
 import { apiChartLeaveCount } from '@/utils/api';
-import { number } from 'echarts';
+import DurationRadio from '@/components/DurationRadio.vue';
 
 
 use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
@@ -23,8 +23,9 @@ const option = reactive({
     },
     grid: {
         left: '3%',
-        right: '4%',
-        bottom: '3%',
+        top: '25%',
+        right: '3%',
+        bottom: '15%',
         containLabel: true,
     },
     xAxis: {
@@ -46,22 +47,32 @@ const option = reactive({
         },
     ],
 });
+const duration = ref(90);
 
-onMounted(() => {
-    apiChartLeaveCount((data: ResponseData) => {
+const onDurationChange = () => {
+    getData();
+};
+
+const getData = () => {
+    apiChartLeaveCount(duration.value, (data: ResponseData) => {
         option.xAxis.data.length = 0;
         option.series[0].data.length = 0;
 
-        data.data.forEach((item: { _class: number, count: number}) => {
-            option.xAxis.data.push(`${item._class} 班`);
+        data.data.forEach((item: { _class: string, count: number}) => {
+            option.xAxis.data.push(item._class.substring(0, 2) + item._class.substring(item._class.length - 3).replace(' ', ''));
             option.series[0].data.push(item.count);
         });
     });
+};
+
+onMounted(() => {
+    getData();
 });
 </script>
 
 <template>
     <div class="chart leave-count-chart">
+        <duration-radio v-model="duration" @change="onDurationChange()" direction="horizontal" />
         <v-chart class="chart" :option="option" autoresize />
     </div>
 </template>

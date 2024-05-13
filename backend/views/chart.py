@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 from flask import request
 from flask_jwt_extended import jwt_required, current_user
-from sqlalchemy import func, SmallInteger
+from sqlalchemy import func, distinct, SmallInteger
 from ..plugins import db
 from ..views import chart_blue
-from ..models import ERole, User, Student, Leave
-from ..utils import Result
+from ..models import ERole, ELeaveState, User, Student, Leave
+from ..utils import Result, RequestUtils
 
 
 # 所有请求都需要登录 且为指定角色
@@ -26,9 +26,10 @@ def authentication():
 @chart_blue.route('/leaveState')
 def leave_state():
     """查询指定辅导员所有请假类别（分组）统计"""
+    duration = RequestUtils.quick_data(request, ('duration', int, 90))
     teacher_id = current_user.any_user.get('id')
 
-    rows = db.session.query(
+    query_wrapper = db.session.query(
         Leave.state,
         func.count().label('count'),
     ).join(
@@ -43,18 +44,35 @@ def leave_state():
         Leave.state,
     ).order_by(
         Leave.state.asc(),
-    ).all()
+    )
 
-    return Result.success(data=[{ 'state': row.state, 'count': row.count } for row in rows])
+    # 时间范围
+    if duration:
+        query_wrapper = query_wrapper.filter(
+            func.abs(func.datediff(Leave.apply_datetime, func.now())) <= duration,
+        )
+
+    rows = query_wrapper.all()
+
+    # 给默认值
+    data = [{ 'state': i, 'count': 0 } for i in range(ELeaveState.DONE + 1)]
+
+    # 格式化数据
+    for row in rows:
+        data[row.state]['count'] = row.count
+
+    return Result.success(data=data)
 
 @chart_blue.route('/leaveCount')
 def leave_count():
     """查询指定辅导员管理的班级（分组）请假人数统计"""
+    duration = RequestUtils.quick_data(request, ('duration', int, 90))
     teacher_id = current_user.any_user.get('id')
 
-    rows = db.session.query(
+    query_wrapper = db.session.query(
+        Student.major,
         func.cast(Student._class, SmallInteger).label('_class'),
-        func.coalesce(func.count(), 0).label('count'),
+        func.count().label('count'),
     ).join(
         User,
         Student.user_id == User.id
@@ -63,24 +81,59 @@ def leave_count():
         User.id == Leave.user_id
     ).filter(
         Student.teacher_id == teacher_id,
-        # Leave.start_datetime <= func.now(),
-        # Leave.end_datetime >= func.now(),
     ).group_by(
+        Student.major,
         Student._class,
     ).order_by(
         '_class',
+    )
+
+    # 时间范围
+    if duration:
+        query_wrapper = query_wrapper.filter(
+            func.abs(func.datediff(Leave.apply_datetime, func.now())) <= duration,
+        )
+
+    rows = query_wrapper.all()
+
+    # 班级列表
+    _class_list = db.session.query(
+        distinct(Student.major).label('major'),
+        Student._class,
+    ).filter(
+        Student.teacher_id == teacher_id,
+    ).order_by(
+        db.asc('major'),
+        Student._class.asc(),
     ).all()
 
-    return Result.success(data=[{ '_class': row._class, 'count': row.count } for row in rows])
+    # 给默认值
+    data = {}
+    for _class in _class_list:
+        t_class = f'{_class.major} {_class._class}班'
+
+        if t_class not in data:
+            data[t_class] = { '_class': t_class, 'count': 0 }
+
+    # 格式化数据
+    for row in rows:
+        t_class = f'{row.major} {row._class}班'
+
+        data[t_class]['count'] = row.count
+
+    return Result.success(data=[value for value in data.values()])
 
 @chart_blue.route('/leaveRank')
 def leave_rank():
     """查询指定辅导员管理的学生中请假次数排行"""
+    duration = RequestUtils.quick_data(request, ('duration', int, 90))
     teacher_id = current_user.any_user.get('id')
 
-    rows = db.session.query(
+    query_wrapper = db.session.query(
         Leave.user_id,
+        Leave.category,
         func.count().label('count'),
+        Student.name,
     ).join(
         User,
         Leave.user_id == User.id
@@ -89,10 +142,38 @@ def leave_rank():
         User.id == Student.user_id
     ).filter(
         Student.teacher_id == teacher_id,
+        Leave.state != ELeaveState.WITHDRAWN,
+        Leave.state != ELeaveState.REJECTED,
     ).group_by(
         Leave.user_id,
+        Leave.category,
+        Student.name,
     ).order_by(
-        db.desc('count'),
-    ).all()
+        Leave.user_id.asc(),
+        Leave.category.asc(),
+    )
 
-    return Result.success(data=[{ 'userId': row.user_id, 'count': row.count } for row in rows])
+    # 时间范围
+    if duration:
+        query_wrapper = query_wrapper.filter(
+            func.abs(func.datediff(Leave.apply_datetime, func.now())) <= duration,
+        )
+
+    rows = query_wrapper.all()
+
+    # 格式化返回值 (给默认值)
+    data = {}
+    for row in rows:
+        user_id = row.user_id
+
+        if user_id not in data:
+            data[user_id] = {
+                'userId': user_id,
+                'name': row.name,
+                'total': 0,
+                'categoryCount': [0, 0, 0, 0],
+            }
+        data[user_id]['total'] += row.count
+        data[user_id]['categoryCount'][row.category] = row.count
+
+    return Result.success(data=sorted([value for value in data.values()], key=lambda item: item['total'], reverse=True))

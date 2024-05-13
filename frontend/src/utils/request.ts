@@ -41,6 +41,7 @@ service.interceptors.request.use(
         if (isRefreshingToken) {
             return new Promise((resolve, reject) => {
                 suspendedRequestCallbackQueue.push((token: string) => {
+                    console.log('retry request', config.url);
                     // 更新令牌
                     config.headers.Authorization = `Bearer ${token}`;
                     resolve(config);

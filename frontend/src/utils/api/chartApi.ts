@@ -1,25 +1,34 @@
 import { api } from '.';
 
 
-export function apiChartLeaveState(successCallback?: Function, failureCallback?: Function) {
+export function apiChartLeaveState(duration: number, successCallback?: Function, failureCallback?: Function) {
     return api({
         url: '/chart/leaveState',
+        params: {
+            duration,
+        },
         successCallback,
         failureCallback,
     });
 };
 
-export function apiChartLeaveCount(successCallback?: Function, failureCallback?: Function) {
+export function apiChartLeaveCount(duration: number, successCallback?: Function, failureCallback?: Function) {
     return api({
         url: '/chart/leaveCount',
+        params: {
+            duration,
+        },
         successCallback,
         failureCallback,
     });
 };
 
-export function apiChartLeaveRank(successCallback?: Function, failureCallback?: Function) {
+export function apiChartLeaveRank(duration: number, successCallback?: Function, failureCallback?: Function) {
     return api({
         url: '/chart/leaveRank',
+        params: {
+            duration,
+        },
         successCallback,
         failureCallback,
     });
