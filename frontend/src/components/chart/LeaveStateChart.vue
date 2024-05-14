@@ -13,7 +13,7 @@ import DurationRadio from '@/components/DurationRadio.vue';
 use([ CanvasRenderer, PieChart, TitleComponent, TooltipComponent, ]);
 
 const props = withDefaults(defineProps<{
-    isVerticalTitle: boolean;
+    isVerticalTitle?: boolean;
 }>(), {
     isVerticalTitle: false,
 });
@@ -31,6 +31,7 @@ const option = reactive({
             name: '请假状态',
             type: 'pie',
             radius: ['35%', '75%'],
+            center: props.isVerticalTitle ? ['55%', '45%'] : ['50%', '50%'],
             minShowLabelAngle: 9,
             data: [
                 { value: 0, name: '待审批' },
@@ -144,10 +145,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="chart leave-state-chart">
+    <div class="leave-state-chart">
         <duration-radio v-model="duration" @change="onDurationChange()" direction="horizontal" />
         <v-chart
-            class="chart"
             ref="chartRef"
             autoresize
             :option="option"

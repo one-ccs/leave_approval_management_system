@@ -13,7 +13,7 @@ import DurationRadio from '@/components/DurationRadio.vue';
 use([ TitleComponent, TooltipComponent, LegendComponent, GridComponent, BarChart, CanvasRenderer, ]);
 
 const props = withDefaults(defineProps<{
-    isVerticalTitle: boolean;
+    isVerticalTitle?: boolean;
 }>(), {
     isVerticalTitle: false,
 });
@@ -127,9 +127,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="chart leave-rank-chart">
+    <div class="leave-rank-chart">
         <duration-radio v-model="duration" @change="onDurationChange()" direction="horizontal" />
-        <v-chart class="chart" :option="option" autoresize />
+        <v-chart :option="option" autoresize />
     </div>
 </template>
 
