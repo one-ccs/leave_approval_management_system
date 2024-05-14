@@ -130,6 +130,10 @@ export function apiLogin(user: LoginUser, successCallback?: Function, failureCal
     });
 }
 
+/**
+ * 刷新令牌 api
+ * @returns Promise
+ */
 export function apiRefreshToken() {
     return api({
         url: '/user/refreshToken',

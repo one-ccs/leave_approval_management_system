@@ -19,35 +19,57 @@ const service: AxiosInstance = axios.create({
 });
 
 // 令牌刷新逻辑
+const refreshTokenApi = '/user/refreshToken';
 let isRefreshingToken = false;
-let suspendedRequestCallbackQueue: Function[] = [];
+let repeatRequestQueue: Function[] = [];
+let repeatResponseQueue: Function[] = [];
+/**
+ * 将请求添加到重播队列等待重播
+ * @param config 请求配置
+ * @param source 请求来源 request 响应拦截器 response 请求拦截器
+ * @returns Promise
+ */
+function repeatRequest(config: InternalAxiosRequestConfig, source: 'request' | 'response'): Promise<InternalAxiosRequestConfig> {
+    if (source === 'request') {
+        // 在请求拦截中添加的重播
+        return new Promise((resolve, reject) => {
+            repeatRequestQueue.push((token: string) => {
+                config.headers.Authorization = `Bearer ${token}`;
+                resolve(config);
+            });
+        });
+    }
+    // 在响应拦截中添加的重播
+    return new Promise((resolve, reject) => {
+        repeatResponseQueue.push((token: string) => {
+            config.headers.Authorization = `Bearer ${token}`;
+            resolve(axios(config));
+        });
+    });
+}
+/**
+ * token 刷新事件（重播请求）
+ * @param token 新 token
+ */
 function onRefreshedToken(token: string) {
-    suspendedRequestCallbackQueue.forEach(callback => callback(token));
-    suspendedRequestCallbackQueue.length = 0;
+    repeatRequestQueue.forEach(func => func(token));
+    repeatRequestQueue.length = 0;
+
+    repeatResponseQueue.forEach(func => func(token));
+    repeatResponseQueue.length = 0;
 }
 
 // 请求拦截器
 service.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        // 放行 刷新令牌 api
-        if (config.url === '/user/refreshToken') {
-            config.headers.Authorization = `Bearer ${userStore.data.refreshToken}`;
-            return config;
+        // 若正在刷新 token 则放入队列等待刷新完毕
+        if (isRefreshingToken && config.url !== refreshTokenApi) {
+            return repeatRequest(config, 'request');
         }
         // 设置 token
-        config.headers.Authorization = `Bearer ${userStore.data.accessToken}`;
-
-        // 若正在刷新 token 则放入队列等待刷新完毕
-        if (isRefreshingToken) {
-            return new Promise((resolve, reject) => {
-                suspendedRequestCallbackQueue.push((token: string) => {
-                    console.log('retry request', config.url);
-                    // 更新令牌
-                    config.headers.Authorization = `Bearer ${token}`;
-                    resolve(config);
-                });
-            });
-        }
+        config.headers.Authorization = config.url === refreshTokenApi ?
+            `Bearer ${userStore.data.refreshToken}` :
+            `Bearer ${userStore.data.accessToken}`;
         return config;
     },
     (error: AxiosError) => {
@@ -92,9 +114,13 @@ service.interceptors.response.use(
                 isRefreshingToken = false;
             }
 
-            // 重发请求
+            // 单独重播当前请求
             response.config.headers.Authorization = `Bearer ${userStore.data.accessToken}`;
-            return await axios(response.config);
+            return axios(response.config);
+        }
+        // 重发同时发起的请求
+        if (response.data.code === 401.8 && isRefreshingToken) {
+            return repeatRequest(response.config, 'response');
         }
         // 不允许的跨域请求（服务器重启后丢失 allow_origin_list 数据）
         if (response.data.code === 401.9) {

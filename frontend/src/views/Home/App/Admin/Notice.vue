@@ -28,6 +28,7 @@ const refreshing = ref(false);
 
 globalStore.noticeList.length = 0;
 
+// 分页查询通知
 const getPageNotice = () => {
     loading.value = true;
 
