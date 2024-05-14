@@ -5,7 +5,6 @@ import { BarChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
-
 import { type ResponseData } from '@/utils/interface';
 import { apiChartLeaveCount } from '@/utils/api';
 import DurationRadio from '@/components/DurationRadio.vue';
@@ -13,16 +12,23 @@ import DurationRadio from '@/components/DurationRadio.vue';
 
 use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
 
+const props = withDefaults(defineProps<{
+    isVerticalTitle: boolean;
+}>(), {
+    isVerticalTitle: false,
+});
+
 const option = reactive({
     title: {
-        text: '请假人数统计',
+        text: props.isVerticalTitle ? '请\n假\n人\n数\n统\n计' : '请假人数统计',
+        y: props.isVerticalTitle ? 'middle' : 'auto',
     },
     tooltip: {
         trigger: 'item',
         formatter: '{b}<br/>{c}人',
     },
     grid: {
-        left: '3%',
+        left: props.isVerticalTitle ? '8%' : '3%',
         top: '25%',
         right: '3%',
         bottom: '15%',
@@ -58,9 +64,9 @@ const getData = () => {
         option.xAxis.data.length = 0;
         option.series[0].data.length = 0;
 
-        data.data.forEach((item: { _class: string, count: number}) => {
+        data.data.forEach((item: { _class: string, leaveCount: { total: number, list: { id: number, name: string, count: number }[] }}) => {
             option.xAxis.data.push(item._class.substring(0, 2) + item._class.substring(item._class.length - 3).replace(' ', ''));
-            option.series[0].data.push(item.count);
+            option.series[0].data.push(item.leaveCount.list.length);
         });
     });
 };

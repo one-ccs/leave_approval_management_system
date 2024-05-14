@@ -21,7 +21,6 @@ import LeaveRankChart from '@/components/chart/LeaveRankChart.vue';
     padding: var(--padding);
 
     .chart {
-        box-sizing: border-box;
         margin-bottom: 15PX;
         border-radius: var(--border-radius);
         padding: var(--padding);

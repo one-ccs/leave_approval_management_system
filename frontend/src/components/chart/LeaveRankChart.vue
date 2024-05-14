@@ -12,9 +12,16 @@ import DurationRadio from '@/components/DurationRadio.vue';
 
 use([ TitleComponent, TooltipComponent, LegendComponent, GridComponent, BarChart, CanvasRenderer, ]);
 
+const props = withDefaults(defineProps<{
+    isVerticalTitle: boolean;
+}>(), {
+    isVerticalTitle: false,
+});
+
 const option = reactive({
     title: {
-        text: '请假次数排行',
+        text: props.isVerticalTitle ? '请\n假\n次\n数\n排\n行' : '请假次数排行',
+        y: props.isVerticalTitle ? 'middle' : 'auto',
     },
     tooltip: {
         trigger: 'axis',
@@ -28,7 +35,7 @@ const option = reactive({
         y: 28,
     },
     grid: {
-        left: '3%',
+        left: props.isVerticalTitle ? '8%' : '3%',
         right: '3%',
         bottom: '12%',
         containLabel: true,

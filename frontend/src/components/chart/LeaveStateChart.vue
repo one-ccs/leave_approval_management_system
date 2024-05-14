@@ -5,17 +5,23 @@ import { PieChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
-import { ELeaveState, type ResponseData } from '@/utils/interface';
+import { type ResponseData } from '@/utils/interface';
 import { apiChartLeaveState } from '@/utils/api';
-import i18n from '@/utils/i18n';
 import DurationRadio from '@/components/DurationRadio.vue';
 
 
 use([ CanvasRenderer, PieChart, TitleComponent, TooltipComponent, ]);
 
+const props = withDefaults(defineProps<{
+    isVerticalTitle: boolean;
+}>(), {
+    isVerticalTitle: false,
+});
+
 const option = reactive({
     title: {
-        text: '请假状态统计',
+        text: props.isVerticalTitle ? '请\n假\n状\n态\n统\n计' : '请假状态统计',
+        y: props.isVerticalTitle ? 'middle' : 'auto',
     },
     tooltip: {
         trigger: 'item',
@@ -24,7 +30,7 @@ const option = reactive({
         {
             name: '请假状态',
             type: 'pie',
-            radius: [20, 50],
+            radius: ['35%', '75%'],
             minShowLabelAngle: 9,
             data: [
                 { value: 0, name: '待审批' },

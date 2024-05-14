@@ -70,6 +70,8 @@ def leave_count():
     teacher_id = current_user.any_user.get('id')
 
     query_wrapper = db.session.query(
+        Student.id,
+        Student.name,
         Student.major,
         func.cast(Student._class, SmallInteger).label('_class'),
         func.count().label('count'),
@@ -82,10 +84,12 @@ def leave_count():
     ).filter(
         Student.teacher_id == teacher_id,
     ).group_by(
+        Student.id,
+        Student.name,
         Student.major,
         Student._class,
     ).order_by(
-        '_class',
+        Student.id,
     )
 
     # 时间范围
@@ -113,13 +117,18 @@ def leave_count():
         t_class = f'{_class.major} {_class._class}班'
 
         if t_class not in data:
-            data[t_class] = { '_class': t_class, 'count': 0 }
+            data[t_class] = { '_class': t_class, 'leaveCount': { 'total': 0, 'list': [] } }
 
     # 格式化数据
     for row in rows:
         t_class = f'{row.major} {row._class}班'
 
-        data[t_class]['count'] = row.count
+        data[t_class]['leaveCount']['total'] += row.count
+        data[t_class]['leaveCount']['list'].append({
+            'id': row.id,
+            'name': row.name,
+            'count': row.count,
+        })
 
     return Result.success(data=[value for value in data.values()])
 
@@ -177,3 +186,35 @@ def leave_rank():
         data[user_id]['categoryCount'][row.category] = row.count
 
     return Result.success(data=sorted([value for value in data.values()], key=lambda item: item['total'], reverse=True))
+
+@chart_blue.route('/leaving')
+def leaving():
+    """查询在请假期间内的学生，及请假条信息"""
+    teacher_id = current_user.any_user.get('id')
+
+    query_wrapper = Student.query.join(
+        Leave,
+        Student.user_id == Leave.user_id
+    ).join(
+        User,
+        Leave.user_id == User.id
+    ).add_columns(
+        Leave.category,
+        Leave.state,
+        Leave.apply_datetime,
+        Leave.start_datetime,
+        Leave.end_datetime,
+        Leave.duration,
+        Leave.leave_reason,
+        Leave.annex_url,
+    ).filter(
+        Student.teacher_id == teacher_id,
+        Leave.start_datetime <= func.now(),
+        Leave.end_datetime >= func.now(),
+    )
+
+    rows = query_wrapper.all()
+
+    return Result.success(data=[{
+        **row[0].vars(),
+    } for row in rows])

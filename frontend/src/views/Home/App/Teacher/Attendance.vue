@@ -2,20 +2,11 @@
 import BackNavBar from '@/components/BackNavBar.vue';
 import Portrait from './Attendance/Portrait.vue';
 import Landscape from './Attendance/Landscape.vue';
-
-const onRightClick = () => {
-
-};
 </script>
 
 <template>
     <div class="view">
-        <back-nav-bar class="view-header" @click-right="onRightClick()">
-            <template #right>
-                <van-icon class-prefix="fa" name="expand" size="18"></van-icon>
-                <span class="ms-2">全屏</span>
-            </template>
-        </back-nav-bar>
+        <back-nav-bar class="view-header" />
         <div class="view-container">
             <portrait />
             <landscape />
@@ -44,7 +35,7 @@ const onRightClick = () => {
                 display: none;
             }
             .landscape {
-                display: flex;
+                display: grid;
             }
         }
     }
