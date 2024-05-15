@@ -40,10 +40,6 @@ const noticeType = [
         text: '学院通知',
         value: ENoticeType.COLLEGE,
     },
-    {
-        text: '辅导员通知',
-        value: ENoticeType.TEACHER,
-    },
 ];
 
 // 类别选择事件
