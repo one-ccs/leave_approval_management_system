@@ -110,7 +110,7 @@ onMounted(() => {
     (chartRef.value.$el as HTMLElement).addEventListener('mouseover', () => {
         hover = true;
         // 取消之前高亮的图形
-        chartRef.value.dispatchAction({
+        chartRef.value?.dispatchAction({
             type: 'downplay',
             seriesIndex: 0,
             dataIndex: currentIndex,
@@ -118,7 +118,7 @@ onMounted(() => {
     });
     (chartRef.value.$el as HTMLElement).addEventListener('mouseleave', () => hover = false);
     setInterval(() => {
-        if (hover) return;
+        if (hover || !chartRef.value) return;
         var dataLen = option.series[0].data.length;
 
         // 取消之前高亮的图形

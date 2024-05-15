@@ -30,6 +30,8 @@ let repeatResponseQueue: Function[] = [];
  * @returns Promise
  */
 function repeatRequest(config: InternalAxiosRequestConfig, source: 'request' | 'response'): Promise<InternalAxiosRequestConfig> {
+
+    console.log('重播', config.url, source);
     if (source === 'request') {
         // 在请求拦截中添加的重播
         return new Promise((resolve, reject) => {
@@ -119,7 +121,7 @@ service.interceptors.response.use(
             return axios(response.config);
         }
         // 重发同时发起的请求
-        if (response.data.code === 401.8 && isRefreshingToken) {
+        if (response.data.code === 401.8 && isRefreshingToken && response.config.url !== refreshTokenApi) {
             return repeatRequest(response.config, 'response');
         }
         // 不允许的跨域请求（服务器重启后丢失 allow_origin_list 数据）
