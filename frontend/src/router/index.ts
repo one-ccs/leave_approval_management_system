@@ -367,20 +367,11 @@ const routes: RouteRecordRaw[] = [
                                 ],
                             },
                             {
-                                path: 'permission',
-                                name: 'adminPermission',
-                                meta: {
-                                    title: '角色管理',
-                                    permiss: 12,
-                                },
-                                component: () => import('@/views/Home/App/Admin/Permission.vue'),
-                            },
-                            {
                                 path: 'notice',
                                 name: 'adminNotice',
                                 meta: {
                                     title: '通知管理',
-                                    permiss: 13,
+                                    permiss: 12,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Notice.vue'),
                                 children: [
@@ -403,20 +394,11 @@ const routes: RouteRecordRaw[] = [
                                 ],
                             },
                             {
-                                path: 'lost',
-                                name: 'adminLost',
-                                meta: {
-                                    title: '失物招领管理',
-                                    permiss: 14,
-                                },
-                                component: () => import('@/views/Home/App/Admin/Lost.vue'),
-                            },
-                            {
                                 path: 'admin',
                                 name: 'adminAdmin',
                                 meta: {
                                     title: '管理员信息',
-                                    permiss: 15,
+                                    permiss: 13,
                                 },
                                 component: () => import('@/views/Home/App/UserInfo.vue'),
                             },

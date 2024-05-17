@@ -83,32 +83,18 @@ const apps = [
         permiss: 11,
     },
     {
-        icon: 'cluster-o',
-        text: '角色管理',
-        route: '/app/admin/permission',
-        badge: '',
-        permiss: 12,
-    },
-    {
         icon: 'chat-o',
         text: '通知管理',
         route: '/app/admin/notice',
         badge: '',
-        permiss: 13,
-    },
-    {
-        icon: 'coupon-o',
-        text: '失物招领管理',
-        route: '/app/admin/lost',
-        badge: '',
-        permiss: 14,
+        permiss: 12,
     },
     {
         icon: 'user-circle-o',
         text: '管理员信息',
         route: '/app/admin/admin',
         badge: '',
-        permiss: 15,
+        permiss: 13,
     },
 ];
 </script>
