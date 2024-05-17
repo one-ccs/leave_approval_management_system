@@ -6,7 +6,7 @@ const useNoticeStore = defineStore('notice', {
         systemNotice: '暂无通知',
         schoolNotice: '暂无通知',
         collegeNotice: '暂无通知',
-        teacherNotice: '暂无通知',
+        assistantNotice: '暂无通知',
     }),
     getters: {
     },
@@ -18,7 +18,7 @@ const useNoticeStore = defineStore('notice', {
             this.systemNotice = '暂无通知';
             this.schoolNotice = '暂无通知';
             this.collegeNotice = '暂无通知';
-            this.teacherNotice = '暂无通知';
+            this.assistantNotice = '暂无通知';
         },
     }
 });

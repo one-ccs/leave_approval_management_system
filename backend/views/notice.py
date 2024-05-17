@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, current_user
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import notice_blue
-from ..models import User, Admin, Teacher, Notice, ENoticeType
+from ..models import User, Admin, Assistant, Notice, ENoticeType
 from ..utils import Result, RequestUtils
 
 
@@ -73,12 +73,12 @@ def detail():
         User,
         Notice.user_id == User.id
     ).join(
-        Teacher,
-        Notice.user_id == Teacher.user_id
+        Assistant,
+        Notice.user_id == Assistant.user_id
     ).add_columns(
         User.username,
         User.role,
-        Teacher.name,
+        Assistant.name,
     ).filter(Notice.id == id).first()
 
     if not result:

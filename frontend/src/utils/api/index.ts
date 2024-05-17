@@ -37,7 +37,7 @@ export function api(config: RequestConfig) {
 
 export * from './userApi';
 export * from './adminApi';
-export * from './teacherApi';
+export * from './assistantApi';
 export * from './studentApi';
 export * from './leaveApi';
 export * from './noticeApi';

@@ -8,7 +8,7 @@ class Student(db.Model):
     """学生表"""
     id         = db.Column(db.Integer, primary_key=True, comment='学生 id')
     user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='用户 id')
-    teacher_id = db.Column(db.Integer, db.ForeignKey("teacher.id"), comment='教师 id')
+    assistant_id = db.Column(db.Integer, db.ForeignKey("assistant.id"), comment='辅导员 id')
     name       = db.Column(db.String(32), comment='姓名')
     gender     = db.Column(db.String(2), comment='性别')
     department = db.Column(db.String(38), comment='学部')

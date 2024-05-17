@@ -27,7 +27,7 @@ def authentication():
 def leave_state():
     """查询指定辅导员所有请假类别（分组）统计"""
     duration = RequestUtils.quick_data(request, ('duration', int, 90))
-    teacher_id = current_user.any_user.get('id')
+    assistant_id = current_user.any_user.get('id')
 
     query_wrapper = db.session.query(
         Leave.state,
@@ -39,7 +39,7 @@ def leave_state():
         Student,
         User.id == Student.user_id
     ).filter(
-        Student.teacher_id == teacher_id,
+        Student.assistant_id == assistant_id,
     ).group_by(
         Leave.state,
     ).order_by(
@@ -67,7 +67,7 @@ def leave_state():
 def leave_count():
     """查询指定辅导员管理的班级（分组）请假人数统计"""
     duration = RequestUtils.quick_data(request, ('duration', int, 90))
-    teacher_id = current_user.any_user.get('id')
+    assistant_id = current_user.any_user.get('id')
 
     query_wrapper = db.session.query(
         Student.id,
@@ -82,7 +82,7 @@ def leave_count():
         Leave,
         User.id == Leave.user_id
     ).filter(
-        Student.teacher_id == teacher_id,
+        Student.assistant_id == assistant_id,
     ).group_by(
         Student.id,
         Student.name,
@@ -105,7 +105,7 @@ def leave_count():
         distinct(Student.major).label('major'),
         Student._class,
     ).filter(
-        Student.teacher_id == teacher_id,
+        Student.assistant_id == assistant_id,
     ).order_by(
         db.asc('major'),
         Student._class.asc(),
@@ -136,7 +136,7 @@ def leave_count():
 def leave_rank():
     """查询指定辅导员管理的学生中请假次数排行"""
     duration = RequestUtils.quick_data(request, ('duration', int, 90))
-    teacher_id = current_user.any_user.get('id')
+    assistant_id = current_user.any_user.get('id')
 
     query_wrapper = db.session.query(
         Leave.user_id,
@@ -150,7 +150,7 @@ def leave_rank():
         Student,
         User.id == Student.user_id
     ).filter(
-        Student.teacher_id == teacher_id,
+        Student.assistant_id == assistant_id,
         Leave.state != ELeaveState.WITHDRAWN,
         Leave.state != ELeaveState.REJECTED,
     ).group_by(
@@ -190,7 +190,7 @@ def leave_rank():
 @chart_blue.route('/leaving')
 def leaving():
     """查询在请假期间内的学生，及请假条信息"""
-    teacher_id = current_user.any_user.get('id')
+    assistant_id = current_user.any_user.get('id')
 
     query_wrapper = Student.query.join(
         Leave,
@@ -208,7 +208,7 @@ def leaving():
         Leave.leave_reason,
         Leave.annex_url,
     ).filter(
-        Student.teacher_id == teacher_id,
+        Student.assistant_id == assistant_id,
         Leave.start_datetime <= func.now(),
         Leave.end_datetime >= func.now(),
     )

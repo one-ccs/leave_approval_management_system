@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from flasgger import swag_from
 from ..plugins import db, redis, jwt
 from ..views import user_blue
-from ..models import ERole, MixUser, User, Admin, Teacher, Student
+from ..models import ERole, MixUser, User, Admin, Assistant, Student
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
@@ -77,11 +77,11 @@ def root():
         id = RequestUtils.quick_data(request, ('id', int))
         user = User(id)
         # 获取详细信息
-        any_user: Union[Admin, Teacher, Student] = None
+        any_user: Union[Admin, Assistant, Student] = None
         if user.role == ERole.ADMIN:
             any_user = Admin.query.filter_by(user_id=user.id).first()
         elif user.role == ERole.TEACHER:
-            any_user = Teacher.query.filter_by(user_id=user.id).first()
+            any_user = Assistant.query.filter_by(user_id=user.id).first()
         elif user.role == ERole.STUDENT:
             any_user = Student.query.filter_by(user_id=user.id).first()
         else:
@@ -160,15 +160,15 @@ def login():
             if not user.check_password_hash(password):
                 return Result.failure('登录失败\n密码错误')
             # 获取详细信息
-            any_user: Union[Admin, Teacher, Student] = None
-            teacher: Teacher = None
+            any_user: Union[Admin, Assistant, Student] = None
+            assistant: Assistant = None
             if user.role == ERole.ADMIN:
                 any_user = Admin.query.filter_by(user_id=user.id).first()
             elif user.role == ERole.TEACHER:
-                any_user = Teacher.query.filter_by(user_id=user.id).first()
+                any_user = Assistant.query.filter_by(user_id=user.id).first()
             elif user.role == ERole.STUDENT:
                 any_user = Student.query.filter_by(user_id=user.id).first()
-                teacher = Teacher.query.filter_by(id=any_user.teacher_id).first()
+                assistant = Assistant.query.filter_by(id=any_user.assistant_id).first()
             else:
                 return Result.failure('登录失败\n角色数据异常\n请联系管理员')
 
@@ -182,7 +182,7 @@ def login():
             return Result.success('登录成功', {
                 **user.vars(),
                 **any_user.vars(),
-                'teacherUserId': teacher and teacher.user_id,
+                'assistantUserId': assistant and assistant.user_id,
                 'accessToken': access_token,
                 'refreshToken': refresh_token,
             })

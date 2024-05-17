@@ -28,7 +28,7 @@ const stateAllTabs = (() => {
     if (String(route.name).includes('studentHistory')) {
         result = i18n('tabs.state.history');
     }
-    if (String(route.name).includes('teacherApprove')) {
+    if (String(route.name).includes('assistantApprove')) {
         result = i18n('tabs.state.approve');
     }
     return result;
@@ -47,8 +47,8 @@ const toDetail = (id: number) => {
     if (String(route.name).includes('studentHistory')) {
         result = '/app/student/history/detail?id=' + id;
     }
-    if (String(route.name).includes('teacherApprove')) {
-        result = '/app/teacher/approve/detail?id=' + id;
+    if (String(route.name).includes('assistantApprove')) {
+        result = '/app/assistant/approve/detail?id=' + id;
     }
     return result;
 };

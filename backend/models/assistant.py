@@ -4,9 +4,9 @@ from ..plugins import db
 from ..utils import ObjectUtils
 
 
-class Teacher(db.Model):
-    """教师表"""
-    id         = db.Column(db.Integer, primary_key=True, comment='教师 id')
+class Assistant(db.Model):
+    """辅导员表"""
+    id         = db.Column(db.Integer, primary_key=True, comment='辅导员 id')
     user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), comment='用户 id')
     name       = db.Column(db.String(32), comment='姓名')
     gender     = db.Column(db.String(2), comment='性别')

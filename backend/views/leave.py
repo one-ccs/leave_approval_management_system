@@ -7,7 +7,7 @@ from sqlalchemy.orm import load_only
 
 from ..plugins import db
 from ..views import leave_blue
-from ..models import ERole, ELeaveState, User, Teacher, Student, Leave
+from ..models import ERole, ELeaveState, User, Assistant, Student, Leave
 from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
 
 
@@ -166,10 +166,10 @@ def page_brief():
             Student,
             Student.user_id == Leave.user_id,
         ).join(
-            Teacher,
-            Teacher.id == Student.teacher_id,
+            Assistant,
+            Assistant.id == Student.assistant_id,
         ).filter(
-            Teacher.user_id == current_user.id,
+            Assistant.user_id == current_user.id,
             or_(Leave.state == state, state == None),
             or_(Leave.category == category, category == None),
         )

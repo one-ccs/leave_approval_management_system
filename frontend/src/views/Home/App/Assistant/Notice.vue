@@ -69,7 +69,7 @@ const onRefresh = () => {
 <template>
     <div class="view">
         <right-slide-router-view />
-        <back-nav-bar class="view-header" right-text="发布通知" @click-right="router.push('/app/teacher/notice/add')" />
+        <back-nav-bar class="view-header" right-text="发布通知" @click-right="router.push('/app/assistant/notice/add')" />
         <div class="view-container">
             <time-range-query
                 v-model="query"

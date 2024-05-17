@@ -50,7 +50,7 @@ onMounted(() => {
                 <van-cell v-if="user.role === ERole.student" title="所属专业" :value="user.major" />
                 <van-cell v-if="user.role === ERole.student" title="入学时间" :value="user.admissionDate" />
 
-                <van-cell v-if="user.role === ERole.teacher" title="职工号" :value="user.username" />
+                <van-cell v-if="user.role === ERole.assistant" title="职工号" :value="user.username" />
             </van-cell-group>
 
             <van-cell-group v-if="user.role === ERole.student" inset>

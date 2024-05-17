@@ -4,8 +4,8 @@ from flask import request, send_from_directory
 from flask_jwt_extended import jwt_required
 from mimetypes import guess_type
 from ..config import AppConfig
-from ..utils import Result, RequestUtils, PathUtils
 from ..views import file_blue
+from ..utils import Result, RequestUtils, PathUtils
 
 
 @file_blue.route('/<path:file_path>', methods=['GET'])

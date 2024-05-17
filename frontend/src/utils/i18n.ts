@@ -7,7 +7,7 @@ const map = {
         },
         en: {
             9: 'admin',
-            1: 'teacher',
+            1: 'assistant',
             0: 'student',
         },
     },

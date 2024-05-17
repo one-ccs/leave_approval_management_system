@@ -22,8 +22,8 @@ const noticeGroup = [
     },
     {
         title: '辅导员通知',
-        label: noticeStore.teacherNotice,
-        route: '/notice/teacher',
+        label: noticeStore.assistantNotice,
+        route: '/notice/assistant',
     },
 ];
 const dailyNoticeGroup = [

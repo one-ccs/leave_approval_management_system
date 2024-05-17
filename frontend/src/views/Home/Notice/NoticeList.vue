@@ -23,8 +23,8 @@ const query = reactive<TimeRangePageQuery & {
     startDatetime: '',
     endDatetime: '',
     userId: userStore.userInfo.role === ERole.student ?
-        userStore.userInfo.teacherUserId :
-        userStore.userInfo.role === ERole.teacher ?
+        userStore.userInfo.assistantUserId :
+        userStore.userInfo.role === ERole.assistant ?
             userStore.userInfo.userId :
             undefined,
 });
@@ -59,7 +59,7 @@ const onRefresh = () => {
     globalStore.noticeList.length = 0;
     getPageNotice();
 };
-const noticeType = <'system' | 'school' | 'college' | 'teacher'>route.path.split('/').pop();
+const noticeType = <'system' | 'school' | 'college' | 'assistant'>route.path.split('/').pop();
 
 onMounted(() => {
     switch(noticeType) {
@@ -72,7 +72,7 @@ onMounted(() => {
         case 'college':
             query._type = ENoticeType.COLLEGE;
             break;
-        case 'teacher':
+        case 'assistant':
             query._type = ENoticeType.TEACHER;
             break;
     }

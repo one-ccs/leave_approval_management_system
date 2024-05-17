@@ -31,14 +31,14 @@ const router = useRouter();
             </div>
             <div class="info-item">
                 <span class="label">辅导员</span>
-                <span class="text">：{{ user.teacherName }}</span>
+                <span class="text">：{{ user.assistantName }}</span>
             </div>
             <div class="info-item">
                 <span class="label">班级</span>
                 <span class="text">：{{ `${user.grade}${user.major}${user._class}班` }}</span>
             </div>
         </div>
-        <div class="info-wrapper" v-if="user.role === ERole.teacher">
+        <div class="info-wrapper" v-if="user.role === ERole.assistant">
             <div class="info-item">
                 <span class="label">职工号</span>
                 <span class="text">：{{ user.username }}</span>

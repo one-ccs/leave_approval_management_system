@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue';
 import type { ResponseData, TimeRangePageQuery, UnionUser } from '@/utils/interface';
-import { apiTeacherPageQuery } from '@/utils/api';
+import { apiAssistantPageQuery } from '@/utils/api';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import TimeRangeQuery from '@/components/TimeRangeQuery.vue';
@@ -19,7 +19,7 @@ const userList = reactive<UnionUser[]>([]);
 
 // 分页查询用户
 const getPageUser = () => {
-    apiTeacherPageQuery(query, (data: ResponseData) => {
+    apiAssistantPageQuery(query, (data: ResponseData) => {
         total.value = data.data.total;
         userList.length = 0;
         userList.push(...data.data.list);
@@ -50,7 +50,7 @@ onMounted(() => {
                 <div class="user-list">
                     <user-card v-for="user in userList" :key="user.userId"
                         :user="user"
-                        :to="`/app/admin/teacher/detail?id=${user.userId}`"
+                        :to="`/app/admin/assistant/detail?id=${user.userId}`"
                     />
                     <van-back-top offset="120" bottom="56" teleport=".view-container" z-index="1"></van-back-top>
                 </div>

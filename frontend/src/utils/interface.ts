@@ -18,7 +18,7 @@ export interface Admin {
     telephone: string;
 };
 
-export interface Teacher {
+export interface Assistant {
     id: number;
     userId: number;
     name: string;
@@ -29,7 +29,7 @@ export interface Teacher {
 export interface Student {
     id: number;
     userId: number;
-    teacherId: number;
+    assistantId: number;
     name: string;
     gender: string;
     department: string;
@@ -72,11 +72,11 @@ export interface Notice {
     releaseDatetime: string;
 };
 
-export type RoleEn = 'student' | 'teacher' | 'admin';
+export type RoleEn = 'student' | 'assistant' | 'admin';
 
 export enum ERole {
     admin = 9,
-    teacher = 1,
+    assistant = 1,
     student = 0,
 };
 
@@ -106,10 +106,10 @@ export enum ENoticeType {
 
 /* --------- dto --------- */
 
-export interface UnionUser extends User, Admin, Teacher, Student {
+export interface UnionUser extends User, Admin, Assistant, Student {
     name: string;
-    teacherName: string;
-    teacherUserId: number;
+    assistantName: string;
+    assistantUserId: number;
     admissionDate: string;
     school: string;
     accessToken: string;

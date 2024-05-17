@@ -80,8 +80,8 @@ const routes: RouteRecordRaw[] = [
                         ],
                     },
                     {
-                        path: 'teacher',
-                        name: 'noticeTeacher',
+                        path: 'assistant',
+                        name: 'noticeAssistant',
                         meta: {
                             title: '辅导员通知',
                         },
@@ -89,7 +89,7 @@ const routes: RouteRecordRaw[] = [
                         children: [
                             {
                                 path: 'detail',
-                                name: 'noticeTeacherDetail',
+                                name: 'noticeAssistantDetail',
                                 meta: {
                                     title: '通知详情',
                                 },
@@ -206,12 +206,12 @@ const routes: RouteRecordRaw[] = [
                         ],
                     },
                     {
-                        path: 'teacher',
+                        path: 'assistant',
                         name: '',
                         children: [
                             {
                                 path: 'approve',
-                                name: 'teacherApprove',
+                                name: 'assistantApprove',
                                 meta: {
                                     title: '请假审批',
                                     permiss: 5,
@@ -220,7 +220,7 @@ const routes: RouteRecordRaw[] = [
                                 children: [
                                     {
                                         path: 'detail',
-                                        name: 'teacherApproveDetail',
+                                        name: 'assistantApproveDetail',
                                         meta: {
                                             title: '请假详情',
                                         },
@@ -230,25 +230,25 @@ const routes: RouteRecordRaw[] = [
                             },
                             {
                                 path: 'attendance',
-                                name: 'teacherAttendance',
+                                name: 'assistantAttendance',
                                 meta: {
                                     title: '查看考勤',
                                     permiss: 6,
                                 },
-                                component: () => import('@/views/Home/App/Teacher/Attendance.vue'),
+                                component: () => import('@/views/Home/App/Assistant/Attendance.vue'),
                             },
                             {
                                 path: 'notice',
-                                name: 'teacherNotice',
+                                name: 'assistantNotice',
                                 meta: {
                                     title: '通知管理',
                                     permiss: 7,
                                 },
-                                component: () => import('@/views/Home/App/Teacher/Notice.vue'),
+                                component: () => import('@/views/Home/App/Assistant/Notice.vue'),
                                 children: [
                                     {
                                         path: 'add',
-                                        name: 'teacherNoticeAdd',
+                                        name: 'assistantNoticeAdd',
                                         meta: {
                                             title: '发布通知',
                                         },
@@ -256,7 +256,7 @@ const routes: RouteRecordRaw[] = [
                                     },
                                     {
                                         path: 'detail',
-                                        name: 'teacherNoticeDetail',
+                                        name: 'assistantNoticeDetail',
                                         meta: {
                                             title: '通知详情',
                                         },
@@ -265,8 +265,8 @@ const routes: RouteRecordRaw[] = [
                                 ],
                             },
                             {
-                                path: 'teacher',
-                                name: 'teacherTeacher',
+                                path: 'assistant',
+                                name: 'assistantAssistant',
                                 meta: {
                                     title: '教师信息',
                                     permiss: 8,
@@ -309,17 +309,17 @@ const routes: RouteRecordRaw[] = [
                                 ],
                             },
                             {
-                                path: 'teacher',
-                                name: 'adminTeacher',
+                                path: 'assistant',
+                                name: 'adminAssistant',
                                 meta: {
                                     title: '教师管理',
                                     permiss: 10,
                                 },
-                                component: () => import('@/views/Home/App/Admin/Teacher.vue'),
+                                component: () => import('@/views/Home/App/Admin/Assistant.vue'),
                                 children: [
                                     {
                                         path: 'detail',
-                                        name: 'adminTeacherDetail',
+                                        name: 'adminAssistantDetail',
                                         meta: {
                                             title: '教师详情',
                                         },
@@ -327,7 +327,7 @@ const routes: RouteRecordRaw[] = [
                                         children: [
                                             {
                                                 path: 'modifyAvatar',
-                                                name: 'adminTeacherDetailModifyAvatar',
+                                                name: 'adminAssistantDetailModifyAvatar',
                                                 meta: {
                                                     title: '修改头像',
                                                 },

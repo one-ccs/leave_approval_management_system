@@ -30,8 +30,6 @@ let repeatResponseQueue: Function[] = [];
  * @returns Promise
  */
 function repeatRequest(config: InternalAxiosRequestConfig, source: 'request' | 'response'): Promise<InternalAxiosRequestConfig> {
-
-    console.log('重播', config.url, source);
     if (source === 'request') {
         // 在请求拦截中添加的重播
         return new Promise((resolve, reject) => {

@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from sqlalchemy import or_
 from ..plugins import db
 from ..views import student_blue
-from ..models import User, Teacher, Student
+from ..models import User, Assistant, Student
 from ..utils import Result, RequestUtils, ObjectUtils
 
 
@@ -79,13 +79,13 @@ def page_query():
         User,
         User.id == Student.user_id,
     ).join(
-        Teacher,
-        Teacher.id == Student.teacher_id,
+        Assistant,
+        Assistant.id == Student.assistant_id,
     ).add_columns(
         User.username,
         User.avatar,
         User.role,
-        Teacher.name,
+        Assistant.name,
     ).order_by(
         Student.grade.asc(),
         Student.major.asc(),
@@ -95,7 +95,7 @@ def page_query():
     if query:
         query_wrapper = query_wrapper.filter(or_(
             User.username.contains(query),
-            Teacher.name.contains(query),
+            Assistant.name.contains(query),
             Student.name.contains(query),
         ))
     if start_datetime:
@@ -112,6 +112,6 @@ def page_query():
             'username': item[1],
             'avatar': item[2],
             'role': item[3],
-            'teacherName': item[4],
+            'assistantName': item[4],
         } for item in result.items ],
     })
