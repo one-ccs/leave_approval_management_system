@@ -87,9 +87,7 @@ def page_query():
         User.role,
         Assistant.name,
     ).order_by(
-        Student.grade.asc(),
-        Student.major.asc(),
-        Student._class.asc(),
+        Student.id.asc(),
     )
     # 查询条件
     if query:
