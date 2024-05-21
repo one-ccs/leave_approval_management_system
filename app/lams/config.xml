@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.one_ccs.TheWildOfEast" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>请假审批管理系统</name>
+    <description>请假审批管理系统</description>
+    <author email="one-ccs@foxmail.com" href="https://read.one-ccs.com">one-ccs</author>
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <platform name="android">
+        <content src="/" />
+
+        <icon src="res/android/icon.png" density="ldpi" />
+        <icon src="res/android/icon.png" density="mdpi" />
+        <icon src="res/android/icon.png" density="hdpi" />
+        <icon src="res/android/icon.png" density="xhdpi" />
+        <icon src="res/android/icon.png" density="xxhdpi" />
+        <icon src="res/android/icon.png" density="xxxhdpi" />
+
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splash.png" density="land-ldpi" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splash.png" density="land-mdpi" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splash.png" density="land-hdpi" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splash.png" density="land-xhdpi" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splash.png" density="land-xxhdpi" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/splash.png" density="land-xxxhdpi" />
+        <!-- <preference name="SplashScreenDelay" value="2000" /> -->
+        <!-- <preference name="SplashMaintainAspectRatio" value="true" /> -->
+
+        <preference name="StatusBarOverlaysWebView" value="true" />
+        <preference name="StatusBarStyle" value="lightContent" />
+    </platform>
+</widget>
