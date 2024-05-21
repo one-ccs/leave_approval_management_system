@@ -15,7 +15,7 @@
             "path": "frontend",
             "group": "build",
             "problemMatcher": [],
-            "label": "npm: build - frontend",
+            "label": "编译前端并运行检查",
             "detail": "vue-tsc --build --force && vite build"
         },
         {
@@ -24,7 +24,7 @@
             "path": "frontend",
             "group": "build",
             "problemMatcher": [],
-            "label": "npm: build-only - frontend",
+            "label": "仅编译前端",
             "detail": "vite build"
         },
         {
@@ -47,6 +47,20 @@
             "problemMatcher": [],
             "label": "安装后端依赖",
             "detail": "pip install -r requirements.txt"
+        },
+        {
+            "type": "shell",
+            "command": "cd app/lams && npm run app",
+            "problemMatcher": [],
+            "label": "运行 Android App",
+            "detail": "cordova run android"
+        },
+        {
+            "type": "shell",
+            "command": "cd app/lams && npm run build",
+            "problemMatcher": [],
+            "label": "编译 Android App",
+            "detail": "cordova build android"
         },
     ]
 }

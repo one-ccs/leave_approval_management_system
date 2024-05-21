@@ -1,3 +1,4 @@
+import { closeToast, showLoadingToast, showSuccessToast } from "vant";
 import { defineStore } from "pinia";
 import axios from "axios";
 import type { LeaveExtra, NoticeExtra } from "@/utils/interface";
@@ -9,6 +10,7 @@ const testApi = (apiHost: string, xOriginToken: string) => axios.get(apiHost, {
     headers: {
         'X-Origin-Token': xOriginToken,
     },
+    timeout: 3000,
 });
 
 const useGlobalStore = defineStore('global', {
@@ -22,9 +24,12 @@ const useGlobalStore = defineStore('global', {
         isUpdate: false,
         _apiHostList: [
             'http://127.0.0.1:5001/api',
-            'http://192.168.137.1:5001/api'
+            'http://192.168.137.1:5001/api',
+            'http://192.168.37.1:5001/api',
+            'http://192.168.71.106:5001/api',
         ],
         apiHost: 'https://www.one-ccs.com:5001/api',
+        onConnectedServer: (apiHost: string) => {},
         xOriginToken: 'f0d8f7aa144828d60106968a6067ea19dbfa0d2d2e067eda19dbfa0d2d2e235d37e5198842dca67e13a',
         timeout: 5000,
         defaultAvatarUrl: '/static/img/avatar.jpg',
@@ -73,17 +78,31 @@ const useGlobalStore = defineStore('global', {
             return this;
         },
         async connectApiServer() {
+            const toast = showLoadingToast({
+                type: 'loading',
+                message: `正在尝试连接\n服务器...`,
+                overlay: true,
+                forbidClick: false,
+                duration: 0,
+            });
+            let isSuccess = false, i = 0;
+
             for (let apiHost of this._apiHostList) {
+                toast.message = `正在尝试连接\n服务器：${++i}`;
+
                 try {
                     const data = await testApi(apiHost, this.xOriginToken);
 
                     if (data.data) {
+                        isSuccess = true;
                         this.apiHost = apiHost;
+                        this.onConnectedServer(apiHost);
                         break;
                     }
                 }
                 catch(e) {}
             }
+            isSuccess ? showSuccessToast('服务器连接\n成功') : showSuccessToast('服务器连接\n失败');
         },
         setBackgroundImageIndex(index: number) {
             this.data.backgroundImageIndex = index;

@@ -17,6 +17,10 @@ const service: AxiosInstance = axios.create({
     // 小于 500 的状态码不抛出错误
     validateStatus: status => (status < 500),
 });
+// 重新设置 baseUrl
+globalStore.onConnectedServer = (apiHost: string) => {
+    service.defaults.baseURL = apiHost;
+};
 
 // 令牌刷新逻辑
 const refreshTokenApi = '/user/refreshToken';
