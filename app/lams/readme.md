@@ -48,6 +48,12 @@ cordova platform add android
 cordova platform add ios
 ```
 
+### 3、安装插件
+
+```powershell
+cordova plugin add cordova-plugin-statusbar
+```
+
 ### 3、拷贝静态资源
 
 将现有项目的 index.html 及其它资源复制到 Cordova 项目的 www 文件夹中
@@ -70,9 +76,21 @@ cordova build android
 cordova run android
 ```
 
-## 三、问题
+## 三、查看调试
 
-Q：No Java files found that extend CordovaActivity.
+### 1、本地调试
+
+使用 `ionic serve` 在浏览器中调试
+
+### 2、远程调试
+
+1. 手机或模拟器运行 debug 版软件
+2. 浏览器输入 [edge://inspect/#devices](edge://inspect/#devices "远程调试") 或 [chrome://inspect/#devices](chrome://inspect/#devices "远程调试")
+3. 点击 inspect
+
+## 四、问题
+
+Q：`No Java files found that extend CordovaActivity.`
 
 A：重新安装平台
 
@@ -80,4 +98,14 @@ A：重新安装平台
 cordova platform rm android
 
 cordova platform add android
+```
+
+Q：`Mixed Content: The page at 'https://localhost/index.html' was loaded over HTTPS, but requested an insecure XMLHttpRequest endpoint 'http:// ....'. This request has been blocked; the content must be served over HTTPS.`
+
+A：默认只允许  `https` 添加 `http` 配置覆盖掉默认的
+
+```xml
+<platform name="android">
+        <preference name="Scheme" value="http"/>
+</platform>
 ```

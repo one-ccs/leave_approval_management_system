@@ -268,7 +268,7 @@ const routes: RouteRecordRaw[] = [
                                 path: 'assistant',
                                 name: 'assistantAssistant',
                                 meta: {
-                                    title: '教师信息',
+                                    title: '辅导员信息',
                                     permiss: 8,
                                 },
                                 component: () => import('@/views/Home/App/UserInfo.vue'),
@@ -312,7 +312,7 @@ const routes: RouteRecordRaw[] = [
                                 path: 'assistant',
                                 name: 'adminAssistant',
                                 meta: {
-                                    title: '教师管理',
+                                    title: '辅导员管理',
                                     permiss: 10,
                                 },
                                 component: () => import('@/views/Home/App/Admin/Assistant.vue'),
@@ -321,7 +321,7 @@ const routes: RouteRecordRaw[] = [
                                         path: 'detail',
                                         name: 'adminAssistantDetail',
                                         meta: {
-                                            title: '教师详情',
+                                            title: '辅导员详情',
                                         },
                                         component: () => import('@/views/Home/App/Admin/UserDetail.vue'),
                                         children: [
