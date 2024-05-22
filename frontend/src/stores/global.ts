@@ -1,4 +1,4 @@
-import { closeToast, showLoadingToast, showSuccessToast } from "vant";
+import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from "vant";
 import { defineStore } from "pinia";
 import axios from "axios";
 import type { LeaveExtra, NoticeExtra } from "@/utils/interface";
@@ -102,7 +102,7 @@ const useGlobalStore = defineStore('global', {
                 }
                 catch(e) {}
             }
-            isSuccess ? showSuccessToast('服务器连接\n成功') : showSuccessToast('服务器连接\n失败');
+            isSuccess ? showSuccessToast('服务器连接\n成功') : showFailToast('服务器连接\n失败');
         },
         setBackgroundImageIndex(index: number) {
             this.data.backgroundImageIndex = index;

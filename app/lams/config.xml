@@ -26,5 +26,7 @@
 
         <preference name="StatusBarOverlaysWebView" value="true" />
         <preference name="StatusBarStyle" value="lightContent" />
+
+        <preference name="Scheme" value="http"/>
     </platform>
 </widget>
