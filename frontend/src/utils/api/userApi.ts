@@ -155,3 +155,21 @@ export function apiLogout(successCallback?: Function, failureCallback?: Function
         failureCallback,
     });
 }
+
+/**
+ * 修改手机号码
+ * @param data 手机号与验证码
+ * @param successCallback
+ * @param failureCallback
+ */
+export function apiModifyTelephone(data: { telephone: string, captcha: string }, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/user/modifyTelephone',
+        method: 'POST',
+        data: {
+            ...data,
+        },
+        successCallback,
+        failureCallback,
+    });
+}

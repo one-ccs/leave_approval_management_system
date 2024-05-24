@@ -220,3 +220,21 @@ def logout():
     redis.set(current_user.id, 0)
 
     return Result.success('登出成功')
+
+@user_blue.route('/modifyTelephone', methods=['POST'])
+@jwt_required()
+def modify_telephone():
+    """ 修改手机号视图 """
+    telephone, captcha = RequestUtils.quick_data(request, 'telephone', 'captcha')
+
+    if captcha != '1234':
+        return Result.failure('验证码错误')
+
+    result = User.query.filter(
+        User.id == current_user.id,
+    ).update({ User.telephone: telephone })
+
+    db.session.commit()
+    if result > 0:
+        return Result.success('修改成功')
+    return Result.failure('修改失败')
