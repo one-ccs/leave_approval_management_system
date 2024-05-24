@@ -8,6 +8,7 @@ from functools import reduce
 from operator import getitem
 from os import path
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 T = TypeVar('T')
@@ -230,3 +231,14 @@ class PathUtils(object):
     def secure_filename(filename: str) -> str:
         """ 返回安全的文件路径 """
         return secure_filename(filename)
+
+
+class EncryptUtils():
+
+    @staticmethod
+    def encrypt(text: str) -> str:
+        return generate_password_hash(text)
+
+    @staticmethod
+    def check(hash: str, text: str) -> bool:
+        return check_password_hash(hash, text)

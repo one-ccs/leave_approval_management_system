@@ -10,7 +10,7 @@ from flasgger import swag_from
 from ..plugins import db, redis, jwt
 from ..views import user_blue
 from ..models import ERole, MixUser, User, Admin, Assistant, Student
-from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils
+from ..utils import Result, RequestUtils, ObjectUtils, DateTimeUtils, EncryptUtils
 
 
 @jwt.user_identity_loader
@@ -233,6 +233,24 @@ def modify_telephone():
     result = User.query.filter(
         User.id == current_user.id,
     ).update({ User.telephone: telephone })
+
+    db.session.commit()
+    if result > 0:
+        return Result.success('修改成功')
+    return Result.failure('修改失败')
+
+@user_blue.route('/modifyPassword', methods=['POST'])
+@jwt_required()
+def modify_password():
+    """ 修改密码视图 """
+    password, captcha = RequestUtils.quick_data(request, 'password', 'captcha')
+
+    if captcha != '1234':
+        return Result.failure('验证码错误')
+
+    result = User.query.filter(
+        User.id == current_user.id,
+    ).update({ User.password_hash: EncryptUtils.encrypt(password) })
 
     db.session.commit()
     if result > 0:

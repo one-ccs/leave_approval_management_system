@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { showLoadingToast, showSuccessToast } from 'vant';
 import type { ResponseData } from '@/utils/interface';
 import { apiLogin } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
@@ -25,7 +26,12 @@ const formData = reactive({
 const passwordInputRef = ref();
 
 const onSubmit = (value: any) => {
+    showLoadingToast({
+        message: '登录中...',
+        forbidClick: true,
+    });
     apiLogin(value, (data: ResponseData) => {
+        showSuccessToast(data.message);
         userStore.clear().setUser(data.data).save();
         router.push('/');
     });

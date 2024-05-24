@@ -1,6 +1,5 @@
-import { closeToast, showLoadingToast } from 'vant';
 import { api } from '.';
-import type { ResponseData, User, LoginUser, TimeRangePageQuery } from '../interface';
+import type { User, LoginUser, TimeRangePageQuery } from '../interface';
 import encryptMD5 from '../encryptMD5';
 
 
@@ -107,26 +106,15 @@ export function apiUserPageQuery(query: TimeRangePageQuery, successCallback?: Fu
  * @returns Promise
  */
 export function apiLogin(user: LoginUser, successCallback?: Function, failureCallback?: Function) {
-    showLoadingToast({
-        message: '登录中...',
-        forbidClick: true,
-    });
     return api({
 		url: '/user/login',
         method: 'POST',
         data: {
-            username: user.username,
+            ...user,
             password: encryptMD5(user.password),
-            remember: user.remember,
         },
-        successCallback: (data: ResponseData) => {
-            closeToast();
-            successCallback && successCallback(data);
-        },
-        failureCallback: (data: ResponseData) => {
-            closeToast();
-            failureCallback && failureCallback(data);
-        },
+        successCallback,
+        failureCallback,
     });
 }
 
@@ -168,6 +156,25 @@ export function apiModifyTelephone(data: { telephone: string, captcha: string },
         method: 'POST',
         data: {
             ...data,
+        },
+        successCallback,
+        failureCallback,
+    });
+}
+
+/**
+ * 修改密码
+ * @param data 密码与验证码
+ * @param successCallback
+ * @param failureCallback
+ */
+export function apiModifyPassword(data: { password: string, captcha: string }, successCallback?: Function, failureCallback?: Function) {
+    return api({
+		url: '/user/modifyPassword',
+        method: 'POST',
+        data: {
+            ...data,
+            password: encryptMD5(data.password),
         },
         successCallback,
         failureCallback,

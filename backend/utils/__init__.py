@@ -5,5 +5,6 @@ from .tools import RequestUtils
 from .tools import ObjectUtils
 from .tools import StringUtils
 from .tools import PathUtils
+from .tools import EncryptUtils
 from .result import Result
 from ._flask import _Flask
