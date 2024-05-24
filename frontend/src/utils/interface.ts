@@ -5,6 +5,7 @@ export interface User {
     username: string;
     passwordHash: string;
     email: string;
+    telephone: string;
     role: number;
     avatar: string;
     createDatetime: string;
@@ -15,7 +16,6 @@ export interface Admin {
     userId: number;
     name: string;
     gender: string;
-    telephone: string;
 };
 
 export interface Assistant {
@@ -23,7 +23,6 @@ export interface Assistant {
     userId: number;
     name: string;
     gender: string;
-    telephone: string;
 };
 
 export interface Student {

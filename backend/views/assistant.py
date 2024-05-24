@@ -86,8 +86,8 @@ def page_query():
     if query:
         query_wrapper = query_wrapper.filter(or_(
             User.username.contains(query),
+            User.telephone.contains(query),
             Assistant.name.contains(query),
-            Assistant.telephone.contains(query),
         ))
     if start_datetime:
         query_wrapper = query_wrapper.filter(or_(start_datetime >= User.create_datetime))

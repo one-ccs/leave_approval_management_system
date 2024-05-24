@@ -10,6 +10,7 @@ class User(db.Model):
     username        = db.Column(db.String(32), index=True, unique=True, nullable=False, comment='用户名')
     password_hash   = db.Column(db.String(255), nullable=False, comment='密码')
     email           = db.Column(db.String(255), comment='电子邮件')
+    telephone       = db.Column(db.String(11), comment='电话号码')
     role            = db.Column(db.SmallInteger, default=0, comment='角色')
     avatar          = db.Column(db.String(255), comment='头像链接')
     create_datetime = db.Column(db.DateTime, default=DateTimeUtils.now, comment='创建时间')
@@ -26,6 +27,7 @@ class User(db.Model):
             self.username = user.username
             self.password_hash = user.password_hash
             self.email = user.email
+            self.telephone = user.telephone
             self.role = user.role
             self.create_datetime = user.create_datetime
             self.avatar = user.avatar
