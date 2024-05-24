@@ -52,10 +52,6 @@ onMounted(() => {
 
                 <van-cell v-if="user.role === ERole.assistant" title="职工号" :value="user.username" />
             </van-cell-group>
-
-            <van-cell-group v-if="user.role === ERole.student" inset>
-                <van-cell title="学籍档案" is-link to="/app/student/student/record" />
-            </van-cell-group>
         </div>
     </div>
 </template>

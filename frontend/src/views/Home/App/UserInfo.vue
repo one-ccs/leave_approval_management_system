@@ -37,10 +37,6 @@ const userStore = useUserStore();
 
                 <van-cell v-permiss="0x200" title="职工号" :value="userStore.userInfo.username" />
             </van-cell-group>
-
-            <van-cell-group v-permiss="0x100" inset>
-                <van-cell title="学籍档案" is-link to="/app/student/student/record" />
-            </van-cell-group>
         </div>
     </div>
 </template>
