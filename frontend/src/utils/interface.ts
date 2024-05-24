@@ -169,4 +169,5 @@ export interface LeaveAddForm {
     endDatetime: string;
     leaveSchool: boolean;
     leaveReason: string;
+    annexUrl: string;
 };

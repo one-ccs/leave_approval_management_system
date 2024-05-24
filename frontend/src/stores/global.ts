@@ -33,6 +33,7 @@ const useGlobalStore = defineStore('global', {
         xOriginToken: 'f0d8f7aa144828d60106968a6067ea19dbfa0d2d2e067eda19dbfa0d2d2e235d37e5198842dca67e13a',
         timeout: 5000,
         defaultAvatarUrl: '/static/img/avatar.jpg',
+        logoPngUrl: '/static/img/logo.png',
         backgroundImages: [
             '/static/img/bg/blob-scene-haikei.svg',
             '/static/img/bg/blurry-gradient-haikei.svg',

@@ -23,9 +23,10 @@ def resource(file_path):
         mimetype=mimetype,
     )
 
-@file_blue.route('/upload/avatar', methods=['POST'])
+@file_blue.route('/<path:file_path>', methods=['POST'])
 @jwt_required()
-def upload():
+def upload(file_path: str):
+    """文件上传接口"""
     file, filename = RequestUtils.quick_data(request, 'file', 'filename')
 
     if not file:
@@ -38,21 +39,6 @@ def upload():
         return Result.failure('不支持的文件格式')
 
     filename = PathUtils.secure_filename(f'{filename}.{suffix}')
-    file.save(f'{AppConfig.UPLOAD_FOLDER}/image/avatar/{filename}')
+    file.save(f'{AppConfig.UPLOAD_FOLDER}/{file_path}/{filename}')
 
-    return Result.success('头像上传成功', f'/image/avatar/{filename}')
-
-@file_blue.route('/download/<path:file_path>', methods=['GET'])
-def download(file_path):
-    """ 下载文件
-    注意：不能使用 @jwt_required() 进行身份校验，会导致响应体格式变为 application/json
-    """
-    directory = f'{AppConfig.UPLOAD_FOLDER}/{file_path}'
-    mimetype, encoding = guess_type(directory)
-
-    return send_from_directory(
-        PathUtils.path.dirname(directory),
-        PathUtils.path.basename(directory),
-        as_attachment=False,
-        mimetype=mimetype,
-    )
+    return Result.success('文件上传成功', f'/{file_path}/{filename}')

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.one_ccs.TheWildOfEast" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.one_ccs.leave_approval_management_system" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>请假审批管理系统</name>
     <description>请假审批管理系统</description>
     <author email="one-ccs@foxmail.com" href="https://read.one-ccs.com">one-ccs</author>

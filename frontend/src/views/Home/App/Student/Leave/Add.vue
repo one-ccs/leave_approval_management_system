@@ -3,11 +3,12 @@ import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { showFailToast, showSuccessToast, type UploaderFileListItem } from 'vant';
 import type { Leave, ResponseData, LeaveAddForm } from '@/utils/interface';
-import { apiLeavePut } from '@/utils/api';
+import { apiLeavePut, apiUploadLeave } from '@/utils/api';
 import { useLeaveDuration } from '@/utils/use';
 import useGlobalStore from '@/stores/global';
 import BackNavBar from '@/components/BackNavBar.vue';
 import useUserStore from '@/stores/user';
+import encryptMD5 from '@/utils/encryptMD5';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
@@ -21,6 +22,7 @@ const leaveForm = reactive<LeaveAddForm>({
     endDatetime: '',
     leaveSchool: false,
     leaveReason: '',
+    annexUrl: '',
 });
 const leaveFormShadow = ref({
     category: '',
@@ -143,14 +145,23 @@ const confirmEndDatetime = () => {
 };
 const pictureAfterRead = (file: any) => {
     file.status = 'uploading';
-    file.message = '上传中...'
+    file.message = '上传中...';
 
-    console.log(file);
-
-    setTimeout(() => {
+    apiUploadLeave({
+        file: file.file,
+        filename: encryptMD5(file.file.name + file.file.lastModified + file.file.size),
+    }, (data: ResponseData) => {
         file.status = 'done';
-        file.message = '上传完成'
-    }, 1000);
+        file.message = '上传完成';
+        leaveForm.annexUrl = data.data;
+
+        showSuccessToast(data.message);
+    }, (data: ResponseData) => {
+        file.status = 'failed';
+        file.message = '上传失败';
+
+        showFailToast(data.message);
+    });
 };
 const pictureOversize = (file: any) => {
     showFailToast('文件大小不能超过 1024 KB');

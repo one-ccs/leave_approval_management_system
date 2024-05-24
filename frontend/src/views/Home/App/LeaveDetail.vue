@@ -7,10 +7,11 @@ import { apiLeaveAgreeLeave, apiLeaveAgreeRevoke, apiLeaveCancel, apiLeaveGet, a
 import { useStateColor } from '@/utils/use';
 import { getCurrentPosition } from '@/utils/advanced';
 import i18n from '@/utils/i18n';
+import useGlobalStore from '@/stores/global';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import Avatar from '@/components/Avatar.vue';
-import useGlobalStore from '@/stores/global';
+import LeaveImage from '@/components/LeaveImage.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -192,15 +193,31 @@ onMounted(() => {
                     <div class="cell">
                         <van-icon class="icon"></van-icon>
                         <div class="title">图片</div>
-                        <div class="text"></div>
+                        <div class="text">
+                            <leave-image :src="leaveDetail?.annexUrl" />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="contact-wrapper">
-
-            </div>
             <div class="flow-wrapper">
-
+                <van-cell-group>
+                    <van-cell title="审批流程"></van-cell>
+                    <van-cell
+                        v-if="leaveDetail?.duration! > 0"
+                        :title="`审批人·${i18n(leaveDetail?.state!, 'approve', 'null')}`"
+                        icon-prefix="fa"
+                        icon="user-o"
+                        label="辅导员"
+                        :value="i18n(leaveDetail?.state!, 'approve', 'null')"
+                    ></van-cell>
+                    <van-cell
+                        v-if="leaveDetail?.duration! >= 3"
+                        :title="`审批人·${i18n(leaveDetail?.state!, 'approve', 'null')}`"
+                        icon="manager-o"
+                        label="学院老师"
+                        :value="i18n(leaveDetail?.state!, 'approve', 'null')"
+                    ></van-cell>
+                </van-cell-group>
             </div>
             <div class="button-group">
                 <van-button
@@ -253,14 +270,14 @@ onMounted(() => {
 .view-container {
     padding: 15px;
 
-    .info-wrapper, .contact-wrapper, .flow-wrapper {
+    .info-wrapper, .flow-wrapper {
         margin: 16px auto;
-        padding: 24px 16px;
         border-radius: var(--border-radius);
         background: #fff;
     }
     .info-wrapper {
         margin-top: 0;
+        padding: 24px 16px;
 
         .header {
             display: flex;
@@ -294,6 +311,10 @@ onMounted(() => {
                 }
             }
         }
+    }
+    .flow-wrapper {
+        padding: 0;
+        overflow: hidden;
     }
     .button-group {
         position: sticky;

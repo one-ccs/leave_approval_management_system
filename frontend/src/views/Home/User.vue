@@ -43,13 +43,6 @@ const cells = [
 ];
 const buttons = [
     {
-        icon: 'rocket',
-        text: '检查更新',
-        type: 'primary',
-        dot: globalStore.isUpdate,
-        onClick: checkUpdate,
-    },
-    {
         icon: 'sign-out',
         text: '退出登录',
         type: 'danger',

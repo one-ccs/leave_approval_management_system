@@ -3,7 +3,8 @@ import useGlobalStore from '@/stores/global';
 
 interface Props {
     src: string | null,
-    size?: string | number,
+    width?: string | number,
+    height?: string | number,
     loadingIcon?: string,
     iconSize?: string | number,
     iconPrefix?: string,
@@ -14,12 +15,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     src: null,
-    size: 64,
+    width: 256,
+    height: 128,
     loadingIcon: 'star-o',
     iconSize: 38,
-    round: true,
+    round: false,
     lazyLoad: true,
-    alt: '头像图片',
+    alt: '请假条图片',
 });
 
 const globalStore = useGlobalStore();
@@ -27,11 +29,11 @@ const globalStore = useGlobalStore();
 
 <template>
     <van-image
-        class="avatar"
-        :src="props.src ? `${globalStore.apiHost}/file${props.src}` : globalStore.defaultAvatarUrl"
-        :width="props.size"
-        :height="props.size"
-        :error-icon="globalStore.defaultAvatarUrl"
+        class="leave"
+        :src="props.src ? `${globalStore.apiHost}/file${props.src}` : globalStore.logoPngUrl"
+        :width="props.width"
+        :height="props.height"
+        :error-icon="globalStore.logoPngUrl"
         :alt="props.alt"
         :round="props.round"
         :lazy-load="props.lazyLoad"
