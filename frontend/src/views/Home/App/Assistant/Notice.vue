@@ -56,6 +56,7 @@ const getPageNotice = () => {
 // 搜索事件
 const onSearch = () => {
     query.pageIndex = 1;
+    globalStore.noticeList.length = 0;
     getPageNotice();
 };
 // 下拉刷新事件

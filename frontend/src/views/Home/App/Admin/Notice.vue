@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { showFailToast, showSuccessToast } from 'vant';
-import type { ENoticeType, ResponseData, TimeRangePageQuery } from '@/utils/interface';
+import type { ResponseData, TimeRangePageQuery } from '@/utils/interface';
 import { apiNoticePageQuery } from '@/utils/api';
 import useGlobalStore from '@/stores/global';
 import RightSlideRouterView from '@/components/RightSlideRouterView.vue';
@@ -50,6 +50,7 @@ const getPageNotice = () => {
 // 搜索事件
 const onSearch = () => {
     query.pageIndex = 1;
+    globalStore.noticeList.length = 0;
     getPageNotice();
 };
 // 下拉刷新事件
