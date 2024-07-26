@@ -11,6 +11,8 @@ DB_PASS = 'LmzwTvA1p5Bds3DODi$b2bfe2b68ef2esdf9b86dd354e00d3c3c7f533ce18fe8a6f33
 class AppConfig(object):
     # Upload 文件夹
     UPLOAD_FOLDER = PathUtils.abspath('./upload')
+    TEMPLATE_FOLDER = f'{PathUtils.getObjectRoot("backend")}/frontend/dist'
+    STATIC_FOLDER = f'{PathUtils.getObjectRoot("backend")}/frontend/dist/static'
     ALLOWED_IMAGE_EXTENSIONS = set(['jpg', 'png', 'webp', 'gif'])
 
 

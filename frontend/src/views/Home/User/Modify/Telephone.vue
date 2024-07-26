@@ -2,8 +2,12 @@
 import { reactive, ref } from 'vue';
 import BackNavBar from '@/components/BackNavBar.vue';
 import { apiModifyTelephone } from '@/utils/api';
+import { showSuccessToast } from 'vant';
+import type { ResponseData } from '@/utils/interface';
+import useUserStore from '@/stores/user';
 
 
+const userStore = useUserStore();
 const modifyTelephoneForm = reactive({
     telephone: '',
     captcha: '',
@@ -35,7 +39,10 @@ const onCaptchaClick = () => {
     }, 1000);
 };
 const onSubmit = () => {
-    apiModifyTelephone(modifyTelephoneForm);
+    apiModifyTelephone(modifyTelephoneForm, (data: ResponseData) => {
+        showSuccessToast(data.message);
+        userStore.userInfo.telephone = modifyTelephoneForm.telephone;
+    });
 };
 </script>
 

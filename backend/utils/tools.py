@@ -9,6 +9,7 @@ from operator import getitem
 from os import path
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from pathlib import Path
 
 
 T = TypeVar('T')
@@ -211,6 +212,16 @@ class StringUtils(object):
 class PathUtils(object):
 
     path = path
+
+    @staticmethod
+    def getObjectRoot(root_name: str) -> str:
+        """ 返回项目根目录的绝对地址
+
+        :param root_name 跟文件夹名称
+        """
+        filepath = str(Path(__file__).resolve())
+
+        return filepath[:filepath.index(root_name) - 1]
 
     @staticmethod
     def abspath(_path: str = '') -> str:

@@ -7,6 +7,7 @@ class Result(object):
 
     @staticmethod
     def with_json(result: tuple):
+        """ 将 Result.success()、Result.failure() 等函数的结果转换为 json"""
         return dumps(result[0])
 
     @staticmethod

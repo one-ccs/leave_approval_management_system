@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import request, redirect
-from .config import MAIN_KEY
+from flask import request, redirect, render_template
+from .config import MAIN_KEY, AppConfig
 from .utils import _Flask, Result
 
 
-app = _Flask(__name__)
-allow_origin_list = set([])
+app = _Flask(__name__, template_folder=AppConfig.TEMPLATE_FOLDER, static_folder=AppConfig.STATIC_FOLDER)
+allow_origin_list = set([
+    'http://127.0.0.1:5001',
+])
 
 
 @app.after_request
@@ -19,7 +21,7 @@ def cors(response):
         return response
 
     # 在白名单
-    if origin in allow_origin_list:
+    if origin in allow_origin_list or origin == None:
         return response
 
     response.set_data(Result.with_json(Result.failure('不允许的跨域请求', None, 401.9)))
@@ -42,6 +44,7 @@ def api():
         return Result.success('ok', True)
     return Result.failure('ok', False)
 
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001, debug=True)
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def SFA(path):
+    return render_template('/index.html')
