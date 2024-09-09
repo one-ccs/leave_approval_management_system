@@ -2,13 +2,17 @@
 
 ## 简介
 
-请假管理审批管理系统，包含前后端及数据库操作。
+请假管理审批管理系统 2.0 使用全新技术栈，适配移动端，包含前后端及数据库操作。
 
 ## 技术栈
 
-前端：HTML、CSS、JavaScript、JQuery、JQuery-Confirm、Bootstrap 5、BootstraTable、BootstrapFileinput、FontAwesome 4
+前端：Vant4、Vue3、Vue-Router、Pinia、Axios、Echarts、TypeScript、Less
 
-后端：Python、Flask、SQLite
+后端：Flask、Flask-Cors、Flask-Login、Flask-SQLAlchemy、Flask-Migrate、MySQL、Redis
+
+## 预览
+
+<img src=preview/preview_1.png width=30% /><img src=preview/preview_2.png width=30% /><img src=preview/preview_3.png width=30% /><img src=preview/preview_4.png width=30% /><img src=preview/preview_5.png width=30% />
 
 ## 功能
 
