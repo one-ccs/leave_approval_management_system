@@ -119,7 +119,7 @@ onMounted(() => {
         <div class="view-container">
             <div class="info-wrapper">
                 <div class="header">
-                    <avatar :key="leaveDetail?.avatar" :src="leaveDetail?.avatar" size="50"></avatar>
+                    <avatar :src="leaveDetail?.avatar" size="50"></avatar>
                     <div class="title">{{ leaveDetail?.name }}的请假申请</div>
                     <van-tag
                         class="tag"

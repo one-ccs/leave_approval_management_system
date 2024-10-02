@@ -15,7 +15,7 @@ const userStore = useUserStore();
             <van-cell-group inset>
                 <van-cell title="头像" is-link to="/user/modify/avatar">
                     <template #value>
-                        <avatar :key="userStore.userInfo.avatar" :src="userStore.userInfo.avatar" size="66"></avatar>
+                        <avatar :src="userStore.userInfo.avatar" size="66"></avatar>
                     </template>
                 </van-cell>
             </van-cell-group>

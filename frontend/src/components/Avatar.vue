@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import useGlobalStore from '@/stores/global';
 
 interface Props {
@@ -23,12 +24,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const globalStore = useGlobalStore();
+const src = computed(() => props.src ? `${globalStore.apiHost}/file${props.src}` : globalStore.defaultAvatarUrl.href);
 </script>
 
 <template>
     <van-image
         class="avatar"
-        :src="props.src ? `${globalStore.apiHost}/file${props.src}` : globalStore.defaultAvatarUrl.href"
+        :key="src"
+        :src="src"
         :width="props.size"
         :height="props.size"
         :error-icon="globalStore.defaultAvatarUrl.href"

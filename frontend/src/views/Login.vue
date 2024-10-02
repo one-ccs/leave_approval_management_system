@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { showLoadingToast, showSuccessToast } from 'vant';
 import type { ResponseData } from '@/utils/interface';
 import { apiLogin } from '@/utils/api';
+import { useDynamicImage } from '@/utils/use';
 import useGlobalStore from '@/stores/global';
 import useUserStore from '@/stores/user';
 
@@ -48,10 +49,10 @@ const onSubmit = (value: any) => {
                 height="380"
                 fit="cover"
                 position="center"
-                src="static/img/img01.jpg"
+                :src="useDynamicImage('img01.jpg').href"
                 title="logo 图片"
             ></van-image>
-            <van-image src="static/img/logo.png" class="logo" title="logo 图片"></van-image>
+            <van-image :src="useDynamicImage('logo.png').href" class="logo" title="logo 图片"></van-image>
         </div>
         <van-form @submit="onSubmit">
             <van-cell-group class="translucent">

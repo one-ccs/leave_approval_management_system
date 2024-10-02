@@ -29,8 +29,7 @@ onMounted(() => {
             <van-cell-group inset>
                 <van-cell title="头像" is-link :to="`${route.path}/modifyAvatar?id=${route.query.id}`">
                     <template #value>
-                        <!-- 加上 key 属性在头像链接改变后重新显示 -->
-                        <avatar :key="user.avatar" :src="user.avatar" size="66"></avatar>
+                        <avatar :src="user.avatar" size="66"></avatar>
                     </template>
                 </van-cell>
             </van-cell-group>
