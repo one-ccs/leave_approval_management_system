@@ -5,8 +5,8 @@
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
   "scripts": {
-    "app": "cordova run android",
-    "build": "cordova build android",
+    "app": "node hooks/before_build.js -p android && cordova run android",
+    "build": "node hooks/before_build.js -p android && cordova build android",
     "clean": "cordova clean"
   },
   "keywords": [
@@ -15,6 +15,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
+    "commander": "^12.1.0",
     "cordova-android": "^13.0.0",
     "cordova-plugin-statusbar": "^4.0.0"
   },

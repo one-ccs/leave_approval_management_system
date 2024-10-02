@@ -24,9 +24,6 @@
         <!-- <preference name="SplashScreenDelay" value="2000" /> -->
         <!-- <preference name="SplashMaintainAspectRatio" value="true" /> -->
 
-        <preference name="StatusBarOverlaysWebView" value="true" />
-        <preference name="StatusBarStyle" value="lightContent" />
-
         <preference name="Scheme" value="http"/>
     </platform>
 </widget>

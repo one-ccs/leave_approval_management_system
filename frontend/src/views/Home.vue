@@ -3,8 +3,6 @@ import Tabbar from '@/components/Tabbar.vue';
 import useGlobalStore from '@/stores/global';
 
 const globalStore = useGlobalStore();
-
-console.log(globalStore.backgroundImage);
 </script>
 
 <template>
