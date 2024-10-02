@@ -1,7 +1,8 @@
-import { closeToast, showLoadingToast, showSuccessToast, showFailToast } from "vant";
+import { showLoadingToast, showSuccessToast, showFailToast } from "vant";
 import { defineStore } from "pinia";
 import axios from "axios";
 import type { LeaveExtra, NoticeExtra } from "@/utils/interface";
+import { useDynamicImage } from "@/utils/use";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 
 
@@ -32,24 +33,24 @@ const useGlobalStore = defineStore('global', {
         onConnectedServer: (apiHost: string) => {},
         xOriginToken: 'f0d8f7aa144828d60106968a6067ea19dbfa0d2d2e067eda19dbfa0d2d2e235d37e5198842dca67e13a',
         timeout: 5000,
-        defaultAvatarUrl: '/static/img/avatar.jpg',
-        logoPngUrl: '/static/img/logo.png',
+        defaultAvatarUrl: useDynamicImage('avatar.jpg'),
+        logoPngUrl: useDynamicImage('logo.png'),
         backgroundImages: [
-            '/static/img/bg/blob-scene-haikei.svg',
-            '/static/img/bg/blurry-gradient-haikei.svg',
-            '/static/img/bg/circle-scatter-haikei.svg',
-            '/static/img/bg/layered-peaks-haikei.svg',
-            '/static/img/bg/layered-waves-haikei.svg',
-            '/static/img/bg/stacked-steps-haikei.svg',
-            '/static/img/bg/stacked-waves-haikei.svg',
-            '/static/img/bg/wave-haikei.svg',
+            useDynamicImage('blob-scene-haikei.svg'),
+            useDynamicImage('blurry-gradient-haikei.svg'),
+            useDynamicImage('circle-scatter-haikei.svg'),
+            useDynamicImage('layered-peaks-haikei.svg'),
+            useDynamicImage('layered-waves-haikei.svg'),
+            useDynamicImage('stacked-steps-haikei.svg'),
+            useDynamicImage('stacked-waves-haikei.svg'),
+            useDynamicImage('wave-haikei.svg'),
         ],
         leaveList: <LeaveExtra[]>[],
         noticeList: <NoticeExtra[]>[],
     }),
     getters: {
-        version: (state: any) => state.data.version,
-        backgroundImage: (state: any) => state.backgroundImages[state.data.backgroundImageIndex]
+        version: (state: any): string => state.data.version,
+        backgroundImage: (state: any): URL => state.backgroundImages[state.data.backgroundImageIndex]
             || state.backgroundImages[0],
     },
     actions: {

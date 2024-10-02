@@ -12,7 +12,7 @@
 
 @font-face {
     font-family: "MyFont";
-    src: url(/static/fonts/MyFont.ttf);
+    src: url(../fonts/MyFont.ttf);
     font-weight: normal;
     font-style: normal;
     font-display: swap;

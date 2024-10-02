@@ -21,7 +21,7 @@ export function useLeaveDuration(startDatetime: string, endDatetime: string) {
  * @param state 状态值
  * @returns 十六进制颜色值
  */
-export function useStateColor(state: number) {
+export function useStateColor(state: ELeaveState) {
     switch(state){
         case ELeaveState.PENDING:
         case ELeaveState.WITHDRAWN:
@@ -37,3 +37,15 @@ export function useStateColor(state: number) {
             return i18n('color.success');
     }
 };
+
+/**
+ * 返回动态图片 URL
+ * @param path 图片路径
+ */
+export function useDynamicImage(path: string) {
+    const fileSplit = path.split('/')?.pop()?.split('.');
+    const ext = fileSplit?.pop();
+    const name = fileSplit?.shift();
+
+    return new URL(`../assets/images/${name}.${ext}`, import.meta.url);
+}

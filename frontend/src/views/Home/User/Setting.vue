@@ -47,7 +47,7 @@ const settings = [
             >
                 <van-grid :border="false" :column-num="2" clickable>
                     <van-grid-item v-for="(imageUrl, index) in globalStore.backgroundImages">
-                        <van-image class="image" :src="imageUrl" @click="changeBackgroundImage(index)"></van-image>
+                        <van-image class="image" :src="(imageUrl.href)" @click="changeBackgroundImage(index)"></van-image>
                     </van-grid-item>
                 </van-grid>
             </van-popup>

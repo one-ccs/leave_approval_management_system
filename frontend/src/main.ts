@@ -5,7 +5,7 @@ import 'vant/es/image-preview/style';
 
 import 'font-awesome/css/font-awesome.min.css';
 
-import './assets/main.css';
+import './assets/css/main.css';
 
 import { createApp } from 'vue';
 import { Lazyload } from 'vant';

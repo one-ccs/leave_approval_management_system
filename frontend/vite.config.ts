@@ -32,12 +32,16 @@ export default defineConfig({
         },
     },
     build: {
+        // 文件改变时自动打包
+        watch: {
+            include: ['src/**'],
+        },
         sourcemap: false, // 取消生成 sourcemap 可以防止在浏览器“源代码”目录树中暴露项目结构
         outDir: 'dist',
-        assetsDir: 'static',
         chunkSizeWarningLimit: 800,
         reportCompressedSize: false, // 禁用 gzip 压缩大小报告
         minify: 'esbuild', // 指定混淆器
+        assetsInlineLimit: 4096, // 内联小于 4kb 的资源
         rollupOptions: {
             output: {
                 // 打包规则
@@ -47,11 +51,11 @@ export default defineConfig({
                         const arr = id.toString().split('node_modules/')[1].split('/')
 
                         switch (arr[0]) {
-                            // 中文件 打包到为 static 中
+                            // 中文件 打包到 main 中
                             case '@vant':
                             case 'vant':
                             case 'font-awesome':
-                                return 'static';
+                                return 'main';
                             // 大文件 单独打包
                             // case '':
                             //     return arr[0];
@@ -62,23 +66,29 @@ export default defineConfig({
                     }
                     // 项目资源打包规则
                     if (id.includes('src')) {
-                        // src 目录中的 css 和 js 全部打包为 static.css/static.js 中
-                        return 'static';
+                        // src 目录中的 css 和 js 全部打包为 main.css/main.js 中
+                        return 'main';
                     }
                 },
                 // 存放路径及命名规则
                 chunkFileNames: (chunkInfo) => {
-                    return 'static/js/[name]-[hash].js';
+                    return 'assets/js/[name]-[hash].js';
                 },
                 entryFileNames: (chunkInfo) => {
-                    return 'static/js/[name]-[hash].js';
+                    return 'assets/js/[name]-[hash].js';
                 },
-                assetFileNames: (chunkInfo) => {
-                    // 修改 font-awesome 字体资源文件路径
-                    if (chunkInfo.name?.includes('fontawesome-webfont')) {
-                        return 'static/fonts/[ext]/[name]-[hash].[ext]';
+                // 修改资源文件路径
+                assetFileNames: (assetInfo) => {
+                    const fontExtnameList = ['.eot', '.woff', '.woff2', '.ttf'];
+                    const imageExtnameList = ['.jpg', '.jpeg', '.png', '.gif', '.ico', '.svg'];
+
+                    if (fontExtnameList.some((extname) => assetInfo.name?.endsWith(extname))) {
+                        return 'assets/fonts/[name]-[hash].[ext]';
                     }
-                    return 'static/[ext]/[name]-[hash].[ext]';
+                    if (imageExtnameList.some((extname) => assetInfo.name?.endsWith(extname))) {
+                        return 'assets/images/[name]-[hash].[ext]';
+                    }
+                    return 'assets/[ext]/[name]-[hash].[ext]';
                 },
             },
         },

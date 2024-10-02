@@ -20,5 +20,6 @@
         "webfont",
         "werkzeug"
     ],
-    "liveServer.settings.root": "/frontend/dist"
+    "liveServer.settings.root": "/frontend/dist",
+    "liveServer.settings.file": "index.html"
 }

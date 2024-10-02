@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import useGlobalStore from '@/stores/global';
 import Tabbar from '@/components/Tabbar.vue';
+import useGlobalStore from '@/stores/global';
 
 const globalStore = useGlobalStore();
-const backgroundImage = computed(() => {
-    return `url(${globalStore.backgroundImage})`;
-});
+
+console.log(globalStore.backgroundImage);
 </script>
 
 <template>
     <div class="view">
         <div class="client-view">
+            <img :src="globalStore.backgroundImage.href" alt="背景图片" class="bgi">
             <router-view v-slot="{ Component, route }">
                 <transition name="van-fade" mode="out-in">
                     <component :is="Component"></component>
@@ -25,14 +24,17 @@ const backgroundImage = computed(() => {
 <style scoped lang="less">
 .view {
     .client-view {
-        --bgi: v-bind(backgroundImage);
-
+        position: relative;
         width: 100%;
         height: calc(100% - var(--van-tabbar-height));
-        background-image: var(--bgi);
-        background-size: cover;
-        background-position: center top;
-        background-repeat: no-repeat;
+
+        .bgi {
+            z-index: -1;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 }
 </style>

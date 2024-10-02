@@ -28,10 +28,10 @@ const globalStore = useGlobalStore();
 <template>
     <van-image
         class="avatar"
-        :src="props.src ? `${globalStore.apiHost}/file${props.src}` : globalStore.defaultAvatarUrl"
+        :src="props.src ? `${globalStore.apiHost}/file${props.src}` : globalStore.defaultAvatarUrl.href"
         :width="props.size"
         :height="props.size"
-        :error-icon="globalStore.defaultAvatarUrl"
+        :error-icon="globalStore.defaultAvatarUrl.href"
         :alt="props.alt"
         :round="props.round"
         :lazy-load="props.lazyLoad"

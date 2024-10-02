@@ -7,7 +7,6 @@
             "path": "frontend",
             "problemMatcher": [],
             "label": "启动前端",
-            "detail": "vite"
         },
         {
             "type": "npm",
@@ -16,7 +15,6 @@
             "group": "build",
             "problemMatcher": [],
             "label": "编译前端并运行检查",
-            "detail": "vue-tsc --build --force && vite build"
         },
         {
             "type": "npm",
@@ -25,42 +23,42 @@
             "group": "build",
             "problemMatcher": [],
             "label": "仅编译前端",
-            "detail": "vite build"
         },
         {
             "type": "shell",
             "command": "python launch.py",
             "problemMatcher": [],
             "label": "启动后端",
-            "detail": "run flask app"
         },
         {
             "type": "shell",
             "command": "cd frontend && npm i",
             "problemMatcher": [],
             "label": "安装前端依赖",
-            "detail": "npm i"
         },
         {
             "type": "shell",
             "command": "cd backend && pip install -r requirements.txt",
             "problemMatcher": [],
             "label": "安装后端依赖",
-            "detail": "pip install -r requirements.txt"
         },
         {
             "type": "shell",
-            "command": "cd app/lams && npm run app",
+            "command": "cd app/lams &&  npm run app",
             "problemMatcher": [],
             "label": "运行 Android App",
-            "detail": "cordova run android"
         },
         {
             "type": "shell",
             "command": "cd app/lams && npm run build",
             "problemMatcher": [],
             "label": "编译 Android App",
-            "detail": "cordova build android"
+        },
+        {
+            "type": "shell",
+            "command": "robocopy /E ${workspaceFolder}/frontend/dist ${workspaceFolder}/app/lams/www",
+            "problemMatcher": [],
+            "label": "复制 dist 目录",
         },
     ]
 }
