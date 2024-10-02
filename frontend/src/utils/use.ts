@@ -39,13 +39,18 @@ export function useStateColor(state: ELeaveState) {
 };
 
 /**
- * 返回动态图片 URL
- * @param path 图片路径
+ * 返回动态加载的 assets 资源文件 URL
+ * @param path 资源路径
  */
-export function useDynamicImage(path: string) {
-    const fileSplit = path.split('/')?.pop()?.split('.');
+export function useDynamicAssets(path: string) {
+    const pathSplit = path.split('/');
+    const fileSplit = pathSplit.pop()?.split('.');
     const ext = fileSplit?.pop();
     const name = fileSplit?.shift();
+    const _path = pathSplit.join('/');
 
-    return new URL(`../assets/images/${name}.${ext}`, import.meta.url);
+    if (_path) {
+        return new URL(`../assets/${_path}/${name}.${ext}`, import.meta.url);
+    }
+    return new URL(`../assets/${name}.${ext}`, import.meta.url);
 }

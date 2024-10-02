@@ -2,7 +2,7 @@ import { showLoadingToast, showSuccessToast, showFailToast } from "vant";
 import { defineStore } from "pinia";
 import axios from "axios";
 import type { LeaveExtra, NoticeExtra } from "@/utils/interface";
-import { useDynamicImage } from "@/utils/use";
+import { useDynamicAssets } from "@/utils/use";
 import { localLoad, localRemove, localSave } from "@/utils/storage";
 
 
@@ -33,17 +33,17 @@ const useGlobalStore = defineStore('global', {
         onConnectedServer: (apiHost: string) => {},
         xOriginToken: 'f0d8f7aa144828d60106968a6067ea19dbfa0d2d2e067eda19dbfa0d2d2e235d37e5198842dca67e13a',
         timeout: 5000,
-        defaultAvatarUrl: useDynamicImage('avatar.jpg'),
-        logoPngUrl: useDynamicImage('logo.png'),
+        defaultAvatarUrl: useDynamicAssets('images/avatar.jpg'),
+        logoPngUrl: useDynamicAssets('images/logo.png'),
         backgroundImages: [
-            useDynamicImage('blob-scene-haikei.svg'),
-            useDynamicImage('blurry-gradient-haikei.svg'),
-            useDynamicImage('circle-scatter-haikei.svg'),
-            useDynamicImage('layered-peaks-haikei.svg'),
-            useDynamicImage('layered-waves-haikei.svg'),
-            useDynamicImage('stacked-steps-haikei.svg'),
-            useDynamicImage('stacked-waves-haikei.svg'),
-            useDynamicImage('wave-haikei.svg'),
+            useDynamicAssets('images/bg/blob-scene-haikei.svg'),
+            useDynamicAssets('images/bg/blurry-gradient-haikei.svg'),
+            useDynamicAssets('images/bg/circle-scatter-haikei.svg'),
+            useDynamicAssets('images/bg/layered-peaks-haikei.svg'),
+            useDynamicAssets('images/bg/layered-waves-haikei.svg'),
+            useDynamicAssets('images/bg/stacked-steps-haikei.svg'),
+            useDynamicAssets('images/bg/stacked-waves-haikei.svg'),
+            useDynamicAssets('images/bg/wave-haikei.svg'),
         ],
         leaveList: <LeaveExtra[]>[],
         noticeList: <NoticeExtra[]>[],
